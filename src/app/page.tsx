@@ -152,9 +152,9 @@ function Hero() {
             className="flex justify-center md:justify-end"
             style={{
               maskImage:
-                "radial-gradient(ellipse 85% 85% at 55% 50%, black 55%, transparent 90%)",
+                "radial-gradient(ellipse 68% 72% at 55% 50%, black 38%, transparent 78%)",
               WebkitMaskImage:
-                "radial-gradient(ellipse 85% 85% at 55% 50%, black 55%, transparent 90%)",
+                "radial-gradient(ellipse 68% 72% at 55% 50%, black 38%, transparent 78%)",
             }}
           >
             <Image
