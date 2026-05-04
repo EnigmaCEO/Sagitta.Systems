@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020508;
+  --surface: #0c1118;
+  --surface-2: #101820;
+  --surface-hover: #121c28;
+  --border: #1a2840;
+  --border-hover: #2a3f5f;
+  --text-primary: #eef2f7;
+  --text-secondary: #7a8fa8;
+  --text-tertiary: #4a5e75;
+  --accent: #3b82f6;
+  --accent-dim: #1d3a6e;
+  --accent-glow: rgba(59, 130, 246, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Offset sticky-nav height when jumping to anchors */
+section[id] {
+  scroll-margin-top: 58px;
+}
+
+/* Hero background — subtle ambient left glow behind copy */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 80% at -5% 50%,
+    rgba(59, 130, 246, 0.055) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+/* Ecosystem card hover */
+a.door-link:hover .door-card {
+  border-color: var(--hover-border, var(--border-hover)) !important;
+  box-shadow:
+    0 0 0 1px var(--hover-border, var(--border-hover)),
+    0 10px 28px rgba(0, 0, 0, 0.3);
+  background-color: var(--surface-hover) !important;
+}
+
+/* Nav links */
+.nav-link {
+  color: var(--text-secondary);
+  transition: color 0.15s;
+}
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-cta {
+  color: var(--text-secondary);
+  border-color: var(--border);
+  transition: color 0.15s, border-color 0.15s;
+}
+.nav-cta:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+
+/* Primary CTA button */
+.btn-primary {
+  background-color: var(--accent);
+  color: #fff;
+  transition: opacity 0.15s, box-shadow 0.15s;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.22);
+}
+
+/* Secondary CTA button */
+.btn-secondary {
+  color: var(--text-secondary);
+  border-color: var(--border);
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+}
+.btn-secondary:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background-color: var(--surface-2);
+}
+
+/* Section divider */
+.section-divider {
+  border-color: var(--border);
+  margin-bottom: 3rem;
+}
+
+/* Audience router card hover */
+a.router-card:hover {
+  border-color: var(--border-hover) !important;
+  background-color: var(--surface-hover) !important;
+}
