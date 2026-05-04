@@ -92,7 +92,7 @@ export default function CareersAccordion({ areas }: { areas: CareerArea[] }) {
                               className="text-sm font-semibold mb-1"
                               style={{ color: "var(--text-primary)" }}
                             >
-                              {role.title}
+                              {role.title} - Remote
                             </p>
                             {role.description !== "Closed" && (
                               <p
