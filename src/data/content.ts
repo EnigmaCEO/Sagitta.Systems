@@ -76,6 +76,18 @@ export const ecosystemItems: EcosystemItem[] = [
   },
   // Services
   {
+    name: "Defense",
+    shortName: "Defense",
+    description:
+      "Protocol survival reviews, authority-surface mapping, and control verification before the emergency.",
+    status: "Live",
+    group: "service",
+    subdomain: "defense.sagitta.systems",
+    href: "https://defense.sagitta.systems",
+    cta: "Launch",
+    logo: "/defense.png",
+  },
+  {
     name: "Treasury Decision Desk",
     shortName: "Treasury",
     description:
@@ -84,17 +96,6 @@ export const ecosystemItems: EcosystemItem[] = [
     group: "service",
     subdomain: "treasury.sagitta.systems",
     href: "https://treasury.sagitta.systems",
-    cta: "Request access",
-  },
-  {
-    name: "Defense",
-    shortName: "Defense",
-    description:
-      "Protocol survival reviews, authority-surface mapping, and control verification before the emergency.",
-    status: "Beta / Waitlist",
-    group: "service",
-    subdomain: "defense.sagitta.systems",
-    href: "https://defense.sagitta.systems",
     cta: "Request access",
   },
   {
