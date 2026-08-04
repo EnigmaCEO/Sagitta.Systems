@@ -10,8 +10,8 @@ import { site } from "@/content/site";
  * a 58-page export with no sitemap reference leaves discovery to link-following
  * alone.
  *
- * `/_next/` is excluded because it holds build chunks and route payloads, not
- * records. It is the one path here that has nothing to say to a reader.
+ * Rendering resources are intentionally crawlable. Search engines need the
+ * exported CSS and JavaScript under `/_next/` to render pages accurately.
  */
 // Metadata routes are Route Handlers, and `output: "export"` refuses to build
 // one that has not declared itself static — it cannot know that this function
@@ -24,7 +24,6 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/_next/",
     },
     sitemap: new URL("/sitemap.xml", site.url).toString(),
     host: site.url,

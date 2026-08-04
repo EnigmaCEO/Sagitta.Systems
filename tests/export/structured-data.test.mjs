@@ -114,7 +114,7 @@ describe("structured data", () => {
       // The canonical must be this page, never a third-party publisher.
       assert.equal(
         block.mainEntityOfPage["@id"],
-        `https://sagitta.systems${route}`,
+        `https://www.sagitta.systems${route}`,
         `${route}: Article canonical does not point at its own page`,
       );
       // Never invent the property a crawler leans on hardest.

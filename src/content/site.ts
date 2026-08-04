@@ -6,7 +6,7 @@ export const site = {
   tagline: "The Sagitta Systems Network",
   positioning:
     "Systems, intelligence, and infrastructure for continuity, allocation, and capital operations.",
-  url: "https://sagitta.systems",
+  url: "https://www.sagitta.systems",
   description:
     "Sagitta Systems operates a network of systems for continuity, allocation, and capital infrastructure — protecting protocols through control failure, governing where capital goes, and settling it.",
   /**

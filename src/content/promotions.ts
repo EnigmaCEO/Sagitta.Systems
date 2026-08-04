@@ -110,7 +110,7 @@ export const promotionChannelRecords: PromotionChannelRecord[] = [
   {
     id: "sagitta-systems",
     label: "Sagitta Systems",
-    url: "https://sagitta.systems",
+    url: "https://www.sagitta.systems",
     active: true,
     verification: verified("This site"),
     publicationState: "published",
