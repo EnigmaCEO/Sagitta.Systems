@@ -1,10 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-
-  "//": "buildCommand is pinned to the package.json script on purpose: it carries the --webpack flag that next.config.ts documents as mandatory, and Vercel's Next.js default (next build) would silently use Turbopack, which cannot build this app. outputDirectory is deliberately NOT set — Vercel's Next.js builder detects output: 'export' from next.config.ts and serves out/ itself; overriding it fights the framework preset.",
   "buildCommand": "npm run build",
-
   "headers": [
     {
       "source": "/(.*)",
