@@ -1,0 +1,53 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/check-links.mjs)",
+      "Bash(node -e \"const m=require\\('./.next/prerender-manifest.json'\\); const r=Object.keys\\(m.routes\\); console.log\\('prerendered routes:', r.length\\); console.log\\(r.join\\('\\\\n'\\)\\)\")",
+      "WebFetch(domain:sce.sagitta.systems)",
+      "WebFetch(domain:defense.sagitta.systems)",
+      "WebFetch(domain:radar.sagitta.systems)",
+      "WebFetch(domain:selun.sagitta.systems)",
+      "WebFetch(domain:protocol.sagitta.systems)",
+      "WebFetch(domain:treasury.sagitta.systems)",
+      "WebFetch(domain:wallet.sagitta.systems)",
+      "WebFetch(domain:grants.sagitta.systems)",
+      "WebFetch(domain:rebalancing.sagitta.systems)",
+      "WebFetch(domain:www.sagittalabs.com)",
+      "WebFetch(domain:sagitta-protocol.gitbook.io)",
+      "WebFetch(domain:banking.sagitta.systems)",
+      "Bash(node -e \"import\\('./src/content/index.ts'\\).then\\(m => console.log\\('OK systems:', m.systemCount, 'entries:', m.publishedEntries.length\\)\\).catch\\(e => console.log\\('ERR', e.message\\)\\)\")",
+      "Bash(node -e \"const m=require\\('./.next/prerender-manifest.json'\\);console.log\\('app prerendered routes:',Object.keys\\(m.routes\\).length\\)\")",
+      "Bash(cp src/content/desks.ts /tmp/desks.bak)",
+      "Bash(sed -i '0,/state: \"upcoming\"/s//state: \"active\"/' src/content/desks.ts)",
+      "Bash(node -e ' *)",
+      "Bash(grep -roh \"\\\\$29/month\\\\|\\\\$99/month\\\\|\\\\$149/month\\\\|\\\\$79/month\\\\|\\\\$499/month\\\\|\\\\$2,500/month\" out --include=\"*.html\")",
+      "Bash(grep -roh \"\\\\$3,000\" out --include=\"*.html\")",
+      "Bash(grep -o \"Archived[^<]\\\\{0,60\\\\}\" out/systems.html)",
+      "PowerShell(npm run verify 2>&1)",
+      "PowerShell(Get-ChildItem -Recurse -File src,public,scripts | Where-Object { $_.FullName -notmatch 'node_modules' } | ForEach-Object { \"{0,8}  {1}\" -f $_.Length, $_.FullName.Replace\\(\"d:\\\\Projects\\\\Sagitta\\\\Systems\\\\\",\"\"\\) })",
+      "PowerShell(npx tsc --noEmit 2>&1)",
+      "PowerShell(npm run check:content 2>&1)",
+      "PowerShell(node -e \"import\\('next/og'\\).then\\(m=>console.log\\('next/og ok:', Object.keys\\(m\\)\\)\\).catch\\(e=>console.log\\('ERR', e.message\\)\\)\")",
+      "PowerShell(node -e \"import\\('next/og.js'\\).then\\(m=>console.log\\('ok:', Object.keys\\(m\\)\\)\\).catch\\(e=>console.log\\('ERR', e.message\\)\\)\")",
+      "PowerShell(node -e \"const s=require\\('sharp'\\); console.log\\('sharp', s.versions.vips\\)\")",
+      "PowerShell(node scripts/build-og.mjs)",
+      "PowerShell(Select-String -Path src\\\\app\\\\about\\\\page.tsx,src\\\\app\\\\documentation\\\\page.tsx,src\\\\app\\\\contact\\\\page.tsx,src\\\\app\\\\legal\\\\page.tsx,src\\\\app\\\\status\\\\page.tsx,src\\\\app\\\\careers\\\\[slug]\\\\page.tsx,src\\\\components\\\\PersonCard.tsx,src\\\\components\\\\PressResourceCard.tsx,src\\\\components\\\\InquiryForm.tsx -Pattern 'var\\\\\\(--accent\\\\\\)|path: \"/' | ForEach-Object { \"$\\($_.Path.Replace\\('D:\\\\Projects\\\\Sagitta\\\\Systems\\\\',''\\)\\):$\\($_.LineNumber\\): $\\($_.Line.Trim\\(\\)\\)\" })",
+      "Bash(xargs sed -i 's/var\\(--accent\\)/var\\(--family-accent\\)/g; s/var\\(--background\\)/var\\(--bg-base\\)/g; s/var\\(--border-hover\\)/var\\(--border-strong\\)/g')",
+      "Bash(sed -i 's|  path: \"/about\",|  path: \"/about\",\\\\n  ogImage: \"/og/about.png\",|' src/app/about/page.tsx)",
+      "Bash(sed -i 's|  path: \"/documentation\",|  path: \"/documentation\",\\\\n  ogImage: \"/og/systems.png\",|' src/app/documentation/page.tsx)",
+      "Bash(sed -i 's|  path: \"/status\",|  path: \"/status\",\\\\n  ogImage: \"/og/systems.png\",|' src/app/status/page.tsx)",
+      "PowerShell(npx next lint 2>&1)",
+      "Bash(node --test tests/unit/)",
+      "Bash(node --test \"tests/unit/*.test.mjs\")",
+      "PowerShell(npm run build 2>&1)",
+      "Bash(node --test \"tests/export/*.test.mjs\")",
+      "Bash(npx playwright *)",
+      "Bash(node qa.mjs interaction)",
+      "Bash(sed -i 's/const PORT = 4321;/const PORT = Number\\(process.env.QA_PORT ?? 4399\\);/' qa.mjs)",
+      "Bash(QA_PORT=4407 node qa.mjs interaction)"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
+    ]
+  }
+}

@@ -1,40 +1,26 @@
 import type { Metadata } from "next";
+import CtaAnalytics from "@/components/CtaAnalytics";
+import JsonLd from "@/components/JsonLd";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
+import { site } from "@/content/site";
+import { organizationLd, webSiteLd } from "@/lib/jsonld";
+import { buildMetadata } from "@/lib/metadata";
 import "./globals.css";
 
-const socialImage = {
-  url: "/sagitta-hero.png",
-  width: 400,
-  height: 300,
-  alt: "Sagitta Systems constellation graphic",
-};
-
 export const metadata: Metadata = {
-  title: "Sagitta Systems — Ecosystem for protocol defense, treasury support, and portfolio decisions",
-  description:
-    "One ecosystem of focused systems that power the defense, treasury support, portfolio decisions, and continuity of the Sagitta Protocol.",
-  metadataBase: new URL("https://sagitta.systems"),
-  alternates: {
-    canonical: "https://sagitta.systems",
+  ...buildMetadata({
+    title: site.name,
+    description: site.description,
+    path: "/",
+  }),
+  title: {
+    default: `${site.name} — ${site.tagline}`,
+    template: `%s`,
   },
   icons: {
-    icon: "/sagitta.png",
-    apple: "/sagitta.png",
-  },
-  openGraph: {
-    title: "Sagitta Systems - Ecosystem for protocol defense, treasury support, and portfolio decisions",
-    description:
-      "One ecosystem of focused systems that power the defense, treasury support, portfolio decisions, and continuity of the Sagitta Protocol.",
-    url: "https://sagitta.systems",
-    siteName: "Sagitta Systems",
-    images: [socialImage],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sagitta Systems - Ecosystem for protocol defense, treasury support, and portfolio decisions",
-    description:
-      "One ecosystem of focused systems that power the defense, treasury support, portfolio decisions, and continuity of the Sagitta Protocol.",
-    images: [socialImage.url],
+    icon: site.mark,
+    apple: site.mark,
   },
 };
 
@@ -44,8 +30,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    // `data-scroll-behavior` is the Next 16 opt-in for the behaviour Next 15
+    // applied automatically: this stylesheet sets `scroll-behavior: smooth`
+    // on <html> for in-page anchors, and without this attribute every route
+    // change would smooth-scroll to the top instead of landing instantly.
+    <html lang="en" data-scroll-behavior="smooth">
+      <body className="min-h-screen flex flex-col">
+        {/* The Organization and WebSite nodes are site-wide identity, so they
+            belong on every page. Page-level nodes reference them by @id rather
+            than restating them. */}
+        <JsonLd data={organizationLd()} />
+        <JsonLd data={webSiteLd()} />
+        {/* Reads the `data-cta` attributes the templates already carry. Inert
+            unless NEXT_PUBLIC_ANALYTICS_ENDPOINT is set, and inert for any
+            reader sending Do Not Track or Global Privacy Control. Loads no
+            third-party script. */}
+        <CtaAnalytics />
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <SiteHeader />
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }

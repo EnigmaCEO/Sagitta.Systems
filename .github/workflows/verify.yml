@@ -1,0 +1,59 @@
+name: verify
+
+# Runs the same gate chain as `npm run verify`, in the same order, so a green
+# check here means exactly what a green local run means: typecheck, lint,
+# content validation, unit tests, build, export tests against the real shipped
+# HTML, then the structural link and route-count check.
+#
+# The steps are split rather than run as one `npm run verify` so a failure names
+# the stage that failed in the job summary instead of collapsing to "npm exited
+# 1". The order is load-bearing — the export tests and the link check both read
+# out/, so neither can run before the build.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Validate content
+        run: npm run check:content
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Export tests
+        run: npm run test:export
+
+      - name: Links and route count
+        run: npm run check:links

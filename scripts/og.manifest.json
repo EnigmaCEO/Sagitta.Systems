@@ -1,0 +1,75 @@
+{
+  "generatedFrom": "src/content — via scripts/lib/og-cards.mjs",
+  "cards": [
+    {
+      "file": "about.png",
+      "eyebrow": "About",
+      "title": "The development identity behind the network.",
+      "subtitle": "Sagitta Systems builds and documents the systems, and operates within Sagitta Labs — the emerging umbrella brand.",
+      "footer": "sagitta.systems/about"
+    },
+    {
+      "file": "careers.png",
+      "eyebrow": "Careers",
+      "title": "Build with Sagitta.",
+      "subtitle": "Open roles with published terms, a contributor network, and future workstreams — each held clearly apart.",
+      "footer": "sagitta.systems/careers"
+    },
+    {
+      "file": "family-allocation.png",
+      "eyebrow": "Allocation and Agent Intelligence",
+      "title": "Deciding where capital goes.",
+      "subtitle": "Autonomous Allocation Agent and Selun — policy-governed allocation for institutions, individuals, and other agents.",
+      "footer": "sagitta.systems/systems#allocation-agent-intelligence"
+    },
+    {
+      "file": "family-capital.png",
+      "eyebrow": "Capital Infrastructure",
+      "title": "Holding and moving what the network decides on.",
+      "subtitle": "Sagitta Protocol, Sagitta Banking, and Sagitta Wallet — the protocol layer and institutional settlement.",
+      "footer": "sagitta.systems/systems#capital-infrastructure"
+    },
+    {
+      "file": "family-continuity.png",
+      "eyebrow": "Continuity and Defense",
+      "title": "Keeping protocols operating through control failure.",
+      "subtitle": "Sagitta Continuity Engine, Sagitta Defense, and Sagitta Radar — continuity doctrine, defense review, and infrastructure monitoring.",
+      "footer": "sagitta.systems/systems#continuity-defense"
+    },
+    {
+      "file": "home.png",
+      "eyebrow": "The Sagitta Systems Network",
+      "title": "Continuity, allocation, and capital infrastructure.",
+      "subtitle": "What the network is seeing and doing now — with the route into the system that supports the next decision.",
+      "footer": "sagitta.systems"
+    },
+    {
+      "file": "newsroom.png",
+      "eyebrow": "Newsroom",
+      "title": "The record of what Sagitta has published.",
+      "subtitle": "Research notes, reports, documents, and dated system updates from the desks that are running.",
+      "footer": "sagitta.systems/newsroom"
+    },
+    {
+      "file": "press.png",
+      "eyebrow": "Press room",
+      "title": "Sourced, scoped, and dated.",
+      "subtitle": "Approved descriptions, one leadership profile, marks and diagrams, and every figure with its source and verification date.",
+      "footer": "sagitta.systems/press"
+    },
+    {
+      "file": "roadmap.png",
+      "eyebrow": "Roadmap",
+      "title": "Now, Next, Horizon.",
+      "subtitle": "Every milestone carries an evidence-based state and links to what supports it. No dates are claimed, because none are committed.",
+      "footer": "sagitta.systems/roadmap"
+    },
+    {
+      "file": "systems.png",
+      "eyebrow": "Systems directory",
+      "title": "8 systems. 3 families.",
+      "subtitle": "Every record states what the system is, what you can use today, and what evidence supports its operating state.",
+      "footer": "sagitta.systems/systems"
+    }
+  ]
+}

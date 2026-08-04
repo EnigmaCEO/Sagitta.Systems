@@ -1,18 +1,178 @@
 @import "tailwindcss";
 
+/* ════════════════════════════════════════════════════════════════════════════
+   Sagitta Systems — design tokens
+   Documented in VISUAL_DIRECTION.md. Every colour, space, and duration used by
+   a component resolves to a token here, so the visual system has one source.
+   ════════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  --background: #020508;
-  --surface: #0c1118;
-  --surface-2: #101820;
-  --surface-hover: #121c28;
-  --border: #1a2840;
-  --border-hover: #2a3f5f;
-  --text-primary: #eef2f7;
-  --text-secondary: #7a8fa8;
-  --text-tertiary: #4a5e75;
-  --accent: #3b82f6;
-  --accent-dim: #1d3a6e;
-  --accent-glow: rgba(59, 130, 246, 0.12);
+  /* ── Background levels ── near-black foundation rising to deep navy ──────── */
+  --bg-base: #04070d;
+  --bg-raised: #070c16;
+
+  /* ── Surface levels ── */
+  --surface: #0a111e;
+  --surface-2: #0f1829;
+  --surface-3: #142138;
+  --surface-hover: #131f33;
+
+  /* ── Borders ── */
+  --border: #1b2942;
+  --border-strong: #2b3f61;
+  --border-gold: rgba(217, 177, 104, 0.34);
+
+  /* ── Typography ── off-white primary, cool greys beneath ────────────────── */
+  --text-primary: #eef2f8;
+  --text-secondary: #a2b3c9;
+  --text-tertiary: #77899f;
+
+  /* ── Gold ── the institutional accent. Links, eyebrows, primary action ──── */
+  --gold: #d9b168;
+  --gold-bright: #f0cf92;
+  --gold-deep: #8a6c30;
+  --gold-dim: rgba(217, 177, 104, 0.14);
+  --gold-glow: rgba(217, 177, 104, 0.22);
+
+  /* ── Violet ── the secondary accent, and the allocation family ──────────── */
+  --violet: #a78bfa;
+  --violet-deep: #5b3fb0;
+  --violet-dim: rgba(167, 139, 250, 0.13);
+  --violet-glow: rgba(167, 139, 250, 0.2);
+
+  /* ── Signal / status ── four evidence-based operating states ────────────── */
+  --state-operating: #35d39a;
+  --state-operating-dim: rgba(53, 211, 154, 0.1);
+  --state-public-test: #4ec8d8;
+  --state-public-test-dim: rgba(78, 200, 216, 0.1);
+  --state-development: #a78bfa;
+  --state-development-dim: rgba(167, 139, 250, 0.1);
+  --state-horizon: #8095ad;
+  --state-horizon-dim: rgba(128, 149, 173, 0.09);
+
+  /* ── System-family accents ──────────────────────────────────────────────── */
+  --family-continuity: #4ec8d8;
+  --family-continuity-dim: rgba(78, 200, 216, 0.12);
+  --family-continuity-deep: #1c5f6b;
+
+  --family-allocation: #a78bfa;
+  --family-allocation-dim: rgba(167, 139, 250, 0.12);
+  --family-allocation-deep: #4a338f;
+
+  --family-capital: #d9b168;
+  --family-capital-dim: rgba(217, 177, 104, 0.12);
+  --family-capital-deep: #7a5f2a;
+
+  /* Set per-subtree by .family-scope; components read the generic names. */
+  --family-accent: var(--gold);
+  --family-accent-dim: var(--gold-dim);
+  --family-accent-deep: var(--gold-deep);
+
+  /* ── Atmosphere ── the light the stages sit in ──────────────────────────────
+     Held as channels, not colours, so each stage sets its own weight.
+
+     `--atmos-cool` is deliberately NOT the violet accent. It is a desaturated
+     indigo a few steps off `--bg-raised`, so a stage reads as dark receding
+     rather than as purple laid over it. The saturated violet remains the
+     allocation family's accent and belongs on marks, rules, and badges — the
+     things that should carry a hue — not spread across a whole screen. */
+  --atmos-cool: 46, 54, 96;
+  --atmos-warm: 217, 177, 104;
+
+  /* What a hero is tinted with. Neutral here on purpose: an institutional
+     route has no family, so nothing in its atmosphere should carry a hue.
+     The family scopes below override it, because there the colour is a fact
+     about the page rather than decoration. */
+  --hero-tint: rgb(var(--atmos-cool));
+
+  /* ── Shadows and glow ───────────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.36);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.48);
+  --glow-soft: 0 0 24px -6px var(--family-accent-dim);
+  --glow-strong: 0 0 32px -4px var(--gold-glow);
+
+  /* ── Spacing scale ──────────────────────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* ── Type scale ─────────────────────────────────────────────────────────── */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --tracking-eyebrow: 0.14em;
+  --tracking-tight: -0.022em;
+
+  /* ── Radius ─────────────────────────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+
+  /* ── Motion ─────────────────────────────────────────────────────────────── */
+  --duration-instant: 90ms;
+  --duration-fast: 160ms;
+  --duration-base: 260ms;
+  --duration-slow: 520ms;
+  --duration-reveal: 800ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-signal: cubic-bezier(0.34, 1.2, 0.64, 1);
+
+  /* Header height, used for anchor offsets and the mobile drawer. */
+  --header-height: 56px;
+
+  /* ── The editorial gutter ─────────────────────────────────────────────────
+     One distance from the viewport edge to the front page's content, used by
+     every stage and by the header sitting over them.
+
+     The second term is what caps the content: past 100rem of usable width the
+     gutter absorbs the surplus instead of a centred max-width box doing it.
+     That keeps one alignment for the whole page and — because the gutter is
+     then the entire distance to the edge — lets media bleed to the viewport
+     edge exactly, rather than stopping short by the centring leftover. */
+  --gutter: max(clamp(1.25rem, 5vw, 5.5rem), calc((100vw - 100rem) / 2));
+
+  /* Legacy aliases — kept so nothing regresses mid-migration. */
+  --background: var(--bg-base);
+  --border-hover: var(--border-strong);
+  --accent: var(--gold);
+  --accent-dim: var(--gold-deep);
+  --accent-glow: var(--gold-glow);
+}
+
+/* Family scoping. Wrap any subtree in one of these and every component inside
+   picks up that family's accent without knowing which family it is in. */
+.family-continuity-defense {
+  --hero-tint: var(--family-continuity);
+  --family-accent: var(--family-continuity);
+  --family-accent-dim: var(--family-continuity-dim);
+  --family-accent-deep: var(--family-continuity-deep);
+}
+.family-allocation-agent-intelligence {
+  --hero-tint: var(--family-allocation);
+  --family-accent: var(--family-allocation);
+  --family-accent-dim: var(--family-allocation-dim);
+  --family-accent-deep: var(--family-allocation-deep);
+}
+.family-capital-infrastructure {
+  --hero-tint: var(--family-capital);
+  --family-accent: var(--family-capital);
+  --family-accent-dim: var(--family-capital-dim);
+  --family-accent-deep: var(--family-capital-deep);
 }
 
 * {
@@ -24,94 +184,1633 @@ html {
 }
 
 body {
-  background-color: var(--background);
+  background-color: var(--bg-base);
   color: var(--text-primary);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* A fine institutional grid, held far below the content. */
+  background-image:
+    linear-gradient(rgba(43, 63, 97, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(43, 63, 97, 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-attachment: fixed;
 }
 
-/* Offset sticky-nav height when jumping to anchors */
-section[id] {
-  scroll-margin-top: 58px;
+/* Offset the sticky header when jumping to an anchor. */
+:target,
+section[id],
+div[id] {
+  scroll-margin-top: calc(var(--header-height) + 12px);
 }
 
-/* Hero background — subtle ambient left glow behind copy */
+/* ── Typography helpers ───────────────────────────────────────────────────── */
+
+.eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--family-accent);
+}
+
+.display {
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+/* ── Surfaces ─────────────────────────────────────────────────────────────── */
+
+.surface-card {
+  background-color: var(--surface);
+  border-color: var(--border);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+.surface-card:hover,
+.surface-card:focus-within {
+  border-color: var(--border-strong);
+  background-color: var(--surface-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* A card that belongs to a family: a hairline of family accent along the top,
+   and the family accent picked up on hover. */
+.family-card {
+  position: relative;
+  overflow: hidden;
+}
+.family-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--family-accent) 22%,
+    var(--family-accent) 72%,
+    transparent 100%
+  );
+  opacity: 0.42;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+.family-card:hover::before,
+.family-card:focus-within::before {
+  opacity: 1;
+}
+.family-card:hover,
+.family-card:focus-within {
+  border-color: color-mix(in srgb, var(--family-accent) 40%, var(--border));
+  box-shadow: var(--shadow-md), var(--glow-soft);
+}
+
+/* Evidence surfaces read as inspectable technical material, not marketing. */
+.evidence-panel {
+  background-color: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--family-accent);
+  border-radius: var(--radius-lg);
+}
+
+/* ── Hero and section atmosphere ──────────────────────────────────────────── */
+
+/* Every page opens with a hero, and the header is fixed and transparent over
+   it. The hero reserves the header's height so nothing ever starts underneath
+   it — this is what lets the header sit *in* the composition rather than above
+   it without content hiding behind the bar. */
 .hero-section {
   position: relative;
   overflow: hidden;
+  /* The hero used to sit a step lighter than the page. It read as a band laid
+     on top rather than as the top of the page, and a lighter ground is also
+     what made the wash over it visible. It is now the page's own base; the
+     horizon rule below is what marks where the hero ends. */
+  background-color: var(--bg-base);
+  padding-top: var(--header-height);
 }
 .hero-section::before {
   content: "";
   position: absolute;
   inset: 0;
+  /* One wash, and only where a colour means something.
+     `--hero-tint` is neutral by default and becomes the family accent only
+     inside a family scope. That is the whole rule: on /systems/sagitta-radar
+     the cyan is information — it says which family you are in — but on
+     /careers or /newsroom there is no family, and a gold glow there is a hue
+     applied for its own sake. Those routes now get depth instead of colour.
+     The separate warm highlight is gone with it; it was the second light this
+     pass exists to remove. */
   background: radial-gradient(
-    ellipse 55% 80% at -5% 50%,
-    rgba(59, 130, 246, 0.055) 0%,
-    transparent 65%
+    ellipse 92% 135% at -6% 44%,
+    color-mix(in srgb, var(--hero-tint) 13%, transparent) 0%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+/* A single horizon line under the hero — the network's baseline. */
+.hero-section::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border-strong) 18%,
+    var(--gold-deep) 50%,
+    var(--border-strong) 82%,
+    transparent
   );
   pointer-events: none;
 }
 
-/* Ecosystem card hover */
-a.door-link:hover .door-card {
-  border-color: var(--hover-border, var(--border-hover)) !important;
-  box-shadow:
-    0 0 0 1px var(--hover-border, var(--border-hover)),
-    0 10px 28px rgba(0, 0, 0, 0.3);
-  background-color: var(--surface-hover) !important;
+/* ── The broadcast grammar ────────────────────────────────────────────────────
+   The homepage only. Where an institutional route is a document — one measure,
+   one rhythm, hairlines between sections — the front page is a broadcast: each
+   stage owns a full viewport, changes medium, and is separated by light and
+   composition rather than by another horizontal border.
+
+   The rules this layer holds to:
+
+     - The viewport is the canvas. A stage may align its text to an inner
+       column, but nothing is confined to one repeated centred box.
+     - Hierarchy comes from scale, image dominance, and negative space.
+     - A border means a real frame: an interface, a poster, a document. Nothing
+       decorative is put in a rectangle.
+     - Gold illuminates and points. It is not a button fill down the page.
+     - Violet is depth and signal energy, held at the edges of the light.
+
+   Nothing below is used by /systems, /newsroom, /about, or any other route.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+.broadcast {
+  /* Reading measure. Body copy on this page never exceeds it. */
+  --measure: 34rem;
+  position: relative;
+  /* Media bleeds past the gutter; the page itself never scrolls sideways. */
+  overflow-x: clip;
+  background-color: #02040a;
 }
 
-/* Nav links */
-.nav-link {
+/* An editorial canvas: full width, aligned only by the gutter.
+   Deliberately not a centred max-width box — that is the shape being replaced,
+   and a centred box also breaks the bleed: anything that escapes it would have
+   to cross both the gutter *and* whatever centring leftover the viewport
+   happens to have, which is not a distance an element can know. Capping the
+   content inside the gutter instead means `-1 * var(--gutter)` always lands
+   exactly on the viewport edge, at every width. */
+.canvas {
+  width: 100%;
+  padding-inline: var(--gutter);
+}
+
+/* Text held to a column inside a wide canvas. */
+.measure {
+  max-width: var(--measure);
+  line-height: 1.7;
+}
+
+/* ── Editorial type ───────────────────────────────────────────────────────── */
+
+/* The lead headline. It carries the first screen on its own.
+
+   ── Size ────────────────────────────────────────────────────────────────────
+   The governing constraint is the fold, not the type scale. At 7vw the real
+   headline — "The infrastructure you depend on is being watched." — set to
+   four lines on every desktop width and five on mobile, and the stage ran
+   915px against a 900px viewport. Nearly all of that height was the headline.
+
+   5.5vw sets it to three lines everywhere, and three lines is where the height
+   actually comes from: the saving is a whole line, not a few points of size.
+   Measured after the change, the stage occupies 88–94% of the fold from 1057px
+   to 1865px, which leaves the next stage just visible underneath — the point
+   is to fill the screen, not to overflow it.
+
+   ── Line height ─────────────────────────────────────────────────────────────
+   A hard floor, and a measured one rather than a taste: in this face a
+   descender's ink reaches 0.243em below the baseline and an ascender's reaches
+   0.743em above it, so lines closer together than 0.987em make the two
+   collide. This was 0.93, and "you depend on is / being watched." overlapped
+   the y into the b by about 4px at 74px.
+
+   1.02 clears the ink by 0.033em and matches `.stage-title`, which is what the
+   rest of the display scale already uses — 0.93 was the outlier, not the
+   standard. Do not take this below 1.0. */
+.lede-display {
+  font-size: clamp(2.6rem, 5.5vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.038em;
+  font-weight: 700;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+
+/* A stage title. Visual authority, not a card heading. */
+.stage-title {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.032em;
+  font-weight: 700;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+
+/* A headline inside the network desk. Large enough to be the interest. */
+.desk-headline {
+  font-size: clamp(1.25rem, 1.9vw, 1.9rem);
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.desk-lead-headline {
+  font-size: clamp(1.9rem, 3.4vw, 3.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+/* Eyebrows and metadata stay compact and precise at every scale. */
+.stage-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--gold);
+}
+.meta-line {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+}
+.numeral {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ── Atmosphere ───────────────────────────────────────────────────────────────
+   Light, haze, and geometry instead of section borders. Each is a single
+   pointer-events-none layer so nothing here can intercept a click. */
+
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Stage atmosphere ─────────────────────────────────────────────────────────
+   The light each stage sits in.
+
+   This was four stages of the same arrangement: a saturated violet ellipse in
+   one corner at 0.30–0.36 alpha and a gold ellipse in the opposite one. Two
+   competing blobs in complementary brand colours is the default look of every
+   generated landing page, and it read as one — the colour was doing the work
+   that the composition should be doing.
+
+   Three rules replace it:
+
+     1. One light source per stage, not two. A believable room has a direction
+        the light comes from. The second blob was never light; it was a colour
+        choice in a corner.
+     2. The cool tone is depth, not a hue. `--atmos-cool` is a desaturated
+        indigo sitting a few steps off the page's own navy, so it reads as the
+        dark receding rather than as purple applied on top. The vivid violet is
+        still the allocation family's accent — it belongs on a badge, a rule, a
+        mark, not spread across a whole stage.
+     3. Gold is a highlight, not a bloom. It is small, dim, and pinned to an
+        edge — light catching a corner rather than an orb floating in frame.
+
+   Alphas are held low deliberately: the hexagonal lattice now carries the
+   structure of these stages, and it cannot be read through a wash of colour.
+   Channels rather than colours, so each stage sets its own weight. */
+
+.haze-lead {
+  background:
+    /* One warm source, tucked into the upper-right edge behind the mark. */
+    radial-gradient(ellipse 46% 40% at 90% 10%, rgba(var(--atmos-warm), 0.09) 0%, transparent 60%),
+    /* Ambient depth, very large and very soft, rising from below the fold. */
+    radial-gradient(ellipse 135% 88% at 28% 120%, rgba(var(--atmos-cool), 0.32) 0%, transparent 72%);
+}
+.haze-product {
+  background:
+    radial-gradient(ellipse 38% 32% at 4% 6%, rgba(var(--atmos-warm), 0.06) 0%, transparent 58%),
+    radial-gradient(ellipse 125% 82% at 84% 110%, rgba(var(--atmos-cool), 0.24) 0%, transparent 70%);
+}
+.haze-watch {
+  background:
+    radial-gradient(ellipse 34% 30% at 12% 4%, rgba(var(--atmos-warm), 0.055) 0%, transparent 56%),
+    radial-gradient(ellipse 130% 80% at 54% 118%, rgba(var(--atmos-cool), 0.28) 0%, transparent 70%);
+}
+.haze-close {
+  background:
+    radial-gradient(ellipse 42% 36% at 88% 8%, rgba(var(--atmos-warm), 0.075) 0%, transparent 58%),
+    radial-gradient(ellipse 125% 90% at 16% 112%, rgba(var(--atmos-cool), 0.3) 0%, transparent 72%);
+}
+
+/* Film grain. Static, extremely fine, and the last thing over the light. It is
+   held inside its own stage — grain that spilled past would carry the stage's
+   atmosphere into the next one. */
+.grain {
+  overflow: hidden;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* ── The lattice ──────────────────────────────────────────────────────────────
+   A hexagonal lattice, used as the network's structural substrate.
+
+   It is Sagitta's own geometry rather than a texture pack: the Defense mark is
+   a gold hexagonal frame, and the Banking lifecycle diagram sets every node on
+   a hexagonal plate. Putting the same figure under the page says the stages are
+   cells of one structure — which is the actual claim the site makes.
+
+   Three rules keep it premium rather than wallpaper:
+
+     1. It is masked, always. A lattice that reaches the edges of a stage reads
+        as a background image; one that dissolves reads as structure the light
+        happens to be falling on.
+     2. It is large. At 132px+ a cell it is architecture; at 40px it is texture,
+        and texture is what makes a page look templated.
+     3. Each stage gets its own scale, origin, and fade. A single uniform
+        lattice across every stage would flatten exactly the differences the
+        rest of the page works to preserve.
+
+   The tile is a mask rather than an image, so the colour comes from a token and
+   can follow a family accent instead of being baked into a data URI. */
+
+:root {
+  /* One tile of the honeycomb: a hexagon plus the stem that joins it to the
+     cell below. Adjacent tiles share their vertical edges, so this repeats
+     into a continuous lattice at 56 × 100. */
+  --hex-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E");
+  /* Sparse filled cells, for the stages that want a few of the lattice lit. */
+  --hex-cell-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50Z' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+/* The dissolve depends on compositing two masks. Where that is unsupported the
+   fade is lost and the lattice would reach every edge — the full-bleed hex
+   wallpaper this is specifically not. So it renders only where it can render
+   correctly, and the stage falls back to the light alone. */
+.lattice,
+.lattice-lit {
+  display: none;
+}
+
+@supports (mask-composite: intersect) or (-webkit-mask-composite: source-in) {
+  .lattice,
+  .lattice-lit {
+    display: block;
+  }
+}
+
+.lattice {
+  --lattice-w: 132px;
+  --lattice-color: rgba(217, 177, 104, 0.2);
+  --lattice-fade: radial-gradient(ellipse 68% 64% at 50% 42%, #000 0%, transparent 74%);
+  background-color: var(--lattice-color);
+  -webkit-mask-image: var(--hex-tile), var(--lattice-fade);
+  mask-image: var(--hex-tile), var(--lattice-fade);
+  /* 100/56 — the tile's own proportion, so the cells stay regular at any width. */
+  -webkit-mask-size: var(--lattice-w) calc(var(--lattice-w) * 1.7857), cover;
+  mask-size: var(--lattice-w) calc(var(--lattice-w) * 1.7857), cover;
+  -webkit-mask-position: var(--lattice-x, 0) var(--lattice-y, 0), center;
+  mask-position: var(--lattice-x, 0) var(--lattice-y, 0), center;
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  /* Both masks must agree: the lattice is drawn only where the fade allows. */
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* A few cells of the lattice carrying light. Layered over `.lattice` at a
+   multiple of its scale so the lit cells land on the structure rather than
+   floating free of it. */
+.lattice-lit {
+  --lattice-w: 264px;
+  --lattice-color: rgba(167, 139, 250, 0.09);
+  --lattice-fade: radial-gradient(ellipse 42% 46% at 76% 30%, #000 0%, transparent 70%);
+  background-color: var(--lattice-color);
+  -webkit-mask-image: var(--hex-cell-fill), var(--lattice-fade);
+  mask-image: var(--hex-cell-fill), var(--lattice-fade);
+  -webkit-mask-size: var(--lattice-w) calc(var(--lattice-w) * 1.7857), cover;
+  mask-size: var(--lattice-w) calc(var(--lattice-w) * 1.7857), cover;
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* Per-stage composition. Same figure, four different rooms. */
+.lattice-lead {
+  --lattice-w: 148px;
+  --lattice-color: rgba(217, 177, 104, 0.17);
+  --lattice-fade: radial-gradient(ellipse 56% 60% at 78% 34%, #000 0%, transparent 68%);
+}
+/* The quietest of the four. This stage's subject is a working interface, and a
+   lattice that reaches the type competes with it — a broad diagonal fade here
+   read as wallpaper, which is the failure mode this whole treatment exists to
+   avoid. It is pulled back to a single lit region behind the upper left and
+   given the lowest opacity on the page. */
+.lattice-product {
+  --lattice-w: 116px;
+  --lattice-color: rgba(167, 139, 250, 0.09);
+  --lattice-fade: radial-gradient(ellipse 44% 48% at 16% 16%, #000 0%, transparent 68%);
+  --lattice-y: 28px;
+}
+.lattice-watch {
+  --lattice-w: 172px;
+  --lattice-color: rgba(78, 200, 216, 0.13);
+  --lattice-fade: radial-gradient(ellipse 62% 72% at 34% 78%, #000 0%, transparent 70%);
+  --lattice-x: 24px;
+}
+.lattice-close {
+  --lattice-w: 196px;
+  --lattice-color: rgba(217, 177, 104, 0.15);
+  --lattice-fade: radial-gradient(ellipse 60% 68% at 24% 56%, #000 0%, transparent 72%);
+}
+
+/* The inner-page lattice.
+   One per page, in the hero band, and nowhere else — the institutional routes
+   are long and section-heavy, so a lattice repeated down them would be the
+   wallpaper this treatment exists to avoid. Bookending is the homepage's job;
+   here the structure appears once, at the opening, and the page then gets out
+   of the reader's way.
+
+   Its colour is the family accent, so the lattice states which family you are
+   in before a word is read: cyan under Continuity and Defense, violet under
+   Allocation and Agent Intelligence, gold under Capital Infrastructure. Routes
+   with no family inherit the gold `--family-accent` default from :root.
+
+   Two adjustments against the homepage: the hero sits on `--bg-raised` rather
+   than near-black, so the mix is stronger to survive the lighter ground; and
+   the cell is smaller, because the hero is a shallow band and a 196px cell
+   would show barely one row of it. */
+.lattice-hero {
+  --lattice-w: 124px;
+  /* Same rule as the wash: the lattice is tinted only where the tint is a
+     fact. On a route with no family it is drawn in neutral depth. */
+  --lattice-color: color-mix(in srgb, var(--hero-tint) 20%, transparent);
+  --lattice-fade: radial-gradient(ellipse 58% 92% at 88% 18%, #000 0%, transparent 72%);
+}
+
+/* Constellation geometry drawn in the page rather than dropped in as art. */
+.constellation-lines line {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+.constellation-lines circle {
+  fill: var(--gold);
+}
+
+/* ── The lead stage ───────────────────────────────────────────────────────────
+   Near-full-viewport. The media occupies the right of the field and runs past
+   the gutter; the headline is layered into the composition over it. */
+
+.stage-lead {
+  position: relative;
+  isolation: isolate;
+  min-height: 78svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: calc(var(--header-height) + 1.75rem);
+  padding-bottom: 1.5rem;
+  background-color: #02040a;
+}
+@media (min-width: 1024px) {
+  .stage-lead {
+    min-height: 88svh;
+    justify-content: center;
+  }
+}
+
+/* The slide's media: bled to the viewport edge, cropped, and lit from behind.
+   Mobile gets a landscape crop rather than the desktop proportion shrunk down,
+   so the picture stays cinematic without pushing the headline off the screen.
+   The crop follows what the picture is: 4:3 suits a mark and a composition,
+   but wide editorial artwork is set wider so it is not cut in half. */
+.lead-media {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: var(--lead-ratio-mobile, 4 / 3);
+}
+@media (min-width: 1024px) {
+  .lead-media {
+    aspect-ratio: var(--lead-ratio, 4 / 3);
+    /* The picture is dominant, not unbounded. Without this the slide's own
+       proportion would decide the height of the first screen and push the
+       opening composition past the viewport on a wide display. */
+    max-height: min(64svh, 680px);
+  }
+}
+.lead-media img {
+  animation: sag-media-settle 1400ms var(--ease-out) both;
+}
+
+/* A mark is not a picture, and must not be given a picture's treatment.
+   Scrimming a transparent mark paints a lit rectangle around it — the framed
+   logo tile this pass exists to remove. So a contained mark gets no scrim and
+   no fill: only a soft well of light behind it, and it floats in the field. */
+.lead-media[data-fit="contain"] {
+  background: radial-gradient(
+    ellipse 58% 58% at 54% 48%,
+    rgba(217, 177, 104, 0.11) 0%,
+    rgba(91, 63, 176, 0.09) 38%,
+    transparent 72%
+  );
+}
+
+/* A composition does need legibility where the headline crosses it — and its
+   own edges dissolved, so it reads as a picture the page opens onto rather
+   than a rectangle laid on top of one. */
+.lead-media[data-fit="cover"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 4, 10, 0.86) 0%,
+    rgba(2, 4, 10, 0.28) 42%,
+    rgba(2, 4, 10, 0.72) 100%
+  );
+}
+.lead-media[data-fit="cover"] {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 9%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 9%, #000 90%, transparent 100%);
+}
+
+@media (min-width: 1024px) {
+  .lead-media {
+    /* Escapes the content column and runs off the right edge of the viewport.
+       The gutter is the whole distance to that edge, so this lands on it. */
+    margin-right: calc(var(--gutter) * -1);
+  }
+  .lead-media[data-fit="cover"]::after {
+    background: linear-gradient(
+      92deg,
+      rgba(2, 4, 10, 0.97) 0%,
+      rgba(2, 4, 10, 0.74) 38%,
+      rgba(2, 4, 10, 0.1) 78%
+    );
+  }
+  /* Left edge only: the picture runs off the right of the viewport, so the
+     only edge left to dissolve is the one the type crosses.
+
+     The ramp is long and slow rather than short and steep, because the headline
+     crosses at roughly an eighth of the picture's width — a mask that reached
+     full strength at 22% was still better than half opaque exactly there. Any
+     artwork carrying its own typography then set a second headline behind the
+     real one. The picture is now effectively absent across the whole text
+     column and only arrives at full strength past the halfway point, which is
+     well clear of the longest line the stage can set. */
+  .lead-media[data-fit="cover"] {
+    -webkit-mask-image: linear-gradient(
+      92deg,
+      transparent 0%,
+      transparent 24%,
+      rgba(0, 0, 0, 0.3) 44%,
+      #000 68%
+    );
+    mask-image: linear-gradient(
+      92deg,
+      transparent 0%,
+      transparent 24%,
+      rgba(0, 0, 0, 0.3) 44%,
+      #000 68%
+    );
+  }
+}
+
+/* A slide becomes visible rather than appearing. `hidden` is display:none, so
+   this animation re-runs each time a slide is brought forward. */
+.lead-slide {
+  animation: sag-slide-in var(--duration-slow) var(--ease-out) both;
+}
+
+/* Numbered navigation, integrated into the composition as a fine rule that
+   fills. Nothing auto-advances, so the fill is a reveal, not a countdown. */
+.lead-marker {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  padding-top: 0.75rem;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border);
+  transition: color var(--duration-base) var(--ease-out);
+  text-align: left;
+}
+.lead-marker::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  height: 1px;
+  width: 0;
+  background-color: var(--gold);
+  box-shadow: 0 0 10px -1px var(--gold-glow);
+  transition: width var(--duration-base) var(--ease-out);
+}
+/* The active marker's rule fills across the slide's own dwell time, so the
+   rail reports how long is left rather than merely which story is open. It is
+   driven by an animation rather than a transition because it has to restart
+   cleanly on every slide, and its duration comes from the component so the
+   timing cannot drift from the interval that actually advances the stage. */
+.lead-marker[data-running="true"]::before {
+  animation: sag-marker-countdown var(--rotate-ms, 7000ms) linear forwards;
+}
+
+.lead-marker:hover {
   color: var(--text-secondary);
-  transition: color 0.15s;
+}
+
+/* Pause and play for the rotation. Quiet by default — it is a control, not a
+   call to action — and it comes forward on hover and focus. */
+.lead-rotate-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.375rem 0.125rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-tertiary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.lead-rotate-toggle:hover,
+.lead-rotate-toggle:focus-visible {
+  color: var(--gold);
+}
+.lead-rotate-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+}
+.lead-marker[aria-selected="true"] {
+  color: var(--text-primary);
+}
+.lead-marker[aria-selected="true"]::before {
+  width: 100%;
+  animation: sag-fill var(--duration-reveal) var(--ease-out) both;
+}
+.lead-marker-index {
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+.lead-marker-label {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── The signal ticker ────────────────────────────────────────────────────────
+   The fastest surface on the page: one live line of figures, wider than any
+   text column, built from rules and spacing rather than boxes. */
+
+.ticker {
+  position: relative;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background-color: rgba(4, 7, 13, 0.9);
+}
+.ticker-track {
+  display: flex;
+  align-items: stretch;
+}
+/* The strip scrolls only where it has to. Above 900px the four figures share
+   the width and nothing overflows, so the scroll container is removed rather
+   than left in place reserving scrollbar space at the edge of the stage. */
+.ticker-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+.ticker-scroll::-webkit-scrollbar {
+  display: none;
+}
+@media (min-width: 900px) {
+  .ticker-scroll {
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+}
+.ticker-item {
+  position: relative;
+  flex: 1 0 min(78vw, 21rem);
+  padding: 1.5rem var(--gutter) 1.5rem 0;
+  scroll-snap-align: start;
+}
+@media (min-width: 900px) {
+  .ticker-item {
+    flex: 1 1 0;
+    padding-right: 2rem;
+  }
+  .ticker-item + .ticker-item {
+    padding-left: 2rem;
+    border-left: 1px solid var(--border);
+  }
+}
+.ticker-value {
+  font-size: clamp(1.75rem, 2.6vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--text-primary);
+}
+.ticker-item:hover .ticker-value {
+  color: var(--gold-bright);
+}
+.ticker-value,
+.ticker-item .ticker-link {
+  transition: color var(--duration-base) var(--ease-out);
+}
+/* A live dot: the only motion on this surface. */
+.ticker-pulse {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background-color: var(--state-operating);
+  box-shadow: 0 0 8px -1px var(--state-operating);
+}
+.ticker-link {
+  color: var(--text-tertiary);
+}
+.ticker-item:hover .ticker-link {
+  color: var(--gold);
+}
+
+/* ── Real frames ──────────────────────────────────────────────────────────────
+   A border on this page means the content's own format needs one: a running
+   interface, a poster, a document page. */
+
+.interface-frame {
+  position: relative;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(168deg, var(--surface-2) 0%, var(--bg-base) 68%);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 90px -30px var(--violet-glow);
+  overflow: hidden;
+}
+/* The interface runs off the right of the viewport, so it loses the edge it
+   runs past — a frame with four sides would read as a picture of a window
+   rather than as a window. */
+@media (min-width: 1024px) {
+  .interface-bleed-right {
+    border-right: 0;
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  }
+}
+.interface-bar {
+  border-bottom: 1px solid var(--border);
+  background-color: rgba(4, 7, 13, 0.7);
+}
+.interface-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background-color: var(--border-strong);
+}
+/* A control the interface actually renders, in its resting state. */
+.interface-chip {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 0.3125rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+.interface-chip[data-selected="true"] {
+  border-color: var(--violet);
+  color: var(--text-primary);
+  background-color: var(--violet-dim);
+  box-shadow: 0 0 18px -6px var(--violet-glow);
+}
+.interface-segment {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: rgba(10, 17, 30, 0.6);
+}
+.interface-segment[data-selected="true"] {
+  border-color: var(--violet-deep);
+  background-color: rgba(91, 63, 176, 0.14);
+}
+/* The seven processing steps, as the wizard renders them: done, running, queued. */
+.interface-step {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.4375rem 0;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+.interface-step[data-state="done"] {
+  color: var(--text-secondary);
+}
+.interface-step[data-state="running"] {
+  color: var(--text-primary);
+}
+.interface-step-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+}
+.interface-step[data-state="done"] .interface-step-dot {
+  background-color: var(--state-operating);
+  border-color: var(--state-operating);
+}
+.interface-step[data-state="running"] .interface-step-dot {
+  background-color: var(--violet);
+  border-color: var(--violet);
+  animation: sag-pulse 2.2s var(--ease-in-out) infinite;
+}
+
+/* ── The Watch stage ──────────────────────────────────────────────────────── */
+
+.stage-watch {
+  position: relative;
+  isolation: isolate;
+  background-color: #010308;
+}
+/* A programme poster. Cinematic, and framed because a poster has a frame. */
+.poster {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background-color: #010308;
+}
+/* A poster that runs off the viewport edge loses the border it runs past. */
+@media (min-width: 1024px) {
+  .poster-bleed-left {
+    border-left: 0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+}
+.poster img {
+  transition: transform var(--duration-reveal) var(--ease-out);
+}
+.poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(1, 3, 8, 0.1) 0%,
+    rgba(1, 3, 8, 0.14) 52%,
+    rgba(1, 3, 8, 0.88) 100%
+  );
+}
+a:hover .poster img,
+a:focus-visible .poster img {
+  transform: scale(1.02);
+}
+/* Marks a programme that has been announced but not published. It is a status
+   line, never a control — the forthcoming stage has nothing to press. */
+.forthcoming-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.forthcoming-mark::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background-color: var(--gold);
+}
+
+/* A play affordance over a verified 16:9 poster. Published episodes only. */
+.play-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-pill);
+  color: #120d02;
+  background-color: var(--gold);
+  box-shadow: var(--shadow-md), var(--glow-strong);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+a:hover .play-badge {
+  transform: scale(1.06);
+}
+/* The Watch stage's own play control. It is the primary affordance on that
+   stage — the thing the reader is meant to press — so it is sized for that
+   rather than borrowed from a thumbnail. */
+.play-badge-lg {
+  width: 5rem;
+  height: 5rem;
+}
+a:focus-visible .play-badge {
+  transform: scale(1.06);
+}
+
+/* A runtime, over the corner of a poster. Rendered only where the source
+   publishes one, so its absence is a fact rather than a layout gap. */
+.runtime-chip {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 10;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  background-color: rgba(1, 3, 8, 0.85);
+}
+
+/* The title of the video that is playing.
+   A stage title by default. A published video title is never paraphrased and
+   never truncated, so a long one steps the type down rather than losing any of
+   itself — real titles on the channel run from 17 to 69 characters. */
+.watch-title {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.032em;
+  font-weight: 700;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+.watch-title[data-long="true"] {
+  font-size: clamp(1.5rem, 2.3vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+}
+
+/* ── The Watch queue ──────────────────────────────────────────────────────────
+   The other videos on the channel, beside the one that is playing. A row of
+   rules and a small frame, not a card grid: the stage already has one framed
+   picture and a second set of borders would flatten the hierarchy between the
+   video being watched and the ones waiting. */
+
+.watch-queue-item {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.875rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.875rem 0;
+  text-align: left;
+  border-top: 1px solid var(--border);
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.watch-queue-item:hover,
+.watch-queue-item:focus-visible {
+  opacity: 0.78;
+}
+.watch-queue-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background-color: #010308;
+}
+.watch-queue-text {
+  display: block;
+  min-width: 0;
+}
+.watch-queue-title {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+
+/* ── The network desk ─────────────────────────────────────────────────────────
+   A publication desk: source, headline, date, system. Fine rules and a
+   directional cue, and the headline carries all of the interest. */
+
+.desk-row {
+  position: relative;
+  border-top: 1px solid var(--border);
+}
+.desk-row:last-child {
+  border-bottom: 1px solid var(--border);
+}
+/* The desk's lead item. A gold rule marks the priority; nothing else changes. */
+.desk-row-lead {
+  border-top-color: var(--gold-deep);
+  border-bottom: 0;
+}
+.desk-row a {
+  display: block;
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+.desk-row a:hover {
+  background-color: rgba(15, 24, 41, 0.4);
+}
+.desk-row a::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  height: 1px;
+  width: 0;
+  background-color: var(--gold);
+  transition: width var(--duration-base) var(--ease-out);
+}
+.desk-row a:hover::before,
+.desk-row a:focus-visible::before {
+  width: 100%;
+}
+.desk-row a:hover .desk-headline,
+.desk-row a:hover .desk-lead-headline {
+  color: var(--gold-bright);
+}
+.desk-headline,
+.desk-lead-headline {
+  color: var(--text-primary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.desk-cue {
+  display: inline-flex;
+  color: var(--text-tertiary);
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+.desk-row a:hover .desk-cue {
+  color: var(--gold);
+  transform: translateX(4px);
+}
+
+/* ── The closing feature ──────────────────────────────────────────────────────
+   The image emerges from the dark rather than sitting in a panel. */
+
+.stage-close {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: #010308;
+}
+.stage-close .close-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+  z-index: -2;
+  animation: sag-drift 34s var(--ease-in-out) infinite alternate;
+}
+/* An evidence artifact on the closing stage.
+   A diagram or a document page is information, not atmosphere: it is shown
+   whole rather than cropped to the viewport, so it gets a real frame — the
+   same rule the poster follows, for the same reason. It breaks the right
+   gutter and loses the border it runs past, keeping the stage asymmetrical
+   and edge-breaking rather than becoming a card sitting in a column. */
+.artifact-plate {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background-color: #010308;
+  box-shadow: 0 40px 90px -30px rgba(1, 3, 8, 0.9);
+}
+.artifact-plate img {
+  display: block;
+  animation: sag-media-settle 1400ms var(--ease-out) both;
+}
+/* A fine wash of the stage's own light across the plate, so the artifact sits
+   in the room rather than on top of it. */
+.artifact-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    rgba(1, 3, 8, 0.34) 0%,
+    rgba(1, 3, 8, 0.04) 44%,
+    rgba(91, 63, 176, 0.08) 100%
+  );
+}
+@media (min-width: 1024px) {
+  .artifact-plate {
+    border-right: 0;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+  }
+}
+
+.stage-close::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 58% 64% at 26% 52%, rgba(1, 3, 8, 0.5) 0%, rgba(1, 3, 8, 0.95) 74%),
+    linear-gradient(180deg, rgba(1, 3, 8, 0.94) 0%, transparent 26%, rgba(1, 3, 8, 0.9) 100%);
+}
+
+/* ── A precise action ─────────────────────────────────────────────────────────
+   The front page's one action treatment: an illuminated line, not a filled
+   gold button repeated at every stage. */
+
+.action-line {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding-block: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--gold);
+}
+.action-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--gold-deep);
+  transform-origin: left;
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+.action-line:hover {
+  color: var(--gold-bright);
+}
+.action-line:hover::after {
+  background-color: var(--gold-bright);
+  box-shadow: 0 0 14px -2px var(--gold-glow);
+}
+.action-line svg {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.action-line:hover svg {
+  transform: translateX(4px);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+
+.btn-primary {
+  background-color: var(--gold);
+  color: #120d02;
+  border: 1px solid var(--gold);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+.btn-primary:hover {
+  background-color: var(--gold-bright);
+  border-color: var(--gold-bright);
+  box-shadow: var(--glow-strong);
+}
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-secondary {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  background-color: transparent;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+.btn-secondary:hover {
+  border-color: var(--family-accent);
+  background-color: var(--surface-2);
+}
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+/* ── Navigation ───────────────────────────────────────────────────────────── */
+
+.nav-link {
+  position: relative;
+  color: var(--text-secondary);
+  transition: color var(--duration-fast) var(--ease-out);
 }
 .nav-link:hover {
   color: var(--text-primary);
+}
+.nav-link[aria-current="page"] {
+  color: var(--text-primary);
+}
+/* The active route is marked by a gold underline as well as by colour, so the
+   state does not depend on colour perception alone. */
+.nav-link[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--gold);
 }
 
 .nav-cta {
   color: var(--text-secondary);
   border-color: var(--border);
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
 }
 .nav-cta:hover {
-  color: var(--text-primary);
-  border-color: var(--accent);
+  color: var(--gold-bright);
+  border-color: var(--gold-deep);
 }
 
-/* Primary CTA button */
-.btn-primary {
-  background-color: var(--accent);
-  color: #fff;
-  transition: opacity 0.15s, box-shadow 0.15s;
+/* Header sits over the hero and solidifies once the page scrolls. */
+.site-header {
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    backdrop-filter var(--duration-base) var(--ease-out);
 }
-.btn-primary:hover {
-  opacity: 0.9;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.22);
+/* Over the front page the header adopts the broadcast gutter, so navigation
+   and content share one alignment down the whole page. */
+.site-header[data-home="true"] .site-header-inner {
+  max-width: none;
+  padding-inline: var(--gutter);
+}
+.site-header[data-solid="true"] {
+  background-color: rgba(6, 10, 19, 0.86);
+  border-bottom-color: var(--border);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
 
-/* Secondary CTA button */
-.btn-secondary {
-  color: var(--text-secondary);
-  border-color: var(--border);
-  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
-}
-.btn-secondary:hover {
-  color: var(--text-primary);
-  border-color: var(--border-hover);
-  background-color: var(--surface-2);
-}
+/* ── Dividers ─────────────────────────────────────────────────────────────── */
 
-/* Section divider */
 .section-divider {
   border-color: var(--border);
-  margin-bottom: 3rem;
+  margin-bottom: var(--space-12);
 }
 
-/* Audience router card hover */
-a.router-card:hover {
-  border-color: var(--border-hover) !important;
-  background-color: var(--surface-hover) !important;
+/* A section rule that carries a short gold signal at its left edge. */
+.section-rule {
+  position: relative;
+  border-top: 1px solid var(--border);
+}
+.section-rule::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 72px;
+  height: 1px;
+  background-color: var(--family-accent);
+  opacity: 0.7;
+}
+
+/* ── Focus ────────────────────────────────────────────────────────────────── */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: var(--space-4);
+  top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--surface-2);
+  border: 1px solid var(--gold);
+  color: var(--text-primary);
+  font-size: var(--text-xs);
+  border-radius: var(--radius-md);
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────────── */
+
+/* Content is present and readable from the first frame; the reveal only moves
+   it, so a failed or disabled animation never hides anything. */
+@keyframes sag-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sag-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes sag-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes sag-trace {
+  from {
+    stroke-dashoffset: var(--trace-length, 200);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ── Broadcast motion ─────────────────────────────────────────────────────────
+   Slow, atmospheric, and confident. Nothing here delays comprehension: every
+   animation either settles content that is already legible, or moves a
+   decorative light layer. All of it is neutralised under reduced motion. */
+
+/* A slide is brought forward, not swapped. */
+@keyframes sag-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Featured media settles out of a slight over-scale as it arrives. */
+@keyframes sag-media-settle {
+  from {
+    opacity: 0;
+    transform: scale(1.055);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* The active marker's rule fills once. */
+@keyframes sag-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+/* The lead rail's countdown: the active marker's rule crossing its own dwell. */
+@keyframes sag-marker-countdown {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+/* Deep-space drift on a full-bleed image layer. */
+@keyframes sag-drift {
+  from {
+    transform: scale(1.06) translate3d(-1.2%, 0.6%, 0);
+  }
+  to {
+    transform: scale(1.11) translate3d(1.2%, -0.8%, 0);
+  }
+}
+
+.motion-drift {
+  animation: sag-drift 40s var(--ease-in-out) infinite alternate;
+}
+.motion-rise {
+  animation: sag-rise var(--duration-reveal) var(--ease-out) both;
+}
+.motion-rise-2 {
+  animation: sag-rise var(--duration-reveal) var(--ease-out) 90ms both;
+}
+.motion-rise-3 {
+  animation: sag-rise var(--duration-reveal) var(--ease-out) 180ms both;
+}
+.motion-pulse {
+  animation: sag-pulse 2.8s var(--ease-in-out) infinite;
+}
+.motion-sweep {
+  animation: sag-sweep 7s linear infinite;
+  transform-origin: center;
+}
+.motion-trace {
+  stroke-dasharray: var(--trace-length, 200);
+  animation: sag-trace var(--duration-slow) var(--ease-out) both;
+}
+
+/* ── System ticker ──────────────────────────────────────────────────────────
+   A promotional rail of product marks. The track holds two identical copies of
+   the list, so translating by exactly -50% lands the second copy where the
+   first began and the loop has no visible seam. */
+@keyframes sag-ticker {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.sag-ticker-track {
+  animation: sag-ticker var(--ticker-ms, 46s) linear infinite;
+  will-change: transform;
+}
+
+/* Stop for anyone trying to actually aim at a mark — pointer or keyboard. */
+.sag-ticker:hover .sag-ticker-track,
+.sag-ticker:focus-within .sag-ticker-track {
+  animation-play-state: paused;
+}
+
+/* The eight marks are not a matched set — glossy emblems, a flat glyph, a cyan
+   SVG. Holding every one below full strength pulls the palettes together; the
+   one being pointed at comes up to full. */
+.sag-ticker-item {
+  opacity: 0.55;
+  filter: saturate(0.6);
+  transition:
+    opacity var(--duration-fast, 160ms) var(--ease-out),
+    filter var(--duration-fast, 160ms) var(--ease-out);
+}
+
+.sag-ticker-item:hover,
+.sag-ticker-item:focus-visible {
+  opacity: 1;
+  filter: saturate(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .motion-rise,
+  .motion-rise-2,
+  .motion-rise-3 {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .motion-trace {
+    stroke-dasharray: none;
+    animation: none;
+  }
+
+  /* The rail stops and shows the first marks in place. Nothing is lost: the
+     directory below lists every system the rail was scrolling through. */
+  .sag-ticker-track {
+    animation: none;
+    transform: none;
+  }
+
+  /* The broadcast layer. Content that animates in must end up present and
+     unmoved; decorative light layers simply stop. */
+  .lead-slide,
+  .lead-media img,
+  .lead-marker[aria-selected="true"]::before {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .motion-drift,
+  .stage-close .close-image,
+  .interface-step[data-state="running"] .interface-step-dot {
+    animation: none;
+    transform: none;
+  }
+  .poster img {
+    transform: none;
+  }
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+
+/* Structured-text equivalent for a complex graphic: available to assistive
+   technology and to anyone who reaches it by keyboard, never a hover-only fact. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* A complex graphic's structured-text equivalent. Below `lg` it *is* the
+   presentation; from `lg` up the graphic takes over and this becomes the text
+   alternative behind it. One element serves both, so the markup is not
+   duplicated and only one version is ever in the accessibility tree. */
+@media (min-width: 1024px) {
+  .alt-text-at-lg {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+/* Wide content scrolls inside its own container; the page body never does. */
+.scroll-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+/* Touch targets stay at or above 44px on coarse pointers. */
+@media (pointer: coarse) {
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Ecosystem flow figure.
+
+   Cells carry their grid track as custom properties rather than as inline
+   `grid-column` / `grid-row`, because the placement is only meaningful in the
+   three-column desktop figure. Applied inline it would also apply to the
+   single-column stack below `lg`, where a cell asking for column 3 would
+   silently widen the grid. The rows and spans are computed from the number of
+   surfaces at render time, so they cannot be Tailwind utilities. */
+@media (min-width: 1024px) {
+  .eco-cell {
+    grid-column: var(--eco-col);
+    grid-row: var(--eco-row);
+  }
 }
