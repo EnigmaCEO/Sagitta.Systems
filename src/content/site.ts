@@ -134,7 +134,7 @@ export const proofResources: (Link & { summary: string })[] = [
   },
   {
     label: "Protocol architecture",
-    href: "/diagram.png",
+    href: "/diagram.webp",
     external: true,
     summary:
       "The capital architecture and flow behind Vault, Treasury, Reserve, Escrow, AAA, and SCE.",

@@ -82,12 +82,16 @@ describe("structured data", () => {
     }
   });
 
-  it("advertises no job postings while role terms are unpublished", () => {
-    for (const { route, html } of pages) {
-      for (const block of blocks(html)) {
-        assert.notEqual(block["@type"], "JobPosting", `${route}: emits a JobPosting`);
-      }
-    }
+  it("advertises only the active role as a job posting", () => {
+    const postings = pages.flatMap(({ route, html }) =>
+      blocks(html)
+        .filter((block) => block["@type"] === "JobPosting")
+        .map((block) => ({ route, block })),
+    );
+    assert.equal(postings.length, 1, "expected exactly one active JobPosting");
+    assert.equal(postings[0].route, "/careers/sales-engine-operator");
+    assert.equal(postings[0].block.jobLocationType, "TELECOMMUTE");
+    assert.equal(postings[0].block.hiringOrganization["@id"], "https://www.sagitta.systems/#organization");
   });
 
   it("names one person, on /about, and it is the one public profile", () => {
@@ -192,6 +196,12 @@ describe("structured data", () => {
       // site cannot honour.
       assert.equal(video.contentUrl, undefined, `${route}: claims a content URL it does not host`);
     }
+  });
+
+  it("describes the videos presented in Watch on the homepage", () => {
+    const home = page("/");
+    const videos = blocks(home.html).filter((block) => block["@type"] === "VideoObject");
+    assert.equal(videos.length, 2, "homepage Watch schema does not match its published videos");
   });
 
   it("publishes a breadcrumb trail on every nested route", () => {

@@ -15,7 +15,7 @@ import {
   roadmapForCareer,
 } from "@/content";
 import type { CareerRecord } from "@/content/types";
-import { breadcrumbLd } from "@/lib/jsonld";
+import { breadcrumbLd, jobPostingLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/metadata";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -71,14 +71,11 @@ export default async function CareerPage({ params }: Params) {
   const related = relatedCareers(career);
   const roadmap = roadmapForCareer(career);
   const archived = career.status === "Archived";
+  const jobPosting = jobPostingLd(career);
 
   return (
     <>
-      {/* No `JobPosting` — twelve of thirteen roles publish no compensation,
-          first deliverable, or required experience by decision, and emitting
-          one would push the site to advertise the fields it withholds. See the
-          note in src/lib/jsonld.ts. The breadcrumb makes no such claim: it
-          restates the hierarchy the page already renders. */}
+      {jobPosting && <JsonLd data={jobPosting} />}
       <JsonLd
         data={breadcrumbLd([
           { name: "Careers", path: "/careers" },

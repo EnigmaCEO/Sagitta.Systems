@@ -277,7 +277,7 @@ export const promotions: PromotionRecord[] = [
     },
     media: {
       kind: "system-mark",
-      src: "/sce.png",
+      src: "/sce.webp",
       alt: "The Sagitta Continuity Engine mark, the backend Sagitta Radar runs on.",
       fit: "contain",
     },
@@ -316,7 +316,7 @@ export const promotions: PromotionRecord[] = [
     },
     media: {
       kind: "system-mark",
-      src: "/defense.png",
+      src: "/defense.webp",
       alt: "The Sagitta Defense mark: a gold shield carrying a violet infinity figure.",
       fit: "contain",
     },
@@ -434,7 +434,7 @@ export const promotions: PromotionRecord[] = [
     },
     media: {
       kind: "system-mark",
-      src: "/protocol.png",
+      src: "/protocol.webp",
       alt: "The Sagitta Protocol mark.",
       fit: "contain",
     },
@@ -1159,7 +1159,7 @@ export const promotions: PromotionRecord[] = [
     },
     media: {
       kind: "report-cover",
-      src: "/diagram.png",
+      src: "/diagram.webp",
       alt:
         "The Sagitta Protocol capital architecture diagram, tracing deposits through the Vault, Treasury, Reserve, and Escrow.",
       fit: "cover",
@@ -1189,7 +1189,7 @@ export const promotions: PromotionRecord[] = [
     action: {
       id: "promo:protocol-architecture-brief:open-diagram",
       label: "Open the full diagram",
-      href: "/diagram.png",
+      href: "/diagram.webp",
       type: "evidence",
       availability: "available",
     },

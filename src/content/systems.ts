@@ -103,7 +103,7 @@ export const systems: SystemRecord[] = [
     evidence: [
       { label: "SCE product surface", href: "https://sce.sagitta.systems", external: true },
       { label: "Defense Review methodology", href: "https://defense.sagitta.systems", external: true },
-      { label: "Protocol architecture diagram", href: "/diagram.png", external: true },
+      { label: "Protocol architecture diagram", href: "/diagram.webp", external: true },
     ],
     connections: [
       {
@@ -135,7 +135,7 @@ export const systems: SystemRecord[] = [
       type: "evidence",
       availability: "available",
     },
-    logo: "/sce.png",
+    logo: "/sce.webp",
     featured: true,
     verification: verified(
       "https://sce.sagitta.systems + SCE/README.md",
@@ -195,7 +195,7 @@ export const systems: SystemRecord[] = [
       type: "evidence",
       availability: "available",
     },
-    logo: "/defense.png",
+    logo: "/defense.webp",
     featured: true,
     verification: verified(
       "https://defense.sagitta.systems",
@@ -256,7 +256,7 @@ export const systems: SystemRecord[] = [
     // Radar has its own mark as of the launch pass. It previously borrowed the
     // Continuity Engine's, which was accurate about the backend it runs on and
     // wrong about the product being its own.
-    logo: "/radar.png",
+    logo: "/radar.webp",
     featured: true,
     verification: verified(
       "https://radar.sagitta.systems + SCE/SCE_BUILD_STATE.md (2026-07-05)",
@@ -300,7 +300,7 @@ export const systems: SystemRecord[] = [
       { label: "AAA documentation", href: "https://aaa.sagitta.systems/docs", external: true },
       { label: "Methodology", href: "https://aaa.sagitta.systems/methodology", external: true },
       { label: "Research notes", href: "https://aaa.sagitta.systems/research-notes", external: true },
-      { label: "Protocol architecture diagram", href: "/diagram.png", external: true },
+      { label: "Protocol architecture diagram", href: "/diagram.webp", external: true },
     ],
     connections: [
       {
@@ -513,7 +513,7 @@ export const systems: SystemRecord[] = [
     evidence: [
       { label: "Sagitta whitepaper", href: WHITEPAPER, external: true },
       { label: "Protocol interface", href: "https://protocol.sagitta.systems", external: true },
-      { label: "Protocol architecture diagram", href: "/diagram.png", external: true },
+      { label: "Protocol architecture diagram", href: "/diagram.webp", external: true },
     ],
     connections: [
       {
@@ -553,7 +553,7 @@ export const systems: SystemRecord[] = [
       type: "documentation",
       availability: "available",
     },
-    logo: "/protocol.png",
+    logo: "/protocol.webp",
     featured: true,
     verification: verified(
       "https://protocol.sagitta.systems + whitepaper executive summary + owner-supplied launch dates (2026-07-31)",

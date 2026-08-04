@@ -4,22 +4,24 @@ import NetworkHeadlines from "@/components/NetworkHeadlines";
 import ProductMoment from "@/components/ProductMoment";
 import SignalStrip from "@/components/SignalStrip";
 import WatchStage from "@/components/WatchStage";
+import JsonLd from "@/components/JsonLd";
 import Link from "@/components/Link";
 import {
   ecosystemThesis,
   formatDate,
+  getNewsroomEntry,
   getSystemName,
   promotionsAt,
-  site,
   solePromotionAt,
 } from "@/content";
 import type { PromotionRecord } from "@/content/types";
 import { buildMetadata } from "@/lib/metadata";
+import { videoObjectLd } from "@/lib/jsonld";
 
 export const metadata = buildMetadata({
   // The tagline alone. `buildMetadata` appends the site name itself, and
   // passing it here as well is what produced the doubled homepage title.
-  title: site.tagline,
+  title: "DeFi Continuity, Allocation & Protocol Infrastructure | Sagitta Systems",
   description:
     "What Sagitta is seeing and doing now: live infrastructure signals, launches, allocation intelligence, and protocol readiness — with the route into the system that supports the next decision.",
   path: "/",
@@ -56,11 +58,19 @@ export default function HomePage() {
   const signals = promotionsAt("signal-strip", 5);
   const product = solePromotionAt("product-feature");
   const videos = promotionsAt("video-feature", 4);
+  const videoSchema = videos
+    .map((promotion) => promotion.canonicalRecord?.replace("/newsroom/", ""))
+    .map((slug) => (slug ? getNewsroomEntry(slug) : undefined))
+    .map((entry) => (entry ? videoObjectLd(entry) : null))
+    .filter((entry) => entry !== null);
   const headlines = promotionsAt("network-headlines", 4);
   const feature = solePromotionAt("cinematic-feature");
 
   return (
     <div className="broadcast">
+      {videoSchema.map((entry) => (
+        <JsonLd key={entry.url} data={entry} />
+      ))}
       {lead.length > 0 && <LeadCarousel slides={lead.map(toSlide)} />}
 
       {/* One sentence, and the only sentence on this page that describes the

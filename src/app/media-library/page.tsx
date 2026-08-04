@@ -76,7 +76,7 @@ const assets: Asset[] = [
     format: "PNG",
   },
   {
-    src: "/diagram.png",
+    src: "/diagram.webp",
     name: "Protocol architecture diagram",
     type: "Diagram",
     intendedUse:
@@ -103,7 +103,7 @@ const assets: Asset[] = [
     usage: "Reproduce unmodified.",
   },
   {
-    src: "/sce.png",
+    src: "/sce.webp",
     name: "SCE mark",
     type: "Mark",
     intendedUse: "Sagitta Continuity Engine product mark.",
@@ -112,7 +112,7 @@ const assets: Asset[] = [
     usage: "Reproduce unmodified.",
   },
   {
-    src: "/defense.png",
+    src: "/defense.webp",
     name: "Defense mark",
     type: "Mark",
     intendedUse: "Sagitta Defense product mark.",
@@ -131,7 +131,7 @@ const assets: Asset[] = [
     usage: "Reproduce unmodified.",
   },
   {
-    src: "/radar.png",
+    src: "/radar.webp",
     name: "Radar mark",
     type: "Mark",
     intendedUse: "Sagitta Radar product mark.",
@@ -140,7 +140,7 @@ const assets: Asset[] = [
     usage: "Reproduce unmodified.",
   },
   {
-    src: "/protocol.png",
+    src: "/protocol.webp",
     name: "Protocol mark",
     type: "Mark",
     intendedUse: "Sagitta Protocol product mark.",

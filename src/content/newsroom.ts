@@ -358,8 +358,8 @@ export const newsroomEntries: NewsroomEntry[] = [
     author: "Sagitta Systems",
     systemSlug: "sagitta-protocol",
     relatedSystems: ["aaa", "sagitta-continuity-engine"],
-    heroImage: "/diagram.png",
-    externalUrl: "/diagram.png",
+    heroImage: "/diagram.webp",
+    externalUrl: "/diagram.webp",
     externalRole: "reference",
     externalLabel: "Open the full diagram",
     body: [

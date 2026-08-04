@@ -94,7 +94,11 @@ function item(entry: NewsroomEntry): string {
     `      <dc:creator>${xml(entry.author)}</dc:creator>`,
     entry.heroImage
       ? `      <enclosure url="${xml(abs(entry.heroImage))}" type="${xml(
-          entry.heroImage.endsWith(".png") ? "image/png" : "image/jpeg",
+          entry.heroImage.endsWith(".png")
+            ? "image/png"
+            : entry.heroImage.endsWith(".webp")
+              ? "image/webp"
+              : "image/jpeg",
         )}" length="0" />`
       : null,
     "    </item>",

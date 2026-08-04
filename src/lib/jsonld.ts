@@ -1,7 +1,7 @@
 import { publicPeople } from "@/content/people";
 import { promotionChannelRecords, promotions } from "@/content/promotions";
 import { site } from "@/content/site";
-import type { NewsroomEntry, Person } from "@/content/types";
+import type { CareerRecord, NewsroomEntry, Person } from "@/content/types";
 
 /**
  * Structured data for the hub.
@@ -26,10 +26,9 @@ import type { NewsroomEntry, Person } from "@/content/types";
  *     Systems'. `sameAs` means *the same entity*, so listing it would conflate
  *     the two identities the audit works to keep apart. The rule is encoded in
  *     `SAME_AS_EXCLUDED` rather than left to whoever edits this next.
- *   - **No `JobPosting`.** Twelve of thirteen roles publish no compensation,
- *     first deliverable, or required experience by decision (§4). A JobPosting
- *     without them is a thin result, and emitting one would push the site to
- *     advertise exactly the fields it deliberately withholds.
+ *   - **Selective `JobPosting`.** Only a role explicitly classified `Open` is
+ *     eligible. Contributor, future, and archived records remain ordinary
+ *     career records and cannot appear as active openings in search.
  */
 
 const ORG_ID = `${site.url}/#organization`;
@@ -179,6 +178,31 @@ export function videoObjectLd(entry: NewsroomEntry) {
     embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
     url: abs(`/newsroom/${entry.slug}`),
     publisher: { "@id": ORG_ID },
+  };
+}
+
+/** JobPosting for a role the public record explicitly marks as open. */
+export function jobPostingLd(career: CareerRecord) {
+  if (career.status !== "Open" || !career.publishedAt) return null;
+
+  const url = abs(`/careers/${career.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    title: career.title,
+    description: career.immediateResponsibility,
+    identifier: {
+      "@type": "PropertyValue",
+      name: site.name,
+      value: career.slug,
+    },
+    datePosted: career.publishedAt,
+    employmentType: "CONTRACTOR",
+    hiringOrganization: { "@id": ORG_ID, name: site.name, sameAs: site.url },
+    jobLocationType: "TELECOMMUTE",
+    directApply: false,
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
 }
 

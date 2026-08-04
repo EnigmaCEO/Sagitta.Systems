@@ -68,6 +68,15 @@ export function buildMetadata({
     title: fullTitle,
     description,
     metadataBase: new URL(site.url),
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+      },
+    },
     alternates: {
       canonical,
       // Feed autodiscovery, declared on every route rather than in the root

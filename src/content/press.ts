@@ -183,9 +183,13 @@ export const pressSections: PressSection[] = [
           },
           { label: "aaa.png", href: "/aaa.png", external: true },
           { label: "sce.png", href: "/sce.png", external: true },
+          { label: "sce.webp", href: "/sce.webp", external: true },
           { label: "defense.png", href: "/defense.png", external: true },
+          { label: "defense.webp", href: "/defense.webp", external: true },
           { label: "radar.png", href: "/radar.png", external: true },
+          { label: "radar.webp", href: "/radar.webp", external: true },
           { label: "protocol.png", href: "/protocol.png", external: true },
+          { label: "protocol.webp", href: "/protocol.webp", external: true },
           { label: "selun.svg", href: "/selun.svg", external: true },
         ],
         verification: verified("public/ in this repository"),
@@ -205,7 +209,7 @@ export const pressSections: PressSection[] = [
         description:
           "Capital architecture and flow across Vault, Treasury, Reserve, Escrow, AAA, and SCE.",
         links: [
-          { label: "View diagram", href: "/diagram.png", external: true },
+          { label: "View diagram", href: "/diagram.webp", external: true },
           { label: "Record", href: "/newsroom/protocol-architecture-diagram" },
           { label: "Media library", href: "/media-library" },
         ],

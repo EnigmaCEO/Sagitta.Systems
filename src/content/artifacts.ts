@@ -81,10 +81,10 @@ export const evidenceArtifacts: EvidenceArtifact[] = [
     systemSlug: "sagitta-protocol",
     proves:
       "How capital moves through the protocol: deposits into the Vault, liquidity through the Treasury, the gold-backed Reserve, Escrow as the interface to external venues, and AAA and SCE governing allocation and continuity.",
-    publicUrl: "/diagram.png",
+    publicUrl: "/diagram.webp",
     sourcePath: "public/diagram.png",
     preview: {
-      src: "/diagram.png",
+      src: "/diagram.webp",
       alt:
         "The Sagitta Protocol capital architecture diagram, tracing deposits through the Vault, Treasury, Reserve, and Escrow.",
       kind: "diagram",

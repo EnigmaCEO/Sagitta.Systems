@@ -26,8 +26,9 @@ import { capabilities, systems } from "@/content/systems";
  * than substituting the build date, which would be an inferred date published
  * as a real one — the same rule the rest of the content layer follows.
  *
- * `changeFrequency` and `priority` are hints, not claims. They rank the hubs
- * above individual records and assert nothing about content.
+ * `changeFrequency` and `priority` are deliberately omitted because Google
+ * ignores them. A trustworthy source date is emitted as `lastModified`; fixed
+ * and system routes omit it until their content model records one.
  */
 
 // Required by `output: "export"`, which will not build a metadata route that
@@ -40,32 +41,28 @@ const fixedRoutes = ["/", ...primaryNav.map((l) => l.href), ...utilityNav.map((l
 function entry(
   path: string,
   lastModified: string | null | undefined,
-  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
-  priority: number,
 ): MetadataRoute.Sitemap[number] {
   return {
     url: new URL(path, site.url).toString(),
     ...(lastModified ? { lastModified } : {}),
-    changeFrequency,
-    priority,
   };
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    ...fixedRoutes.map((path) => entry(path, undefined, "weekly", path === "/" ? 1 : 0.8)),
+    ...fixedRoutes.map((path) => entry(path, undefined)),
 
     // Systems and capabilities share the /systems/[slug] segment, and this
     // mirrors that route's generateStaticParams exactly.
-    ...systems.map((s) => entry(`/systems/${s.slug}`, undefined, "monthly", 0.7)),
-    ...capabilities.map((c) => entry(`/systems/${c.slug}`, undefined, "monthly", 0.5)),
+    ...systems.map((s) => entry(`/systems/${s.slug}`, undefined)),
+    ...capabilities.map((c) => entry(`/systems/${c.slug}`, undefined)),
 
     ...publishedEntries.map((e) =>
-      entry(`/newsroom/${e.slug}`, e.updatedAt ?? e.publishedAt, "yearly", 0.6),
+      entry(`/newsroom/${e.slug}`, e.updatedAt ?? e.publishedAt),
     ),
 
     ...publicCareers.map((c) =>
-      entry(`/careers/${c.slug}`, c.updatedAt ?? c.publishedAt, "monthly", 0.5),
+      entry(`/careers/${c.slug}`, c.updatedAt ?? c.publishedAt),
     ),
   ];
 }
