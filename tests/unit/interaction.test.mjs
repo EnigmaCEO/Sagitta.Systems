@@ -224,6 +224,25 @@ describe("newsroom filters", () => {
     assert.ok(result.every((e) => e.period === "2026"));
   });
 
+  it("publishes Allocation Read 001 canonically and relates it to Selun", () => {
+    const entry = content.getNewsroomEntry("what-aggressive-means-in-a-defensive-market");
+    assert.ok(entry, "Allocation Read 001 is missing");
+    assert.equal(content.getDeskName(entry.desk), "Allocation Desk");
+    assert.equal(entry.seriesLabel, "Allocation Read 001");
+    assert.equal(entry.systemSlug, "selun");
+    assert.equal(entry.externalUrl, undefined, "the canonical report points off-site");
+    assert.equal(entry.mediaType, "Report");
+    assert.equal(
+      entry.body.filter((block) => typeof block !== "string" && block.kind === "table").length,
+      3,
+      "the report's comparison tables are not all represented",
+    );
+    assert.ok(
+      content.entriesForSystem("selun").some((item) => item.slug === entry.slug),
+      "the Selun system page cannot discover Allocation Read 001",
+    );
+  });
+
   it("keeps undated records reachable through their own bucket", () => {
     const undated = entries.filter((e) => e.period === "undated");
     const result = applySelection(entries, { ...unfiltered, period: "undated" });

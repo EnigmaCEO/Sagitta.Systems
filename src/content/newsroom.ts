@@ -1,4 +1,4 @@
-import type { MediaType, NewsroomEntry, Verification } from "./types";
+import type { MediaType, NewsroomBodyBlock, NewsroomEntry, Verification } from "./types";
 
 // Newsroom records.
 //
@@ -79,6 +79,98 @@ export const mediaTypes: MediaType[] = [
 ];
 
 export const newsroomEntries: NewsroomEntry[] = [
+  // Allocation Desk — Allocation Read 001. The newsroom record is canonical;
+  // Selun is the evaluated system and receives the record through systemSlug.
+  {
+    slug: "what-aggressive-means-in-a-defensive-market",
+    title: "What Aggressive Means in a Defensive Market",
+    summary:
+      "A controlled comparison of two Selun allocations showing how risk tolerance changes policy expression while the recorded market state remains Defensive.",
+    publishedAt: "2026-08-07",
+    updatedAt: null,
+    desk: "allocation-read",
+    mediaType: "Report",
+    author: "Sagitta Systems",
+    seriesLabel: "Allocation Read 001",
+    systemSlug: "selun",
+    body: [
+      "What changes when the market stays the same and the operator changes only risk tolerance?",
+      "On August 7, 2026, I ran two Selun allocations using the same $10,000 reference portfolio, 1–3 year timeframe and Bluechips segment. Selun recorded the same market state for both runs.",
+      "The variable was the operator's risk tolerance: **Conservative versus Aggressive**.",
+      "The result was a clear change in both allocation structure and strategy category. Conservative produced **Capital Preservation**. Aggressive produced **Balanced Defensive**.",
+      "Aggressive reduced Stable Holdings from 55.80% to 29.67%, reduced Core Holdings from 35.36% to 29.50%, expanded Growth Positions from 8.84% to 30.03%, and introduced a 10.80% Income Position. The portfolio expanded from four allocated assets to seven, while the Speculative role remained at 0%.",
+      "The market stayed Defensive. The way Selun expressed the operator's risk tolerance changed materially inside that market condition.",
+      { kind: "heading", text: "Market conditions" },
+      {
+        kind: "table",
+        caption: "Market conditions in the Conservative and Aggressive runs",
+        columns: ["Market state", "Conservative run", "Aggressive run"],
+        rows: [
+          ["Market condition", "Defensive", "Defensive"],
+          ["Fear & Greed", "29 / Fear", "29 / Fear"],
+          ["Volatility", "Low", "Low"],
+          ["Liquidity", "Tight", "Tight"],
+        ],
+      },
+      "The Fear & Greed reading of 29 placed the market in **Fear**, and Selun described the environment as supporting defensive tilts. Liquidity was **Tight**, while volatility was **Low**. Together, Selun classified the broader market condition as **Defensive** in both runs.",
+      "That shared market context matters because it frames the allocations. Conservative expressed the Defensive condition through heavy Stable and Core exposure. Aggressive accepted more Growth and Income exposure while still resolving to a defensive strategy category.",
+      { kind: "heading", text: "The allocations" },
+      {
+        kind: "table",
+        caption: "Asset allocations in the Conservative and Aggressive runs",
+        columns: ["Asset", "Conservative role", "Conservative", "Aggressive role", "Aggressive", "Change"],
+        numericColumns: [2, 4, 5],
+        rows: [
+          ["USDT", "Stable Holdings", "55.80%", "Stable Holdings", "29.67%", "-26.13 pp"],
+          ["BTC", "Core Holdings", "17.68%", "Core Holdings", "14.75%", "-2.93 pp"],
+          ["ETH", "Core Holdings", "17.68%", "Core Holdings", "14.75%", "-2.93 pp"],
+          ["SOL", "Growth Positions", "8.84%", "Growth Positions", "12.42%", "+3.58 pp"],
+          ["ADA", "—", "—", "Income Position", "10.80%", "+10.80 pp"],
+          ["XRP", "—", "—", "Growth Positions", "12.43%", "+12.43 pp"],
+          ["BNB", "—", "—", "Growth Positions", "5.18%", "+5.18 pp"],
+          ["Total", "", "100.00%", "", "100.00%", "0.00 pp"],
+        ],
+      },
+      "The largest single change was USDT, which fell by **26.13 percentage points**. That capital was redeployed primarily into Growth Positions and the newly active Income Position.",
+      "BTC and ETH remained paired in Core Holdings, moving from 17.68% each to 14.75% each. SOL increased from 8.84% to 12.42%, while XRP and BNB entered as additional Growth Positions. ADA entered as an Income Position at 10.80%.",
+      "The allocations have a **31.99% policy allocation distance**: the absolute asset-weight changes total 63.98 percentage points, halved because each reallocated weight is counted once leaving one asset and again entering another.",
+      { kind: "heading", text: "How the allocation categories changed" },
+      {
+        kind: "table",
+        caption: "Allocation categories in the Conservative and Aggressive runs",
+        columns: ["Role", "Conservative", "Aggressive", "Change"],
+        numericColumns: [1, 2, 3],
+        rows: [
+          ["Stable Holdings", "55.80%", "29.67%", "-26.13 pp"],
+          ["Core Holdings", "35.36%", "29.50%", "-5.86 pp"],
+          ["Income Position", "0%", "10.80%", "+10.80 pp"],
+          ["Growth Positions", "8.84%", "30.03%", "+21.19 pp"],
+          ["Liquidity Reserve", "0%", "0%", "0.00 pp"],
+          ["Speculative", "0%", "0%", "0.00 pp"],
+        ],
+      },
+      "The category shift is the clearest expression of the changed risk tolerance.",
+      "Under Conservative, **91.16%** of the portfolio sat in Stable and Core Holdings. Growth represented only 8.84%, and the allocation used four assets.",
+      "Under Aggressive, Stable and Core Holdings together fell to **59.17%**. Growth rose to 30.03%, Income appeared at 10.80%, and the allocation expanded to seven assets.",
+      "Selun therefore expressed Aggressive risk tolerance by activating more of the Growth and Income categories and broadening the asset set. The Speculative category remained at 0%, and every selected asset in the Aggressive allocation carried Selun's **Large Cap Crypto** risk class.",
+      "That structural change also changed the strategy category. Selun categorized the Conservative allocation as **Capital Preservation** and the Aggressive allocation as **Balanced Defensive**. Under the same Defensive market conditions, the different risk tolerance produced a different allocation structure and strategy category.",
+      "That is what Aggressive meant in this market: less capital held in Stable and Core categories, more capital deployed into Growth and Income, and a broader asset set. The strategy category was **Balanced Defensive**, while the **Speculative** allocation role remained at 0%.",
+      {
+        kind: "note",
+        text: "Allocation Read is a system demonstration of Selun's allocation-policy behavior for product evaluation and technical analysis. It is not investment guidance.",
+      },
+    ],
+    featured: false,
+    verification: {
+      status: "verified",
+      source: "Owner-supplied Allocation Read 001 (2026-08-07)",
+      lastVerifiedAt: "2026-08-07",
+      note: "Published from the owner-supplied report. The two allocation runs, their inputs, and their outputs are recorded as product-evaluation evidence rather than investment guidance.",
+    },
+    publicationState: "published",
+    visibility: "public",
+  },
+
   // ── AAA / Policy Notes — four published research notes ─────────────────────
   {
     slug: "scenario-governance-in-on-chain-markets",
@@ -603,7 +695,7 @@ export const newsroomEntries: NewsroomEntry[] = [
     visibility: "public",
   },
 
-  // Selun / Allocation Read — the first published video.
+  // Allocation Desk — the first published video.
   {
     slug: "introducing-selun",
     title: "Introducing Selun",
@@ -782,6 +874,19 @@ export function sortByDate(entries: NewsroomEntry[]): NewsroomEntry[] {
 export const publishedEntries = sortByDate(
   newsroomEntries.filter((e) => e.publicationState === "published" && e.visibility === "public"),
 );
+
+/** Plain-text form used by RSS and content-quality checks. */
+export function newsroomBodyText(body: NewsroomBodyBlock[]): string {
+  return body
+    .map((block) => {
+      if (typeof block === "string") return block.replace(/\*\*/g, "");
+      if (block.kind === "heading" || block.kind === "note") return block.text;
+      return [block.caption, block.columns.join(" | "), ...block.rows.map((row) => row.join(" | "))]
+        .filter(Boolean)
+        .join("\n");
+    })
+    .join("\n\n");
+}
 
 export function getNewsroomEntry(slug: string): NewsroomEntry | undefined {
   return newsroomEntries.find((e) => e.slug === slug);

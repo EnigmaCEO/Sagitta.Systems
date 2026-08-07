@@ -733,6 +733,25 @@ describe("external link handling", () => {
 
 // ─── Published records only ──────────────────────────────────────────────────
 
+describe("Allocation Read 001", () => {
+  const route = "/newsroom/what-aggressive-means-in-a-defensive-market";
+
+  it("publishes the numbered read under the Allocation Desk with its data tables", () => {
+    const report = page(route);
+    assert.ok(report, `${route} was not exported`);
+    assert.ok(report.html.includes("Allocation Desk · Allocation Read 001"));
+    assert.ok(report.html.includes("What Aggressive Means in a Defensive Market"));
+    assert.equal(report.html.match(/<table/g)?.length, 3);
+    assert.ok(report.html.includes("It is not investment guidance."));
+  });
+
+  it("surfaces the canonical report on the Selun system page", () => {
+    const selun = page("/systems/selun");
+    assert.ok(selun.html.includes(route));
+    assert.ok(selun.html.includes("What Aggressive Means in a Defensive Market"));
+  });
+});
+
 describe("unpublished records never reach the export", () => {
   const WITHHELD_NEWSROOM = ["placeholder"];
   const WITHHELD_CAREERS = ["sagitta-protocol-workstream", "sagitta-wallet-workstream"];

@@ -257,6 +257,12 @@ function StoryMeta({
       style={{ color: "var(--text-tertiary)" }}
     >
       <span>{getDeskName(entry.desk)}</span>
+      {entry.seriesLabel && (
+        <>
+          <span aria-hidden="true">·</span>
+          <span>{entry.seriesLabel}</span>
+        </>
+      )}
       <span aria-hidden="true">·</span>
       <time dateTime={entry.publishedAt ?? undefined}>
         {formatDateOrUndated(entry.publishedAt)}

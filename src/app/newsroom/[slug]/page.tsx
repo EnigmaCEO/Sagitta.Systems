@@ -23,6 +23,7 @@ import {
 } from "@/content";
 import { articleLd, breadcrumbLd, videoObjectLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/metadata";
+import type { NewsroomBodyBlock, NewsroomBodyTable } from "@/content/types";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -92,7 +93,11 @@ export default async function NewsroomEntryPage({ params }: Params) {
         ])}
       />
       <PageHero
-        eyebrow={getDeskName(entry.desk)}
+        eyebrow={
+          entry.seriesLabel
+            ? `${getDeskName(entry.desk)} · ${entry.seriesLabel}`
+            : getDeskName(entry.desk)
+        }
         title={entry.title}
         lead={entry.summary}
         actions={
@@ -158,20 +163,7 @@ export default async function NewsroomEntryPage({ params }: Params) {
               )
             )}
 
-            <div
-              className="pl-5 border-l-2"
-              style={{ borderColor: `color-mix(in srgb, ${accent} 45%, transparent)` }}
-            >
-              {entry.body.map((paragraph) => (
-                <p
-                  key={paragraph.slice(0, 40)}
-                  className="text-sm md:text-base leading-relaxed mb-4 last:mb-0"
-                  style={{ color: "var(--text-secondary)" }}
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <ArticleBody blocks={entry.body} accent={accent} />
 
             {entry.externalUrl && (
               <div
@@ -214,6 +206,7 @@ export default async function NewsroomEntryPage({ params }: Params) {
             <h2 className="eyebrow mb-4">Record</h2>
             <dl className="space-y-4 text-xs">
               <Meta label="Editorial desk" value={getDeskName(entry.desk)} />
+              {entry.seriesLabel && <Meta label="Edition" value={entry.seriesLabel} />}
               {desk && <Meta label="Desk cadence" value={`${desk.cadence} · ${desk.format}`} />}
               <Meta label="Media type" value={entry.mediaType} />
               <Meta label="Author" value={entry.author} />
@@ -329,5 +322,124 @@ function Meta({ label, value }: { label: string; value: string }) {
       </dt>
       <dd style={{ color: "var(--text-secondary)" }}>{value}</dd>
     </div>
+  );
+}
+
+function ArticleBody({ blocks, accent }: { blocks: NewsroomBodyBlock[]; accent: string }) {
+  return (
+    <div
+      className="pl-5 border-l-2"
+      style={{ borderColor: `color-mix(in srgb, ${accent} 45%, transparent)` }}
+    >
+      {blocks.map((block, index) => {
+        if (typeof block === "string") {
+          return (
+            <p
+              key={`${index}-${block.slice(0, 40)}`}
+              className="text-sm md:text-base leading-relaxed mb-4"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              <InlineText text={block} />
+            </p>
+          );
+        }
+
+        if (block.kind === "heading") {
+          return (
+            <h2
+              key={`${index}-${block.text}`}
+              className="display text-xl md:text-2xl font-semibold mt-10 mb-4 first:mt-0"
+              style={{ color: "var(--text-primary)" }}
+            >
+              {block.text}
+            </h2>
+          );
+        }
+
+        if (block.kind === "table") {
+          return <ArticleTable key={`${index}-${block.caption}`} table={block} />;
+        }
+
+        return (
+          <p
+            key={`${index}-${block.text.slice(0, 40)}`}
+            className="text-xs md:text-sm italic leading-relaxed mt-8 mb-0 pt-5 border-t"
+            style={{ color: "var(--text-tertiary)", borderColor: "var(--border)" }}
+          >
+            <InlineText text={block.text} />
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
+function ArticleTable({ table }: { table: NewsroomBodyTable }) {
+  const numeric = new Set(table.numericColumns ?? []);
+
+  return (
+    <div className="overflow-x-auto mb-6 rounded-lg border" style={{ borderColor: "var(--border)" }}>
+      <table className="w-full min-w-[38rem] border-collapse text-xs md:text-sm">
+        <caption className="visually-hidden">{table.caption}</caption>
+        <thead style={{ backgroundColor: "var(--surface-2)" }}>
+          <tr>
+            {table.columns.map((column, columnIndex) => (
+              <th
+                key={column}
+                scope="col"
+                className={`px-3 py-2.5 font-semibold border-b ${numeric.has(columnIndex) ? "text-right" : "text-left"}`}
+                style={{ color: "var(--text-primary)", borderColor: "var(--border)" }}
+              >
+                {column}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="[&>tr:last-child>*]:border-b-0">
+          {table.rows.map((row, rowIndex) => {
+            const isTotal = row[0] === "Total";
+            return (
+              <tr
+                key={`${rowIndex}-${row.join("-")}`}
+                className={isTotal ? "font-semibold" : undefined}
+                style={isTotal ? { backgroundColor: "var(--surface-2)" } : undefined}
+              >
+                {row.map((cell, columnIndex) => {
+                  const Cell = columnIndex === 0 ? "th" : "td";
+                  return (
+                    <Cell
+                      key={`${columnIndex}-${cell}`}
+                      {...(columnIndex === 0 ? { scope: "row" as const } : {})}
+                      className={`px-3 py-2 border-b whitespace-nowrap ${
+                        numeric.has(columnIndex) ? "text-right font-mono" : "text-left"
+                      }`}
+                      style={{
+                        color: columnIndex === 0 ? "var(--text-primary)" : "var(--text-secondary)",
+                        borderColor: "var(--border)",
+                      }}
+                    >
+                      {cell}
+                    </Cell>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/** Bold markers are the only inline syntax the editorial content model needs. */
+function InlineText({ text }: { text: string }) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={`${index}-${part}`} style={{ color: "var(--text-primary)" }}>
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      part
+    ),
   );
 }

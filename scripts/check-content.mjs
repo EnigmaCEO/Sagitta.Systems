@@ -439,7 +439,11 @@ function main() {
     // written down, which is exactly why it was violated twelve times. 120 words
     // is well beneath every real treatment and well above any stub.
     if (isLive(entry)) {
-      const words = (entry.body ?? []).join(" ").trim().split(/\s+/).filter(Boolean).length;
+      const words = content
+        .newsroomBodyText(entry.body ?? [])
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean).length;
       if (words < 120)
         fail(
           `${where}: body is ${words} words — a published record carries its own treatment, not a pointer (minimum 120)`,

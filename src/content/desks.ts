@@ -29,8 +29,9 @@ export const desks: EditorialDesk[] = [
   },
   {
     id: "allocation-read",
-    name: "Selun / Allocation Read",
-    summary: "Allocation reads, agent surfaces, and rebalance commentary from Selun.",
+    name: "Allocation Desk",
+    summary:
+      "Allocation reads, policy expression, agent surfaces, and rebalance commentary across the allocation system family.",
     systemSlug: "selun",
     cadence: "Weekly",
     format: "Read",

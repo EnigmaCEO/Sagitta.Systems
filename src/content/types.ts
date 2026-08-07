@@ -583,6 +583,37 @@ export type MediaType =
   | "Data"
   | "System Update";
 
+export interface NewsroomBodyHeading {
+  kind: "heading";
+  text: string;
+}
+
+export interface NewsroomBodyTable {
+  kind: "table";
+  /** Accessible name for the table. */
+  caption: string;
+  columns: string[];
+  rows: string[][];
+  /** Zero-based columns whose values align on the right. */
+  numericColumns?: number[];
+}
+
+export interface NewsroomBodyNote {
+  kind: "note";
+  text: string;
+}
+
+/**
+ * Article copy is usually prose, but evidence-led reports may also carry
+ * section headings and data tables. Strings deliberately remain the common
+ * case so ordinary newsroom records do not need ceremony.
+ */
+export type NewsroomBodyBlock =
+  | string
+  | NewsroomBodyHeading
+  | NewsroomBodyTable
+  | NewsroomBodyNote;
+
 export interface NewsroomEntry extends RecordBase {
   slug: string;
   title: string;
@@ -594,6 +625,8 @@ export interface NewsroomEntry extends RecordBase {
   desk: DeskId;
   mediaType: MediaType;
   author: string;
+  /** Edition or series marker displayed beneath the editorial desk. */
+  seriesLabel?: string;
   /** Slug of the primary related system. */
   systemSlug?: string;
   /** Additional related system slugs. */
@@ -621,8 +654,8 @@ export interface NewsroomEntry extends RecordBase {
   externalRole?: "canonical" | "reference";
   /** Label for the external action, e.g. "Read on aaa.sagitta.systems". */
   externalLabel?: string;
-  /** Internal context, one string per paragraph. */
-  body: string[];
+  /** Internal article content, in reading order. */
+  body: NewsroomBodyBlock[];
   /**
    * Playable media. Present only where a real, verified source exists — the
    * audio and video components render nothing without it, so the capability

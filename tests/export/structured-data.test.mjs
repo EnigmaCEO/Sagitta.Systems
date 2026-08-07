@@ -173,6 +173,16 @@ describe("structured data", () => {
     }
   });
 
+  it("owns the Article for Allocation Read 001 at its newsroom URL", () => {
+    const route = "/newsroom/what-aggressive-means-in-a-defensive-market";
+    const target = page(route);
+    assert.ok(target, `${route} was not exported`);
+    const article = blocks(target.html).find((block) => block["@type"] === "Article");
+    assert.ok(article, `${route}: canonical Allocation Read emits no Article`);
+    assert.ok(article.mainEntityOfPage["@id"].endsWith(route));
+    assert.equal(article.datePublished, "2026-08-07");
+  });
+
   it("describes each published video as a video", () => {
     const videos = [
       {
