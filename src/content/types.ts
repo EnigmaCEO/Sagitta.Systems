@@ -588,6 +588,8 @@ export interface NewsroomEntry extends RecordBase {
   title: string;
   summary: string;
   publishedAt: IsoDate;
+  /** Complete source publication timestamp used by VideoObject.uploadDate. */
+  videoUploadDate?: string;
   updatedAt: IsoDate;
   desk: DeskId;
   mediaType: MediaType;

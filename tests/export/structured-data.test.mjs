@@ -175,17 +175,25 @@ describe("structured data", () => {
 
   it("describes each published video as a video", () => {
     const videos = [
-      { route: "/newsroom/introducing-selun", duration: "PT41S" },
+      {
+        route: "/newsroom/introducing-selun",
+        duration: "PT41S",
+        uploadDate: "2026-03-28T23:05:48Z",
+      },
       // No runtime is published for the Protocol overview — oEmbed returns
       // none — so the property is absent rather than estimated.
-      { route: "/newsroom/sagitta-protocol-overview", duration: undefined },
+      {
+        route: "/newsroom/sagitta-protocol-overview",
+        duration: undefined,
+        uploadDate: "2026-04-18T22:37:45Z",
+      },
     ];
-    for (const { route, duration } of videos) {
+    for (const { route, duration, uploadDate } of videos) {
       const target = page(route);
       assert.ok(target, `${route} was not exported`);
       const video = blocks(target.html).find((b) => b["@type"] === "VideoObject");
       assert.ok(video, `${route}: published video emits no VideoObject`);
-      assert.match(video.uploadDate, /^\d{4}-\d{2}-\d{2}$/, `${route}: bad uploadDate`);
+      assert.equal(video.uploadDate, uploadDate, `${route}: bad uploadDate`);
       assert.match(
         video.embedUrl,
         /^https:\/\/www\.youtube-nocookie\.com\/embed\//,

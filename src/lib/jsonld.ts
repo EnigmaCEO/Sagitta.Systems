@@ -144,8 +144,8 @@ export function personLd(person: Person) {
  * runtime for it and none was read elsewhere — the same omission the record
  * itself makes rather than an estimate.
  *
- * `uploadDate` is the record's published date. For the Selun video that is now
- * 2026-03-28, the channel feed's own timestamp: the conflict with the
+ * `uploadDate` is the complete publication timestamp from the channel feed.
+ * For the Selun video that is 2026-03-28T23:05:48Z: the conflict with the
  * owner-supplied 2026-03-19 was resolved on 2026-08-02 in favour of the date a
  * reader checking the video actually sees, so this property no longer publishes
  * a contested value.
@@ -156,7 +156,7 @@ export function personLd(person: Person) {
  * video stream would be wrong.
  */
 export function videoObjectLd(entry: NewsroomEntry) {
-  if (entry.mediaType !== "Video" || !entry.externalUrl || !entry.publishedAt) return null;
+  if (entry.mediaType !== "Video" || !entry.externalUrl || !entry.videoUploadDate) return null;
 
   const id = youTubeId(entry.externalUrl);
   if (!id) return null;
@@ -172,7 +172,7 @@ export function videoObjectLd(entry: NewsroomEntry) {
     "@type": "VideoObject",
     name: entry.title,
     description: entry.summary,
-    uploadDate: entry.publishedAt,
+    uploadDate: entry.videoUploadDate,
     ...(entry.heroImage ? { thumbnailUrl: [abs(entry.heroImage)] } : {}),
     ...(runtime ? { duration: iso8601Duration(runtime) } : {}),
     embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,

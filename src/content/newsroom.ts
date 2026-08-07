@@ -610,6 +610,7 @@ export const newsroomEntries: NewsroomEntry[] = [
     summary:
       "The first published Sagitta video: a short introduction to Selun, the guided allocation product built on the Autonomous Allocation Agent.",
     publishedAt: "2026-03-28",
+    videoUploadDate: "2026-03-28T23:05:48Z",
     updatedAt: null,
     desk: "allocation-read",
     mediaType: "Video",
@@ -642,6 +643,7 @@ export const newsroomEntries: NewsroomEntry[] = [
     summary:
       "A video overview of the Sagitta Protocol architecture — the Vault, Treasury, Reserve, and Escrow, and the doctrine behind treating capital protection as a system requirement rather than an operator promise.",
     publishedAt: "2026-04-18",
+    videoUploadDate: "2026-04-18T22:37:45Z",
     updatedAt: null,
     desk: "continuity-desk",
     mediaType: "Video",
