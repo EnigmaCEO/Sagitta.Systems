@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { publicCareers } from "@/content/careers";
-import { publishedEntries } from "@/content/newsroom";
+import { newsroomEntryPath, publishedEntries } from "@/content/newsroom";
 import { primaryNav, site, utilityNav } from "@/content/site";
 import { capabilities, systems } from "@/content/systems";
 
@@ -51,6 +51,7 @@ function entry(
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...fixedRoutes.map((path) => entry(path, undefined)),
+    ...["/defense", "/defense/reviews"].map((path) => entry(path, undefined)),
 
     // Systems and capabilities share the /systems/[slug] segment, and this
     // mirrors that route's generateStaticParams exactly.
@@ -58,7 +59,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...capabilities.map((c) => entry(`/systems/${c.slug}`, undefined)),
 
     ...publishedEntries.map((e) =>
-      entry(`/newsroom/${e.slug}`, e.updatedAt ?? e.publishedAt),
+      entry(newsroomEntryPath(e), e.updatedAt ?? e.publishedAt),
     ),
 
     ...publicCareers.map((c) =>

@@ -616,6 +616,12 @@ export type NewsroomBodyBlock =
 
 export interface NewsroomEntry extends RecordBase {
   slug: string;
+  /**
+   * Canonical route when the full record belongs to a first-class evidence
+   * surface rather than the generic `/newsroom/[slug]` template. The newsroom
+   * still indexes and syndicates the record; every link resolves here.
+   */
+  canonicalPath?: `/${string}`;
   title: string;
   summary: string;
   publishedAt: IsoDate;

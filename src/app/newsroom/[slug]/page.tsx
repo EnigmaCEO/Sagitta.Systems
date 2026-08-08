@@ -16,6 +16,7 @@ import {
   getNewsroomEntry,
   getSystem,
   getSystemName,
+  newsroomEntryPath,
   publishedEntries,
   relatedEntries,
   roadmapForSystem,
@@ -35,7 +36,9 @@ const FAMILY_OG: Record<string, string> = {
 
 /** Only published records get a page. Drafts never reach the export. */
 export function generateStaticParams() {
-  return publishedEntries.map((entry) => ({ slug: entry.slug }));
+  return publishedEntries
+    .filter((entry) => !entry.canonicalPath)
+    .map((entry) => ({ slug: entry.slug }));
 }
 
 export async function generateMetadata({ params }: Params) {
@@ -51,7 +54,7 @@ export async function generateMetadata({ params }: Params) {
   return buildMetadata({
     title: entry.title,
     description: entry.summary,
-    path: `/newsroom/${entry.slug}`,
+    path: newsroomEntryPath(entry),
     ogImage,
     type: "article",
     publishedTime: entry.publishedAt,
@@ -62,7 +65,12 @@ export async function generateMetadata({ params }: Params) {
 export default async function NewsroomEntryPage({ params }: Params) {
   const { slug } = await params;
   const entry = getNewsroomEntry(slug);
-  if (!entry || entry.publicationState !== "published" || entry.visibility !== "public") {
+  if (
+    !entry ||
+    entry.canonicalPath ||
+    entry.publicationState !== "published" ||
+    entry.visibility !== "public"
+  ) {
     notFound();
   }
 
@@ -89,7 +97,7 @@ export default async function NewsroomEntryPage({ params }: Params) {
       <JsonLd
         data={breadcrumbLd([
           { name: "Newsroom", path: "/newsroom" },
-          { name: entry.title, path: `/newsroom/${entry.slug}` },
+          { name: entry.title, path: newsroomEntryPath(entry) },
         ])}
       />
       <PageHero
@@ -279,7 +287,7 @@ export default async function NewsroomEntryPage({ params }: Params) {
                   Cite this record
                 </dt>
                 <dd className="font-mono break-all" style={{ color: "var(--text-secondary)" }}>
-                  {site.url}/newsroom/{entry.slug}
+                  {site.url}{newsroomEntryPath(entry)}
                 </dd>
               </div>
             </dl>

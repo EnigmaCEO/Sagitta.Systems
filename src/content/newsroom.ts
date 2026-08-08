@@ -79,6 +79,38 @@ export const mediaTypes: MediaType[] = [
 ];
 
 export const newsroomEntries: NewsroomEntry[] = [
+  {
+    slug: "cve-2023-39363",
+    canonicalPath: "/defense/reviews/cve-2023-39363",
+    title: "What Can Your Protocol Actually Do When a CVE Reaches It?",
+    summary:
+      "A Sagitta Defense mini-review tracing CVE-2023-39363 from compiler exposure through technical reachability, economic exploitability, protocol authority, migration, and restoration.",
+    publishedAt: "2026-08-07",
+    updatedAt: null,
+    desk: "defense-review",
+    mediaType: "Report",
+    author: "Sagitta Systems",
+    seriesLabel: "Defense Mini-Review · CVE-2023-39363",
+    systemSlug: "sagitta-defense",
+    relatedSystems: ["sagitta-continuity-engine"],
+    heroImage: "/defense-review.jpg",
+    body: [
+      "A CVE can establish that vulnerable software exists. A Defense review has to determine whether the vulnerable behavior is present and reachable in the deployed system, whether exploitation is economically meaningful, and what authority the protocol has once exposure is confirmed.",
+      "In the fictional Meridian ETH Reserve Pool, the affected Vyper version and mechanism are present, the execution path is reachable, and a profitable path is identified. Operator authority is partial: routing and incentives can be stopped, but the pool cannot be paused and user positions cannot be moved.",
+      "The resulting continuity posture is **MIGRATION REQUIRED**. Defense tracks the event from exposure reduction and user advisory through replacement, migration, verification, and restoration.",
+      "The CVE begins the review; deployed behavior and available authority determine the operational finding.",
+    ],
+    featured: true,
+    verification: {
+      status: "verified",
+      source:
+        "https://nvd.nist.gov/vuln/detail/CVE-2023-39363 + https://github.com/vyperlang/vyper/security/advisories/GHSA-5824-cm3x-3c38 + https://www.llamarisk.com/research/curve-pool-reentrancy-exploit-postmortem",
+      lastVerifiedAt: "2026-08-07",
+      note: "Technical claims checked against the NVD record, the Vyper project advisory, and LlamaRisk's Curve incident postmortem. Meridian is explicitly fictional and demonstrates the Defense review method.",
+    },
+    publicationState: "published",
+    visibility: "public",
+  },
   // Allocation Desk — Allocation Read 001. The newsroom record is canonical;
   // Selun is the evaluated system and receives the record through systemSlug.
   {
@@ -890,6 +922,11 @@ export function newsroomBodyText(body: NewsroomBodyBlock[]): string {
 
 export function getNewsroomEntry(slug: string): NewsroomEntry | undefined {
   return newsroomEntries.find((e) => e.slug === slug);
+}
+
+/** One canonical route for cards, feeds, metadata, citations, and sitemaps. */
+export function newsroomEntryPath(entry: NewsroomEntry): string {
+  return entry.canonicalPath ?? `/newsroom/${entry.slug}`;
 }
 
 /** Media types that actually have published records behind them. */

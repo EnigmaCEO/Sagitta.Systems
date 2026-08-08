@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "@/components/Link";
 import { getDeskName } from "@/content/desks";
-import { formatDateOrUndated } from "@/content";
+import { formatDateOrUndated, newsroomEntryPath } from "@/content";
 import { getFamily, getSystem, getSystemName } from "@/content/systems";
 import type { NewsroomEntry } from "@/content/types";
 import { familyClass } from "./FamilyMark";
@@ -29,7 +29,7 @@ export default function StoryCard({
   const systemName = getSystemName(entry.systemSlug);
   const family = entry.systemSlug ? getSystem(entry.systemSlug)?.family : undefined;
   const familyRecord = family ? getFamily(family) : undefined;
-  const href = `/newsroom/${entry.slug}`;
+  const href = newsroomEntryPath(entry);
   const accent = mediaTypeStyles[entry.mediaType].color;
 
   // Records that are documents or recordings earn a visual; status updates and

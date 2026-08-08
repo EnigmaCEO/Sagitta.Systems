@@ -1,5 +1,10 @@
 import { desks } from "@/content/desks";
-import { newsroomBodyText, publishedEntries, sortByDate } from "@/content/newsroom";
+import {
+  newsroomBodyText,
+  newsroomEntryPath,
+  publishedEntries,
+  sortByDate,
+} from "@/content/newsroom";
 import { site } from "@/content/site";
 import type { DeskId, NewsroomEntry } from "@/content/types";
 
@@ -73,7 +78,7 @@ export function feedEntries(desk?: DeskId): NewsroomEntry[] {
 }
 
 function item(entry: NewsroomEntry): string {
-  const url = abs(`/newsroom/${entry.slug}`);
+  const url = abs(newsroomEntryPath(entry));
   const description = [entry.summary, newsroomBodyText(entry.body)].join("\n\n");
   const deskName = desks.find((d) => d.id === entry.desk)?.name;
 

@@ -2,6 +2,7 @@ import { publicPeople } from "@/content/people";
 import { promotionChannelRecords, promotions } from "@/content/promotions";
 import { site } from "@/content/site";
 import type { CareerRecord, NewsroomEntry, Person } from "@/content/types";
+import { newsroomEntryPath } from "@/content/newsroom";
 
 /**
  * Structured data for the hub.
@@ -176,7 +177,7 @@ export function videoObjectLd(entry: NewsroomEntry) {
     ...(entry.heroImage ? { thumbnailUrl: [abs(entry.heroImage)] } : {}),
     ...(runtime ? { duration: iso8601Duration(runtime) } : {}),
     embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
-    url: abs(`/newsroom/${entry.slug}`),
+    url: abs(newsroomEntryPath(entry)),
     publisher: { "@id": ORG_ID },
   };
 }
@@ -274,7 +275,7 @@ export function breadcrumbLd(trail: { name: string; path: string }[]) {
 export function articleLd(entry: NewsroomEntry) {
   if (entry.externalRole === "canonical" || !entry.publishedAt) return null;
 
-  const url = abs(`/newsroom/${entry.slug}`);
+  const url = abs(newsroomEntryPath(entry));
   return {
     "@context": "https://schema.org",
     "@type": "Article",

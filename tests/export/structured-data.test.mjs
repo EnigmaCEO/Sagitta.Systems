@@ -114,7 +114,10 @@ describe("structured data", () => {
     assert.ok(articles.length > 0, "no Article markup was emitted at all");
 
     for (const { route, block } of articles) {
-      assert.ok(route.startsWith("/newsroom/"), `${route}: Article outside the newsroom`);
+      assert.ok(
+        route.startsWith("/newsroom/") || route.startsWith("/defense/reviews/"),
+        `${route}: Article outside a canonical editorial or evidence surface`,
+      );
       // The canonical must be this page, never a third-party publisher.
       assert.equal(
         block.mainEntityOfPage["@id"],

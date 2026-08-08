@@ -1,6 +1,6 @@
 import Link from "@/components/Link";
 import type { EditorialDesk, NewsroomEntry } from "@/content/types";
-import { formatDateOrUndated } from "@/content";
+import { formatDateOrUndated, newsroomEntryPath } from "@/content";
 import { getSystem } from "@/content/systems";
 import { familyClass } from "./FamilyMark";
 import MediaTypeBadge from "./MediaTypeBadge";
@@ -85,7 +85,7 @@ export default function EditorialSchedule({
                       Latest
                     </p>
                     <Link
-                      href={`/newsroom/${latest.slug}`}
+                      href={newsroomEntryPath(latest)}
                       className="text-xs font-medium leading-snug block mb-1.5 transition-opacity duration-150 hover:opacity-80"
                       style={{ color: "var(--family-accent)" }}
                     >

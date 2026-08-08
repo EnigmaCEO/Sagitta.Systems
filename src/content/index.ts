@@ -28,6 +28,7 @@ export * from "./people";
 export * from "./promotions";
 export * from "./artifacts";
 export * from "./watch";
+export * from "./defenseReviews";
 export * from "./legal";
 
 /** Published entries whose primary or secondary system is `slug`. */
