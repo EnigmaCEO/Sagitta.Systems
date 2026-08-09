@@ -507,7 +507,11 @@ describe("promotion model", () => {
     for (const placement of ["product-feature", "cinematic-feature"]) {
       assert.ok(content.promotionsAt(placement).length <= 1, `${placement}: more than one item`);
     }
-    assert.ok(content.promotionsAt("video-feature").length <= 2, "more than two featured videos");
+    // The Watch stage is a channel rather than a single-item stage: one video
+    // plays and the rest queue beside it. Four is what the homepage actually
+    // slices to, and is the same cap check-content.mjs enforces — a fifth would
+    // pass validation and then silently never render.
+    assert.ok(content.promotionsAt("video-feature").length <= 4, "more than four featured videos");
   });
 
   it("dates every snapshot, and dates no rollup", () => {
@@ -678,13 +682,17 @@ describe("the Watch stage's editorial record", () => {
   });
 
   it("is superseded by a real episode rather than sitting beside one", () => {
-    // A real episode now exists, so the stage renders it and this record does
+    // Real videos now exist, so the stage renders them and this record does
     // not render at all. It stays accurate rather than being deleted: the
     // Defense Review programme really is announced and really has published
-    // nothing, and the Selun video is not one of its episodes.
+    // nothing, and none of the staged videos is one of its episodes.
+    //
+    // The Radar overview leads as of 2026-08-08; the two Sagitta Labs videos
+    // queue behind it. What this asserts is that *something real* holds the
+    // lead slot, not which one — the ordering is editorial.
     const staged = content.promotionsAt("video-feature");
     assert.ok(staged.length >= 1, "the Watch stage holds no episode");
-    assert.equal(staged[0].id, "introducing-selun-video");
+    assert.equal(staged[0].id, "radar-overview-video");
     assert.equal(programme.publicationState, "upcoming", "the programme claims to have published");
     for (const video of staged) {
       assert.notEqual(
@@ -741,6 +749,98 @@ describe("the Watch stage's editorial record", () => {
 
     // No view count exists on the record, because none was read.
     assert.doesNotMatch(JSON.stringify(video), /\bviews?\b/i, "a view count is published");
+  });
+});
+
+// ─── Canonical video records ─────────────────────────────────────────────────
+//
+// A video is held once and resolved by every surface that stages it. These
+// assertions exist because the failure they guard against is invisible: three
+// surfaces each carrying their own copy of a title and a runtime look correct
+// on the day they are written and disagree the first time one is corrected.
+
+describe("the canonical video records", () => {
+  it("holds one record per video, not one per placement", () => {
+    const ids = content.videos.map((v) => v.id);
+    assert.equal(new Set(ids).size, ids.length, "two records describe the same video");
+
+    const providerIds = content.videos.map((v) => v.providerVideoId);
+    assert.equal(
+      new Set(providerIds).size,
+      providerIds.length,
+      "the same source video is recorded twice",
+    );
+  });
+
+  it("records the Radar overview as published, unlisted, and Radar's", () => {
+    const video = content.getVideo("radar-overview-2026");
+    assert.ok(video, "the canonical Radar video record is missing");
+    // The exact title oEmbed returns. This is the one field no surface may
+    // paraphrase — the homepage headline is Sagitta's own promotional line and
+    // is deliberately held on the promotion, not here.
+    assert.equal(video.title, "Sagitta Radar Overview");
+    assert.equal(video.standfirst, "DeFi Infrastructure Intelligence");
+    assert.equal(video.systemSlug, "sagitta-radar");
+    assert.equal(video.classification, "Product Overview");
+    assert.equal(video.duration, "1:55");
+    assert.equal(video.publishedAt, "2026-08-08");
+    assert.equal(video.providerVideoId, "KchWMxZIn_g");
+    assert.ok(content.getSystem(video.systemSlug), "the video's system does not exist");
+
+    // Unlisted. Nothing anywhere may present it as browsable on a channel.
+    assert.equal(video.listing, "unlisted");
+    assert.equal(video.channelName, "Sagitta Systems");
+  });
+
+  it("keeps the source video out of the repository and the poster in it", () => {
+    for (const video of content.videos) {
+      assert.ok(video.poster.src.startsWith("/"), `${video.id}: poster is not a local asset`);
+      assert.doesNotMatch(
+        JSON.stringify(video),
+        /\.mp4\b/i,
+        `${video.id}: a source video file is referenced`,
+      );
+      // Only the provider id is stored. The embed URL is built by the frame
+      // that plays it, so the no-cookie host cannot be bypassed by a
+      // hand-written URL on one surface. The one third-party URL a record may
+      // hold is the video's own page, which is where a reader is sent.
+      assert.ok(
+        video.sourceUrl.includes(video.providerVideoId),
+        `${video.id}: the destination is not this video`,
+      );
+      assert.doesNotMatch(
+        JSON.stringify(video),
+        /\/embed\/|youtube-nocookie/,
+        `${video.id}: an embed URL is stored rather than built`,
+      );
+    }
+  });
+
+  it("is staged by placements that resolve it rather than restate it", () => {
+    const staged = content.promotions.filter((p) => p.videoId);
+    assert.ok(staged.length > 0, "no placement resolves a canonical video");
+    for (const promotion of staged) {
+      const video = content.getVideo(promotion.videoId);
+      assert.ok(video, `${promotion.id}: references a video that does not exist`);
+      assert.equal(promotion.media.embed.id, video.providerVideoId);
+      assert.equal(promotion.media.duration, video.duration);
+      assert.equal(promotion.publishedAt, video.publishedAt);
+      assert.ok(promotion.systemSlugs.includes(video.systemSlug));
+    }
+  });
+
+  it("gives the Radar overview its homepage stage copy", () => {
+    const promotion = content.getPromotion("radar-overview-video");
+    assert.equal(promotion.videoId, "radar-overview-2026");
+    assert.equal(promotion.headline, "See how Radar watches DeFi infrastructure");
+    assert.equal(promotion.eyebrow, "Radar");
+    assert.equal(promotion.placement, "video-feature");
+    assert.equal(promotion.format, "video-episode");
+    assert.ok(promotion.action.external, "the YouTube destination is not marked external");
+    // No newsroom record was created for it: it is a reusable media asset, not
+    // a publication event, and inventing one would be the duplicate object the
+    // canonical record exists to prevent.
+    assert.equal(promotion.canonicalRecord, undefined, "a newsroom record was created");
   });
 });
 

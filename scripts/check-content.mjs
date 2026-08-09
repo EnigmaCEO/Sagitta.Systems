@@ -567,6 +567,7 @@ function main() {
     ["press resources", pressSections.flatMap((s) => s.resources)],
     ["press statistics", pressStatistics],
     ["people", people],
+    ["videos", content.videos ?? []],
     ["site", [content.site, ...content.identityHierarchy]],
   ];
 
@@ -840,6 +841,61 @@ function main() {
       fail(`artifact "${artifact.id}": a public artifact must be verified`);
   }
 
+  // ── Video ──────────────────────────────────────────────────────────────────
+  //
+  // One record per video, resolved by every surface that stages it. The rules
+  // that matter: a video points at a real system, its poster is a real local
+  // file, and it states whether the provider actually lists it — an unlisted
+  // video is not discoverable, and nothing may present it as though it were.
+  const { videos, publicVideos } = content;
+  const VIDEO_CLASSIFICATIONS = ["Product Overview", "Demonstration", "Episode", "Presentation"];
+  const VIDEO_LISTINGS = ["public", "unlisted"];
+  const videoIds = new Set();
+
+  for (const video of videos ?? []) {
+    const where = `video "${video.id}"`;
+    if (videoIds.has(video.id)) fail(`${where}: duplicate video id`);
+    videoIds.add(video.id);
+
+    for (const field of ["title", "standfirst", "description", "duration", "channelName"]) {
+      if (!video[field]) fail(`${where}: missing ${field}`);
+    }
+    if (!VIDEO_CLASSIFICATIONS.includes(video.classification))
+      fail(`${where}: invalid classification "${video.classification}"`);
+    if (!VIDEO_LISTINGS.includes(video.listing))
+      fail(`${where}: does not state whether the provider lists it publicly`);
+    if (video.provider !== "youtube") fail(`${where}: unsupported provider "${video.provider}"`);
+    if (!/^[A-Za-z0-9_-]{6,20}$/.test(video.providerVideoId ?? ""))
+      fail(`${where}: "${video.providerVideoId}" is not a video id`);
+    // The id that plays and the page the reader is sent to are the same video,
+    // for the same reason the promotion embed check exists.
+    if (video.providerVideoId && !(video.sourceUrl ?? "").includes(video.providerVideoId))
+      fail(`${where}: sourceUrl "${video.sourceUrl}" is not the video ${video.providerVideoId}`);
+    if (!allSlugs.has(video.systemSlug))
+      fail(`${where}: references unknown system "${video.systemSlug}"`);
+    // A runtime is published as the source publishes it, never rounded to prose.
+    if (video.duration && !/^\d{1,2}:\d{2}(:\d{2})?$/.test(video.duration))
+      fail(`${where}: duration "${video.duration}" is not a runtime`);
+    checkDate(video.publishedAt, `${where} publishedAt`);
+    checkVerification(video, where);
+
+    if (!video.poster?.src) fail(`${where}: no poster`);
+    else checkLocalAsset(video.poster.src, `${where} poster`);
+    if (typeof video.poster?.alt !== "string")
+      fail(`${where} poster: alternative text is required`);
+
+    // The provider's thumbnail is stored locally. A remote poster would put a
+    // third-party request on every page that lists the video.
+    if (/^https?:\/\//.test(video.poster?.src ?? ""))
+      fail(`${where} poster: must be stored locally, not fetched from a third party`);
+  }
+
+  for (const video of publicVideos ?? []) {
+    if (!isLive(video)) fail(`video "${video.id}": leaked into publicVideos`);
+    if (video.verification.status !== "verified")
+      fail(`video "${video.id}": a public video must be verified`);
+  }
+
   const promotionIds = new Set();
   const sentences = (text) => (text.match(/[.!?](\s|$)/g) ?? []).length;
 
@@ -893,6 +949,37 @@ function main() {
 
     if (promotion.artifactId && !artifactIds.has(promotion.artifactId))
       fail(`${where}: references unknown artifact "${promotion.artifactId}"`);
+
+    // A promotion that stages a canonical video restates some of it — the deck
+    // renders the promotion, not the video record — so the two are held to
+    // agreement rather than to trust. This is the whole point of having one
+    // canonical record: a duration corrected on the video must not leave a
+    // stale one on the homepage.
+    if (promotion.videoId) {
+      const video = (videos ?? []).find((v) => v.id === promotion.videoId);
+      if (!video) {
+        fail(`${where}: references unknown video "${promotion.videoId}"`);
+      } else {
+        if (promotion.format !== "video-episode")
+          fail(`${where}: only a video promotion may stage a video record`);
+        if (promotion.media?.embed?.id !== video.providerVideoId)
+          fail(
+            `${where}: stages video "${video.id}" but embeds "${promotion.media?.embed?.id}" — they are different videos`,
+          );
+        if (promotion.media?.duration !== video.duration)
+          fail(
+            `${where}: publishes runtime "${promotion.media?.duration}" against the record's "${video.duration}"`,
+          );
+        if (promotion.media?.src !== video.poster.src)
+          fail(`${where}: uses a different poster from the video record`);
+        if (promotion.publishedAt !== video.publishedAt)
+          fail(`${where}: publishes a different date from the video record`);
+        if (!(promotion.action?.href ?? "").includes(video.providerVideoId))
+          fail(`${where}: the action does not send the reader to the staged video`);
+        if (!promotion.systemSlugs?.includes(video.systemSlug))
+          fail(`${where}: does not route into "${video.systemSlug}", the video's own system`);
+      }
+    }
     if (promotion.canonicalRecord) {
       if (!promotion.canonicalRecord.startsWith("/"))
         fail(`${where}: canonicalRecord must be an internal route`);
@@ -1079,6 +1166,7 @@ function main() {
     ["promotions", promotions],
     ["channels", promotionChannelRecords],
     ["artifacts", evidenceArtifacts ?? []],
+    ["videos", videos ?? []],
     ["press resources", pressSections.flatMap((s) => s.resources)],
     ["press statistics", pressStatistics],
     ["site", [content.site, ...content.identityHierarchy, ...content.audienceRoutes]],
@@ -1185,6 +1273,7 @@ function main() {
       `  ${externalActive.length} external channels on the homepage (${externalActive.join(", ")})`,
       `  ${promotionChannelRecords.filter((c) => c.active).length}/${promotionChannelRecords.length} channels active`,
       `  ${(publicArtifacts ?? []).length} evidence artifacts, each classified by what it proves`,
+      `  ${(publicVideos ?? []).length} canonical video records, each resolved rather than copied by its placements`,
       `  ${promotionFormats.length} promotional formats modelled, ${decisionLenses.length} decision lenses mapped`,
       `  ${content.systemEdges.length} network edges, each with a stated reason`,
       `  no product-level Labs attribution in public copy`,

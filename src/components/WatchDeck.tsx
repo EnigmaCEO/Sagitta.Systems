@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import VideoFrame from "./VideoFrame";
 import { ExternalArrow } from "./icons";
 
 /**
@@ -61,6 +62,13 @@ export interface WatchVideo {
  * the stage still works. With scripting, the click is intercepted and the video
  * plays here instead. There is no dead control in either case.
  */
+/** True when one label is the other, or is contained in it — "Radar" in "Sagitta Radar". */
+function namesSameThing(eyebrow: string, system: string): boolean {
+  const a = eyebrow.trim().toLowerCase();
+  const b = system.trim().toLowerCase();
+  return a.includes(b) || b.includes(a);
+}
+
 export default function WatchDeck({ videos }: { videos: WatchVideo[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -92,73 +100,25 @@ export default function WatchDeck({ videos }: { videos: WatchVideo[] }) {
           breaks right and the product stage breaks right, so this one breaks
           the other way and the page never settles into one direction. */}
       <div className="lg:col-span-7 xl:col-span-8 order-1 lg:-ml-[max(var(--gutter),6vw)]">
-        <div
+        {/* The frame itself is shared with the system pages — see VideoFrame.
+            Keyed by the active video so promoting one from the queue mounts a
+            fresh frame: a new selection starts from its poster rather than
+            inheriting the previous video's playing state, and nothing ever
+            starts unasked. */}
+        <VideoFrame
+          key={active.id}
           ref={frameRef}
-          tabIndex={-1}
           className="poster poster-bleed-left"
-          style={{ aspectRatio: "16 / 9" }}
-        >
-          {playing && active.embedId ? (
-            <iframe
-              // The privacy-enhanced host: no cookie is set until playback.
-              // `autoplay=1` is safe here because this frame only exists as the
-              // result of a click — nothing plays on load.
-              src={`https://www.youtube-nocookie.com/embed/${active.embedId}?autoplay=1&rel=0&playsinline=1`}
-              title={active.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full"
-              style={{ border: 0, zIndex: 20 }}
-            />
-          ) : (
-            <a
-              href={active.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cta={active.action.id}
-              data-cta-type={active.action.type}
-              data-cta-availability={active.action.availability}
-              className="group absolute inset-0"
-              onClick={(event) => {
-                // Only take over the click when the video can actually play
-                // here, and only for an ordinary left click — a reader opening
-                // it in a new tab still gets YouTube.
-                if (!active.embedId) return;
-                if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
-                event.preventDefault();
-                setPlaying(true);
-              }}
-            >
-              <Image
-                src={active.poster}
-                alt={active.alt}
-                fill
-                sizes="(min-width: 1024px) 66vw, 100vw"
-                style={{ objectFit: "cover" }}
-                priority
-              />
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 z-10 flex items-center justify-center"
-              >
-                <span className="play-badge play-badge-lg">
-                  <svg width="26" height="26" viewBox="0 0 18 18" aria-hidden="true">
-                    <path d="M5 3.4v11.2L14.6 9z" fill="currentColor" />
-                  </svg>
-                </span>
-              </span>
-              {active.duration && (
-                <span className="runtime-chip">{active.duration}</span>
-              )}
-              <span className="visually-hidden">
-                {active.embedId
-                  ? `Play ${active.title} on this page`
-                  : `Watch ${active.title} on YouTube (opens in a new tab)`}
-              </span>
-            </a>
-          )}
-        </div>
+          poster={active.poster}
+          alt={active.alt}
+          title={active.title}
+          href={active.href}
+          embedId={active.embedId}
+          duration={active.duration}
+          cta={active.action}
+          onPlayingChange={setPlaying}
+          priority
+        />
 
         {/* Stated rather than assumed: nothing is requested from YouTube until
             the reader asks for it.
@@ -177,9 +137,15 @@ export default function WatchDeck({ videos }: { videos: WatchVideo[] }) {
       </div>
 
       <div className="lg:col-span-5 xl:col-span-4 order-2">
+        {/* The system is appended only where the eyebrow does not already name
+            it. A channel eyebrow ("YouTube · Sagitta Labs") and a system are
+            two different facts and both belong on the line; a product eyebrow
+            ("Radar") beside "Sagitta Radar" is the same fact twice. */}
         <p className="meta-line mb-4">
           {active.eyebrow}
-          {active.system ? ` · ${active.system}` : ""}
+          {active.system && !namesSameThing(active.eyebrow, active.system)
+            ? ` · ${active.system}`
+            : ""}
           {active.publishedLabel && (
             <>
               <span aria-hidden="true"> · </span>
@@ -227,7 +193,11 @@ export default function WatchDeck({ videos }: { videos: WatchVideo[] }) {
 
         {queue.length > 0 && (
           <div>
-            <p className="stage-eyebrow mb-4">Also on the channel</p>
+            {/* "More videos", not "Also on the channel": Sagitta publishes on
+                two YouTube accounts and one of these videos is unlisted, so a
+                queue heading that implies a single browsable channel would be
+                stating something none of these records support. */}
+            <p className="stage-eyebrow mb-4">More videos</p>
             <ul>
               {queue.map((video) => {
                 const index = videos.indexOf(video);

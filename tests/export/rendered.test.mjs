@@ -466,10 +466,14 @@ describe("homepage as a promotional front page", () => {
   });
 
   it("plays the real published video, with only metadata the source publishes", () => {
-    // The stage is in its published state: one verified episode exists. It must
-    // carry what a real episode has — poster, play treatment, exact title,
-    // source, related system, date, runtime, and the video's own destination —
-    // and nothing a source did not publish.
+    // The stage is in its published state: verified videos exist. The lead one
+    // must carry what a real video has — poster, play treatment, exact title
+    // or approved stage headline, source, related system, date, runtime, and
+    // the video's own destination — and nothing a source did not publish.
+    //
+    // The Radar overview leads as of 2026-08-08 and the Selun introduction
+    // queues behind it, so both are asserted: the lead in full, and the queued
+    // one for the metadata that must survive being demoted to a queue row.
     const home = page("/");
     const watch = home.html.slice(
       home.html.indexOf('id="watch"'),
@@ -478,21 +482,29 @@ describe("homepage as a promotional front page", () => {
 
     assert.ok(watch.includes("play-badge"), "the published episode has no play treatment");
     assert.ok(
-      watch.includes("/watch/introducing-selun.jpg"),
+      watch.includes("/watch/radar-overview.jpg"),
       "the verified YouTube thumbnail is not staged",
     );
+    assert.ok(
+      watch.includes("See how Radar watches DeFi infrastructure"),
+      "the approved stage headline is not rendered",
+    );
+    assert.ok(watch.includes("Radar"), "the related system is not named");
+    assert.ok(watch.includes("1:55"), "the verified duration is not rendered");
+    assert.match(watch, /8 Aug 2026/, "the verified publication date is not rendered");
+    assert.ok(
+      watch.includes("https://www.youtube.com/watch?v=KchWMxZIn_g"),
+      "the stage does not link to the video itself",
+    );
+
+    // The queued Selun introduction keeps its exact title, runtime, and date.
     assert.ok(watch.includes("Introducing Selun"), "the exact video title is not rendered");
-    assert.ok(watch.includes("Sagitta Labs"), "the channel is not named");
-    assert.ok(watch.includes("Selun"), "the related system is not named");
-    assert.ok(watch.includes("0:41"), "the verified duration is not rendered");
-    // The channel feed's own timestamp, which is what a reader checking the
-    // video sees. Resolved 2026-08-02: the owner-supplied 2026-03-19 was a
-    // production date and is not published anywhere on the site.
+    assert.ok(watch.includes("0:41"), "the queued video's verified duration is not rendered");
     assert.match(watch, /28 Mar 2026/, "the verified publication date is not rendered");
     assert.doesNotMatch(watch, /19 Mar 2026/, "the superseded production date is published");
     assert.ok(
       watch.includes("https://www.youtube.com/watch?v=SHecO67AqfM"),
-      "the stage does not link to the video itself",
+      "the stage does not link to the queued video itself",
     );
 
     // No view count, no invented episode numbering, and no self-hosted player:
@@ -548,9 +560,9 @@ describe("homepage as a promotional front page", () => {
       home.html.indexOf('id="watch"'),
       home.html.indexOf('id="network"'),
     );
-    const poster = watch.match(/<a[^>]*data-cta="promo:introducing-selun-video:watch"[^>]*>/);
+    const poster = watch.match(/<a[^>]*data-cta="promo:radar-overview-video:watch"[^>]*>/);
     assert.ok(poster, "the Watch poster is not an anchor in the static HTML");
-    assert.match(poster[0], /href="https:\/\/www\.youtube\.com\/watch\?v=SHecO67AqfM"/);
+    assert.match(poster[0], /href="https:\/\/www\.youtube\.com\/watch\?v=KchWMxZIn_g"/);
     assert.match(poster[0], /target="_blank"/);
     assert.match(poster[0], /rel="[^"]*noopener/);
 

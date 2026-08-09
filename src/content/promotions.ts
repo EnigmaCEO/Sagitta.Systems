@@ -69,6 +69,7 @@ function verifiedAug4(source: string, note?: string): Verification {
 const WHITEPAPER = "https://sagitta-protocol.gitbook.io/sagitta-whitepaper";
 const YOUTUBE_SELUN = "https://www.youtube.com/watch?v=SHecO67AqfM";
 const YOUTUBE_PROTOCOL = "https://www.youtube.com/watch?v=PabWDk6I-HI";
+const YOUTUBE_RADAR = "https://www.youtube.com/watch?v=KchWMxZIn_g";
 
 /**
  * The thirteen formats, each with its editorial label and the stage it is built
@@ -159,10 +160,14 @@ export const promotionChannelRecords: PromotionChannelRecord[] = [
     accountName: "Sagitta Labs",
     url: "https://www.youtube.com/@SagittaLabs",
     active: true,
-    verification: verifiedJul31(
-      "https://www.youtube.com/watch?v=SHecO67AqfM via YouTube oEmbed",
-      "Channel name and channel URL both returned by oEmbed as author_name and author_url for the published video. One video is on the record.",
-    ),
+    verification: {
+      status: "verified",
+      source:
+        "https://www.youtube.com/watch?v=SHecO67AqfM and https://www.youtube.com/watch?v=KchWMxZIn_g, both via YouTube oEmbed",
+      lastVerifiedAt: "2026-08-08",
+      note:
+        "Channel name and channel URL returned by oEmbed as author_name and author_url. Sagitta publishes on two YouTube accounts: Sagitta Labs (@SagittaLabs) carries the Selun and Protocol videos, and Sagitta Systems (@SagittaSystems) carries the Radar overview. This record names the Labs channel because that is the one with a public listing behind it; the Radar video is unlisted and its account is recorded on the video itself rather than promoted here as a browsable destination. Re-checked 2026-08-08.",
+    },
     publicationState: "published",
     visibility: "public",
   },
@@ -646,9 +651,66 @@ export const promotions: PromotionRecord[] = [
 
   // ── Watch ──────────────────────────────────────────────────────────────────
   //
-  // The first real episode. Its presence here is what switches the Watch stage
-  // out of its forthcoming state; nothing about Selun is hardcoded in the
-  // component.
+  // Three videos, leading with the Radar overview. Their presence here is what
+  // switches the Watch stage out of its forthcoming state; nothing about any of
+  // them is hardcoded in the component.
+  //
+  // The Radar record is the first to carry `videoId` rather than restating a
+  // video's metadata inline. Title, runtime, poster, embed id, and source URL
+  // are resolved from `videos.ts`, because the same video is also staged on
+  // /systems/sagitta-radar and in the media library and the three must not be
+  // able to disagree. The two earlier videos still carry their metadata inline;
+  // they are each staged in one place, so nothing has drifted, and they can be
+  // migrated when a second placement gives them a reason to be.
+  {
+    id: "radar-overview-video",
+    format: "video-episode",
+    channel: "youtube",
+    placement: "video-feature",
+    systemSlugs: ["sagitta-radar", "sagitta-continuity-engine"],
+    lens: ["defi-health", "cve-defense"],
+    audience: ["Protocol teams", "Infrastructure operators", "Treasury operators"],
+    // The label the stage sets, rather than a channel line. The account this is
+    // published on is real and is recorded on the video, but it is deliberately
+    // not set as an eyebrow: the video is unlisted, and "YouTube · Sagitta
+    // Systems" in a stage eyebrow reads as an invitation to browse a channel
+    // listing this video is not in.
+    eyebrow: "Radar",
+    headline: "See how Radar watches DeFi infrastructure",
+    publishedAt: "2026-08-08",
+    sourceName: "YouTube · Sagitta Systems",
+    sourceUrl: YOUTUBE_RADAR,
+    videoId: "radar-overview-2026",
+    action: {
+      id: "promo:radar-overview-video:watch",
+      label: "Watch on YouTube",
+      href: YOUTUBE_RADAR,
+      external: true,
+      type: "demonstration",
+      availability: "available",
+      audience: "Protocol teams, infrastructure operators, and treasury operators",
+    },
+    media: {
+      kind: "video-thumbnail",
+      src: "/watch/radar-overview.jpg",
+      alt: "Thumbnail published with the Sagitta Radar Overview video on YouTube.",
+      duration: "1:55",
+      embed: { provider: "youtube", id: "KchWMxZIn_g" },
+      fit: "cover",
+    },
+    priority: 1,
+    state: "active",
+    verification: {
+      status: "verified",
+      source: "src/content/videos.ts (radar-overview-2026) + https://www.youtube.com/watch?v=KchWMxZIn_g",
+      lastVerifiedAt: "2026-08-08",
+      note:
+        "Stages the canonical video record; the media block restates it and the content check fails the build if the two disagree. The headline is Sagitta's own promotional line for the stage, not a paraphrase of the video's title — the canonical title 'Sagitta Radar Overview' is held on the video record and is what /systems/sagitta-radar and the media library render. Takes the lead slot ahead of the two Sagitta Labs videos: it is the newest and it is the overview of an Operating product, and both of the others stay in the queue rather than being archived. The video is unlisted, so no claim of channel discoverability is made anywhere. No newsroom record was created — this is a reusable product media asset, not a launch.",
+    },
+    publicationState: "published",
+    visibility: "public",
+  },
+
   {
     id: "introducing-selun-video",
     format: "video-episode",
@@ -679,7 +741,7 @@ export const promotions: PromotionRecord[] = [
       embed: { provider: "youtube", id: "SHecO67AqfM" },
       fit: "cover",
     },
-    priority: 1,
+    priority: 2,
     state: "active",
     canonicalRecord: "/newsroom/introducing-selun",
     verification: verifiedJul31(
@@ -725,7 +787,7 @@ export const promotions: PromotionRecord[] = [
       embed: { provider: "youtube", id: "PabWDk6I-HI" },
       fit: "cover",
     },
-    priority: 2,
+    priority: 3,
     state: "active",
     canonicalRecord: "/newsroom/sagitta-protocol-overview",
     verification: verifiedJul31(

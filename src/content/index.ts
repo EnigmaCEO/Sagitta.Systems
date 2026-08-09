@@ -27,6 +27,7 @@ export * from "./press";
 export * from "./people";
 export * from "./promotions";
 export * from "./artifacts";
+export * from "./videos";
 export * from "./watch";
 export * from "./defenseReviews";
 export * from "./legal";

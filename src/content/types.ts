@@ -317,6 +317,13 @@ export interface PromotionRecord extends RecordBase {
   /** Id of the evidence artifact this promotion is built on, where one exists. */
   artifactId?: string;
   /**
+   * Id of the canonical video this promotion stages, where the subject is a
+   * recording. The promotion is a placement; `videos.ts` holds the video. A
+   * `video-episode` promotion that carries this may not restate the title,
+   * runtime, poster, or embed id — it resolves them.
+   */
+  videoId?: string;
+  /**
    * Route of the canonical record for this subject, where the newsroom holds
    * one. The promotion is a selection; this is where the full record lives.
    */
@@ -392,6 +399,66 @@ export interface EvidenceArtifact extends RecordBase {
   preview?: { src: string; alt: string; kind: PromotionMediaKind };
   /** Whether the artifact is ready to carry a promotion. */
   promotionReadiness: "ready" | "evidence-ready" | "internal";
+}
+
+// ─── Video ───────────────────────────────────────────────────────────────────
+//
+// A published recording, held once and referenced from everywhere it is staged.
+//
+// The distinction from `PromotionMedia` is deliberate. A promotion's media block
+// describes the picture *that promotion* renders; it belongs to the promotion
+// and dies with it. A `VideoRecord` is the video itself — the thing that exists
+// on a provider whether or not the homepage is currently promoting it. The Radar
+// system page, the media library, and the Watch stage all show the same video,
+// so they all resolve the same record rather than each carrying its own copy of
+// a title, a duration, and an embed id that could drift apart three ways.
+//
+// The provider id is stored, never an embed URL. The page builds the
+// privacy-enhanced URL itself, which is the same rule `PromotionEmbed` follows
+// and for the same reason: a raw third-party URL never enters the content layer.
+
+/** What kind of video this is. Stated, so an overview is never staged as a demo. */
+export type VideoClassification =
+  | "Product Overview"
+  | "Demonstration"
+  | "Episode"
+  | "Presentation";
+
+/**
+ * Whether the provider lists the video publicly.
+ *
+ * An `unlisted` video plays for anyone holding the link and appears in no feed,
+ * channel listing, or search result. Recording it keeps the site from asserting
+ * a discoverability it does not have — nothing may present an unlisted video as
+ * published on a channel a reader could browse to.
+ */
+export type VideoListing = "public" | "unlisted";
+
+export interface VideoRecord extends RecordBase {
+  /** Stable internal id. Also the anchor a placement links to. */
+  id: string;
+  /** The canonical title, exactly as the source published it. */
+  title: string;
+  /** One line set beneath the title wherever the video is staged. */
+  standfirst: string;
+  /** What the video covers. */
+  description: string;
+  /** Slug of the system the video belongs to. */
+  systemSlug: string;
+  classification: VideoClassification;
+  provider: "youtube";
+  /** The provider's video id, e.g. "KchWMxZIn_g". Embed URLs are built from it. */
+  providerVideoId: string;
+  /** The video's own page on the provider. */
+  sourceUrl: string;
+  /** The account the video is published on, as the provider returns it. */
+  channelName: string;
+  listing: VideoListing;
+  /** Runtime as published by the source. Never estimated. */
+  duration: string;
+  publishedAt: IsoDate;
+  /** The provider's own thumbnail, stored locally so no request leaves on load. */
+  poster: { src: string; alt: string };
 }
 
 // ─── Systems ─────────────────────────────────────────────────────────────────

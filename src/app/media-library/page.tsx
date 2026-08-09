@@ -6,7 +6,14 @@ import SectionHeading, { Section } from "@/components/SectionHeading";
 import StoryCard from "@/components/StoryCard";
 import { MetaBadge } from "@/components/MediaTypeBadge";
 import { ExternalArrow } from "@/components/icons";
-import { artifactKindLabels, getSystemName, latestEntries, publicArtifacts, site } from "@/content";
+import {
+  artifactKindLabels,
+  getSystemName,
+  latestEntries,
+  publicArtifacts,
+  publicVideos,
+  site,
+} from "@/content";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata = buildMetadata({
@@ -325,6 +332,93 @@ export default function MediaLibraryPage() {
           </Section>
         );
       })}
+
+      {/* Published video — the canonical video records, listed rather than
+          re-created. Each row resolves the same object the system page embeds
+          and the homepage Watch stage stages, and its action opens that
+          embed in place rather than minting a second video experience here:
+          one video, one record, one player.
+
+          A listing state is printed beside each one. An unlisted video plays
+          for anyone holding the link and appears in no channel listing or
+          search result, and a media library that quietly implied otherwise
+          would be handing a journalist a discoverability claim that is false. */}
+      {publicVideos.length > 0 && (
+        <Section id="video" bordered tone="base">
+          <SectionHeading
+            eyebrow={`${publicVideos.length} ${publicVideos.length === 1 ? "video" : "videos"}`}
+            title="Video"
+            description="Product video published by Sagitta, classified by what each recording is. Each opens on the system page that embeds it."
+          />
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {publicVideos.map((video) => (
+              <li key={video.id} className="surface-card rounded-xl border overflow-hidden flex flex-col">
+                <Link
+                  href={`/systems/${video.systemSlug}#overview-video`}
+                  data-cta={`video:${video.id}`}
+                  data-cta-type="demonstration"
+                  className="block relative"
+                  style={{ aspectRatio: "16 / 9" }}
+                >
+                  <Image
+                    src={video.poster.src}
+                    alt={video.poster.alt}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                </Link>
+
+                <div className="p-5 flex flex-col flex-1">
+                  <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                    <MetaBadge tone="quiet">Video</MetaBadge>
+                    <MetaBadge tone="quiet">{video.classification}</MetaBadge>
+                    <span className="text-xs font-mono" style={{ color: "var(--text-tertiary)" }}>
+                      {video.duration}
+                    </span>
+                  </div>
+
+                  <p className="text-sm font-semibold mb-1.5" style={{ color: "var(--text-primary)" }}>
+                    {video.title}
+                  </p>
+
+                  <p
+                    className="text-xs leading-relaxed mb-3 flex-1"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    {video.description}
+                  </p>
+
+                  <p className="text-xs mb-3">
+                    <Link href={`/systems/${video.systemSlug}`} style={{ color: "var(--gold)" }}>
+                      {getSystemName(video.systemSlug)}
+                    </Link>
+                  </p>
+
+                  <p
+                    className="text-xs leading-relaxed mb-3 pl-3 border-l"
+                    style={{ color: "var(--text-tertiary)", borderColor: "var(--border-strong)" }}
+                  >
+                    {video.listing === "unlisted"
+                      ? `Unlisted on ${video.channelName}'s YouTube channel — it plays from a link and is in no public listing or feed.`
+                      : `Published on ${video.channelName}'s YouTube channel.`}
+                  </p>
+
+                  <Link
+                    href={`/systems/${video.systemSlug}#overview-video`}
+                    data-cta={`video:${video.id}:watch`}
+                    data-cta-type="demonstration"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold mt-auto"
+                    style={{ color: "var(--gold)" }}
+                  >
+                    Watch the {video.classification.toLowerCase()}
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
 
       {/* Evidence artifacts — the documents and system outputs the network can
           actually show, each classified by what it establishes. The distinction

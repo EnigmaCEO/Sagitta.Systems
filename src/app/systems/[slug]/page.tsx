@@ -10,6 +10,7 @@ import PageHero from "@/components/PageHero";
 import RoadmapStatusBadge from "@/components/RoadmapStatusBadge";
 import SectionHeading, { Section } from "@/components/SectionHeading";
 import StoryCard from "@/components/StoryCard";
+import VideoFrame from "@/components/VideoFrame";
 import { CapabilityBadge } from "@/components/MediaTypeBadge";
 import { ArrowRight, ExternalArrow } from "@/components/icons";
 import {
@@ -22,6 +23,7 @@ import {
   relatedSystems,
   site,
   systems,
+  videosForSystem,
 } from "@/content";
 import type { Link as ContentLink, OperatingState } from "@/content/types";
 import { breadcrumbLd } from "@/lib/jsonld";
@@ -199,6 +201,54 @@ export default async function SystemPage({ params }: Params) {
           </div>
         </div>
       </Section>
+
+      {/* ── Overview video ───────────────────────────────────────────────────
+          Placed here on purpose: after the positioning and the operating
+          reality, before the written detail. A reader who will watch a two
+          minute overview should reach it before scrolling through the prose,
+          and a reader who will not should meet the prose immediately after.
+
+          Rendered from the canonical video record, so this is the same video
+          object the media library lists and the homepage Watch stage stages —
+          not a second copy of it. The copy around it is deliberately thin: the
+          title, the standfirst, and the player. The video explains the product.
+
+          Not Radar-specific. Any system with a published video gets this
+          section; no system without one gets an empty container. */}
+      {videosForSystem(system.slug).slice(0, 1).map((video) => (
+        <Section key={video.id} id="overview-video" tone="raised">
+          <h2
+            className="display text-2xl md:text-3xl font-semibold mb-2"
+            style={{ color: "var(--text-primary)" }}
+          >
+            {video.title}
+          </h2>
+          <p className="eyebrow mb-6" style={{ color: "var(--family-accent)" }}>
+            {video.standfirst}
+          </p>
+
+          <div className="max-w-4xl">
+            <VideoFrame
+              poster={video.poster.src}
+              alt={video.poster.alt}
+              title={video.title}
+              href={video.sourceUrl}
+              embedId={video.providerVideoId}
+              duration={video.duration}
+              cta={{
+                id: `video:${video.id}:play`,
+                type: "demonstration",
+                availability: "available",
+              }}
+              sizes="(min-width: 1024px) 60vw, 100vw"
+            />
+            <p className="text-xs mt-3" style={{ color: "var(--text-tertiary)" }}>
+              {video.classification} · {video.duration} · Plays here. Nothing loads from YouTube
+              until you press play.
+            </p>
+          </div>
+        </Section>
+      ))}
 
       <Section id="overview">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
