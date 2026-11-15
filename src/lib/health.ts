@@ -41,6 +41,19 @@ function requestInit(check: HealthCheck, mode: RequestMode, signal: AbortSignal)
   return { method: "GET", mode, cache: "no-store", signal };
 }
 
+/** A service may explain itself with a JSON `detail` string; show it if so. */
+async function readDetail(response: Response): Promise<string | undefined> {
+  const type = response.headers?.get?.("content-type") ?? "";
+  if (!type.includes("json")) return undefined;
+  try {
+    const body: unknown = await response.json();
+    const detail = (body as { detail?: unknown } | null)?.detail;
+    return typeof detail === "string" && detail ? detail.slice(0, 120) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 function isTimeout(error: unknown): boolean {
   return error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
 }
@@ -67,9 +80,12 @@ export async function probe(check: HealthCheck, options: ProbeOptions): Promise<
       check.url,
       requestInit(check, "cors", AbortSignal.timeout(options.timeoutMs)),
     );
-    if (!response.ok) return finish({ state: "down", status: response.status, detail: `HTTP ${response.status}` });
     const elapsed = now() - startedAt;
-    return finish({ state: elapsed > options.slowMs ? "slow" : "up", status: response.status });
+    const detail = await readDetail(response);
+    if (!response.ok) {
+      return finish({ state: "down", status: response.status, detail: detail ?? `HTTP ${response.status}` });
+    }
+    return finish({ state: elapsed > options.slowMs ? "slow" : "up", status: response.status, ...(detail ? { detail } : {}) });
   } catch (error) {
     if (isTimeout(error)) return finish({ state: "down", detail: "No response before timeout" });
   }

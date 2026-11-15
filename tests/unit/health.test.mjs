@@ -62,6 +62,21 @@ describe("probe", () => {
     assert.equal(result.detail, "Could not connect");
   });
 
+  it("shows a JSON detail string from the service, up or down", async () => {
+    const jsonResponse = (status, body) => ({
+      ok: status >= 200 && status < 300,
+      status,
+      headers: { get: () => "application/json" },
+      json: async () => body,
+    });
+    const up = await probe(check, options(async () => jsonResponse(200, { detail: "10/10 routes answer unpaid calls with 402" })));
+    assert.equal(up.state, "up");
+    assert.equal(up.detail, "10/10 routes answer unpaid calls with 402");
+    const down = await probe(check, options(async () => jsonResponse(503, { detail: "9/10 routes answer unpaid calls with 402" })));
+    assert.equal(down.state, "down");
+    assert.equal(down.detail, "9/10 routes answer unpaid calls with 402");
+  });
+
   it("posts eth_blockNumber for chain checks", async () => {
     let seen;
     await probe({ ...check, jsonRpc: true }, options(async (_url, init) => { seen = init; return ok(); }));

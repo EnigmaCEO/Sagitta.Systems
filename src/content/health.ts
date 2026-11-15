@@ -33,6 +33,7 @@ export const HEALTH_REFRESH_MS = 60_000;
 export const HEALTH_COLD_START_TIMEOUT_MS = 20_000;
 
 const SCE_API = "https://continuityengineserver.fly.dev/health";
+const SELUN_BACKEND = "https://selunagent-staging.fly.dev";
 
 function site(slug: string, host: string): HealthCheck {
   return { id: `${slug}:site`, kind: "site", label: host, url: `https://${host}/` };
@@ -62,14 +63,20 @@ export const healthChecksBySystem: Record<string, HealthCheck[]> = {
       timeoutMs: HEALTH_COLD_START_TIMEOUT_MS,
     },
   ],
+  // selun.sagitta.systems proxies to the backend named in its Vercel
+  // SELUN_BACKEND_URL, currently selunagent-staging. Check the one it uses.
   selun: [
     site("selun", "selun.sagitta.systems"),
-    { id: "selun:backend", kind: "service", label: "Selun backend", url: "https://selunagent.fly.dev/health" },
+    { id: "selun:backend", kind: "service", label: "Selun backend", url: `${SELUN_BACKEND}/health` },
     {
+      // The backend reads its own discovery document and calls every listed
+      // route unpaid; each must answer with a 402 payment challenge.
       id: "selun:x402",
       kind: "service",
-      label: "x402 discovery document",
-      url: "https://selun.sagitta.systems/.well-known/x402",
+      label: "x402 routes",
+      url: `${SELUN_BACKEND}/health/x402`,
+      // An uncached run calls every route in turn, so allow it longer.
+      timeoutMs: HEALTH_COLD_START_TIMEOUT_MS,
     },
   ],
   "sagitta-protocol": [
