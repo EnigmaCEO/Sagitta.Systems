@@ -102,6 +102,7 @@ export const utilityNav: Link[] = [
   { label: "Press Room", href: "/press" },
   { label: "Media Library", href: "/media-library" },
   { label: "Documentation", href: "/documentation" },
+  { label: "Glossary", href: "/documentation/glossary" },
   { label: "Contact", href: "/contact" },
   { label: "Legal", href: "/legal" },
   { label: "Status", href: "/status" },

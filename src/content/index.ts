@@ -31,6 +31,7 @@ export * from "./videos";
 export * from "./watch";
 export * from "./defenseReviews";
 export * from "./legal";
+export * from "./glossary";
 
 /** Published entries whose primary or secondary system is `slug`. */
 export function entriesForSystem(slug: string, limit?: number): NewsroomEntry[] {

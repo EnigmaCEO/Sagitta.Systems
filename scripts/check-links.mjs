@@ -25,6 +25,7 @@ const REQUIRED_ROUTES = [
   "/press",
   "/media-library",
   "/documentation",
+  "/documentation/glossary",
   "/contact",
   "/legal",
   "/status",

@@ -139,7 +139,7 @@ export const systems: SystemRecord[] = [
     featured: true,
     verification: verified(
       "https://sce.sagitta.systems + SCE/README.md",
-      "Live surface confirms marketing site, sample report, portal login. Site itself reports 'critical incident feed temporarily unavailable' and 'case library sync pending' — status copy reflects that.",
+      "Live surface confirms marketing site, sample report, portal login. Since 2026-11-15 the homepage ticker renders the last successful Case Library read on first paint; before that it showed 'critical incident feed temporarily unavailable' and 'case library sync pending' while loading.",
     ),
     publicationState: "published",
     visibility: "public",
@@ -372,6 +372,7 @@ export const systems: SystemRecord[] = [
     statusEvidence:
       "Public product with a completable wizard and two working payment paths.",
     operatingUrl: "https://selun.sagitta.systems",
+    documentationUrl: "https://selun.sagitta.systems/for-developers",
     subdomain: "selun.sagitta.systems",
     evidence: [
       { label: "Selun", href: "https://selun.sagitta.systems", external: true },

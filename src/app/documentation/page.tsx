@@ -3,7 +3,7 @@ import CtaPanel from "@/components/CtaPanel";
 import PageHero from "@/components/PageHero";
 import SectionHeading, { Section } from "@/components/SectionHeading";
 import { ExternalArrow } from "@/components/icons";
-import { proofResources, site, systems } from "@/content";
+import { glossary, proofResources, site, systems } from "@/content";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata = buildMetadata({
@@ -23,7 +23,16 @@ export default function DocumentationPage() {
         lead="This page routes to documentation rather than duplicating it. Where a system has no published documentation, that is stated plainly."
       />
 
-      <Section bordered={false} id="network-documents">
+      <Section bordered={false} id="glossary">
+        <SectionHeading
+          eyebrow="Vocabulary"
+          title="Glossary"
+          description={`${glossary.length} terms used across the network, from continuity defense and decision records to policy envelopes and x402. Each definition links to where it is published.`}
+          action={{ label: "Open the glossary", href: "/documentation/glossary" }}
+        />
+      </Section>
+
+      <Section id="network-documents">
         <SectionHeading
           eyebrow="Network"
           title="Network documents"
