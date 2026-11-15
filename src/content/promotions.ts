@@ -51,6 +51,7 @@ import type {
 const VERIFIED_ON = "2026-07-29";
 const VERIFIED_JUL_31 = "2026-07-31";
 const VERIFIED_AUG_4 = "2026-08-04";
+const VERIFIED_NOV_15 = "2026-11-15";
 
 function verified(source: string, note?: string): Verification {
   return { status: "verified", source, lastVerifiedAt: VERIFIED_ON, note };
@@ -59,6 +60,11 @@ function verified(source: string, note?: string): Verification {
 /** Verified in the 2026-07-31 real-content pass. */
 function verifiedJul31(source: string, note?: string): Verification {
   return { status: "verified", source, lastVerifiedAt: VERIFIED_JUL_31, note };
+}
+
+/** Verified in the 2026-11-15 refresh pass. */
+function verifiedNov15(source: string, note?: string): Verification {
+  return { status: "verified", source, lastVerifiedAt: VERIFIED_NOV_15, note };
 }
 
 /** Verified in the 2026-08-04 pass that staged the fourth Continuity Desk article. */
@@ -540,13 +546,13 @@ export const promotions: PromotionRecord[] = [
     audience: ["Agent developers", "Integrators"],
     eyebrow: "Selun · x402",
     headline: "Agent-payable endpoints advertised",
-    publishedAt: "2026-07-29",
+    publishedAt: "2026-11-15",
     sourceName: "selun.sagitta.systems/.well-known/x402",
     signal: {
       metric: "Agent-payable endpoints advertised",
-      value: "9",
+      value: "10",
       reading: "snapshot",
-      asOf: "2026-07-29",
+      asOf: "2026-11-15",
       snapshot: true,
     },
     action: {
@@ -559,9 +565,9 @@ export const promotions: PromotionRecord[] = [
     },
     priority: 3,
     state: "active",
-    verification: verifiedJul31(
+    verification: verifiedNov15(
       "https://selun.sagitta.systems/.well-known/x402",
-      "Endpoint count read from the live discovery document. Reassigned on 2026-07-31: x402 is a capability of Selun, so the promotion routes into Selun and carries the capability as metadata rather than naming a system that does not exist. Per-call prices are set in the document and change; they are not quoted here.",
+      "Endpoint count re-read from the live discovery document on 2026-11-15: ten resources (was nine on 2026-07-29). Reassigned on 2026-07-31: x402 is a capability of Selun, so the promotion routes into Selun and carries the capability as metadata rather than naming a system that does not exist. The document currently lists resource URLs only, with no price, asset, or network fields, so no pricing is quoted here.",
     ),
     publicationState: "published",
     visibility: "public",

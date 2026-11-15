@@ -3,26 +3,31 @@ import OperatingStatusBadge, { OperatingStatusLegend } from "@/components/Operat
 import PageHero from "@/components/PageHero";
 import SectionHeading, { Section } from "@/components/SectionHeading";
 import { ExternalArrow } from "@/components/icons";
+import { HealthLegend, HealthProvider, NetworkHealthSummary, SystemHealth } from "@/components/LiveHealth";
 import { formatDate, publicCapabilities, systemFamilies, systemsByFamily } from "@/content";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata = buildMetadata({
   title: "Status",
   description:
-    "The recorded operating state of every Sagitta system, with links to each operating surface.",
+    "Live site and service checks for every Sagitta system, alongside each system's recorded operating state.",
   path: "/status",
   ogImage: "/og/systems.png",
 });
 
 export default function StatusPage() {
   return (
-    <>
+    <HealthProvider>
       <PageHero
         eyebrow="Status"
-        title="Operating state of the network"
-        lead="The recorded operating state of each system, with the evidence for it. Every state below was checked against the system's public surface on the date shown. This is not an automated uptime monitor — no live availability, incident, or latency data is claimed."
+        title="Network status and health"
+        lead="Each system shows two things. Live checks confirm, from your browser, that its site is up and that the service behind it is answering. These are checked separately, because a site can be live while its service is not. The operating state is the recorded stage of the system, with the evidence for it and the date it was verified."
       >
-        <OperatingStatusLegend />
+        <div className="space-y-3">
+          <NetworkHealthSummary />
+          <HealthLegend />
+          <OperatingStatusLegend />
+        </div>
       </PageHero>
 
       {systemFamilies
@@ -57,8 +62,9 @@ export default function StatusPage() {
                       {system.statusEvidence}
                     </p>
                     <p className="text-xs mt-1" style={{ color: "var(--text-tertiary)" }}>
-                      Last verified {formatDate(system.verification.lastVerifiedAt)}
+                      Operating state last verified {formatDate(system.verification.lastVerifiedAt)}
                     </p>
+                    <SystemHealth slug={system.slug} />
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
                     <OperatingStatusBadge state={system.status} />
@@ -112,6 +118,6 @@ export default function StatusPage() {
           ))}
         </ul>
       </Section>
-    </>
+    </HealthProvider>
   );
 }

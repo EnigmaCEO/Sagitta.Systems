@@ -115,15 +115,20 @@ export const roadmapItems: RoadmapItem[] = [
     state: "Operating",
     horizon: "Now",
     summary:
-      "Nine allocation and continuity endpoints are advertised in a live x402 discovery document, callable and settleable by an agent without a human account.",
+      "Ten allocation and continuity endpoints are advertised in a live x402 discovery document, callable and settleable by an agent without a human account.",
     evidence: {
       label: "/.well-known/x402",
       href: "https://selun.sagitta.systems/.well-known/x402",
       external: true,
     },
-    updatedAt: null,
+    updatedAt: "2026-11-15",
     featured: true,
-    verification: verified("https://selun.sagitta.systems/.well-known/x402"),
+    verification: {
+      status: "verified",
+      source: "https://selun.sagitta.systems/.well-known/x402",
+      lastVerifiedAt: "2026-11-15",
+      note: "Re-read 2026-11-15: ten resources listed (nine on 2026-07-29).",
+    },
     publicationState: "published",
     visibility: "public",
   },

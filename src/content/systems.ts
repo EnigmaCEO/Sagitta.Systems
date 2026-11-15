@@ -365,7 +365,7 @@ export const systems: SystemRecord[] = [
       "The guided allocation wizard, end to end",
       "Card checkout and onchain USDC settlement",
       "An optional certified decision report",
-      "The x402 agent-payable surface, advertising nine priced endpoints at /.well-known/x402",
+      "The x402 agent-payable surface, advertising ten endpoints at /.well-known/x402",
     ],
     audience: ["Individual portfolio holders", "Operators", "Referral partners"],
     status: "Operating",
