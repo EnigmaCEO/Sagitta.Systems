@@ -537,7 +537,8 @@ describe("promotion model", () => {
 
     const incidents = content.getPromotion("sce-incidents-tracked");
     assert.equal(incidents.signal.reading, "snapshot");
-    assert.equal(incidents.signal.asOf, "2026-07-29");
+    // Re-read from the live Defense page on 2026-11-15.
+    assert.equal(incidents.signal.asOf, "2026-11-15");
   });
 
   it("publishes the Radar figure as an undated rollup at a threshold", () => {

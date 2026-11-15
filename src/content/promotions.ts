@@ -509,13 +509,13 @@ export const promotions: PromotionRecord[] = [
     audience: ["Protocol teams", "Security leads"],
     eyebrow: "Continuity Engine",
     headline: "Critical incidents in the tracked set",
-    publishedAt: "2026-07-29",
+    publishedAt: "2026-11-15",
     sourceName: "defense.sagitta.systems",
     signal: {
       metric: "Critical incidents in the tracked set",
-      value: "801",
+      value: "1,036",
       reading: "snapshot",
-      asOf: "2026-07-29",
+      asOf: "2026-11-15",
       snapshot: true,
     },
     action: {
@@ -528,9 +528,9 @@ export const promotions: PromotionRecord[] = [
     },
     priority: 2,
     state: "active",
-    verification: verified(
+    verification: verifiedNov15(
       "https://defense.sagitta.systems",
-      "A Sagitta-published figure attributed to SCE on the Defense service page, not an independently audited one. Rendered as a dated snapshot.",
+      "A Sagitta-published figure attributed to SCE on the Defense service page, not an independently audited one. Rendered as a dated snapshot. Re-read 2026-11-15 after the Defense ticker was repointed to /advisories/overview: 1,036 (801 on 2026-07-29, from the retired /incidents/overview).",
     ),
     publicationState: "published",
     visibility: "public",

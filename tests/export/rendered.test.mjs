@@ -342,7 +342,7 @@ describe("homepage as a promotional front page", () => {
   it("labels a moving figure as a dated snapshot", () => {
     const home = page("/");
     assert.match(home.html, /Snapshot as of/, "a point-in-time figure is presented as live");
-    assert.ok(home.html.includes("801"), "the dated Continuity Engine snapshot is not published");
+    assert.ok(home.html.includes("1,036"), "the dated Continuity Engine snapshot is not published");
   });
 
   it("publishes the Radar rollup at a threshold, undated and never to the digit", () => {

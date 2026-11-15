@@ -372,7 +372,7 @@ export const pressStatistics: PressStatistic[] = [
   {
     id: "sce-incidents-tracked",
     metric: "Critical incidents tracked by SCE",
-    value: "801",
+    value: "1,036",
     scope:
       "Incidents in the Sagitta Continuity Engine's tracked set, as published on the Defense service page. A Sagitta-published figure, not an independently audited one.",
     source: {
@@ -380,7 +380,12 @@ export const pressStatistics: PressStatistic[] = [
       href: "https://defense.sagitta.systems",
       external: true,
     },
-    verification: verified("https://defense.sagitta.systems"),
+    verification: {
+      status: "verified",
+      source: "https://defense.sagitta.systems",
+      lastVerifiedAt: "2026-11-15",
+      note: "Re-read 2026-11-15 from the live Defense page: 1,036 (801 on 2026-07-29).",
+    },
     publicationState: "published",
     visibility: "public",
   },
