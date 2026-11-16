@@ -76,6 +76,12 @@ const WHITEPAPER = "https://sagitta-protocol.gitbook.io/sagitta-whitepaper";
 const YOUTUBE_SELUN = "https://www.youtube.com/watch?v=SHecO67AqfM";
 const YOUTUBE_PROTOCOL = "https://www.youtube.com/watch?v=PabWDk6I-HI";
 const YOUTUBE_RADAR = "https://www.youtube.com/watch?v=KchWMxZIn_g";
+const YOUTUBE_SELUN_AI = "https://www.youtube.com/watch?v=5BEWbgL6U-Y";
+
+/** Verified in the 2026-11-16 pass. */
+function verifiedNov16(source: string, note?: string): Verification {
+  return { status: "verified", source, lastVerifiedAt: "2026-11-16", note };
+}
 
 /**
  * The thirteen formats, each with its editorial label and the stage it is built
@@ -259,9 +265,50 @@ export const decisionLenses: { id: DecisionLens; label: string; systemSlugs: str
 export const promotions: PromotionRecord[] = [
   // ── Lead carousel ──────────────────────────────────────────────────────────
   //
-  // Five editorially ordered stories. Order is not chronological: the Radar
-  // launch leads because it is the network's most consequential current fact,
-  // and the 30 July article — the most recent thing on the page — sits third.
+  // Five editorially ordered stories. Order is not chronological. Selun AI
+  // leads from 2026-11-16: it is the newest change and the largest improvement
+  // to how people reach the network. The Radar launch follows. The Protocol
+  // Arc Testnet story was retired to make room, while a new Protocol version
+  // is in development.
+  {
+    id: "selun-ai-launch",
+    format: "launch-milestone",
+    channel: "sagitta-product",
+    placement: "lead-carousel",
+    systemSlugs: ["selun", "aaa", "sagitta-continuity-engine"],
+    lens: ["fund-allocation", "sector-portfolios"],
+    audience: ["Individual portfolio holders", "Operators"],
+    eyebrow: "Selun AI · Launch",
+    headline: "Onchain intelligence, one question away.",
+    context:
+      "Selun now starts with a conversation: ask about crypto in plain language, see the price upfront, and pay by PayPal, card, or crypto wallet, including a phone wallet by QR code.",
+    publishedAt: "2026-11-16",
+    sourceName: "selun.sagitta.systems",
+    sourceUrl: "https://selun.sagitta.systems",
+    action: {
+      id: "promo:selun-ai-launch:read",
+      label: "Read about Selun AI",
+      href: "/newsroom/selun-ai",
+      type: "research",
+      availability: "available",
+      audience: "Individual portfolio holders",
+    },
+    media: {
+      kind: "video-thumbnail",
+      src: "/watch/selun-ai.jpg",
+      alt: "Thumbnail published with the Selun AI - PayPal Hackathon video on YouTube.",
+      fit: "cover",
+    },
+    priority: 1,
+    state: "active",
+    canonicalRecord: "/newsroom/selun-ai",
+    verification: verifiedNov16(
+      "/newsroom/selun-ai + https://devpost.com/software/selun-ai + AAA/SelunAgent repository",
+      "Promotes the Selun AI newsroom record; every claim in the context line is sourced there. The date is the record's publication date on this site; the PayPal AI Hackathon submission was 12 November 2026. The poster is YouTube's own thumbnail for the video, stored locally. No prices are quoted.",
+    ),
+    publicationState: "published",
+    visibility: "public",
+  },
   {
     id: "radar-launched",
     format: "launch-milestone",
@@ -292,7 +339,7 @@ export const promotions: PromotionRecord[] = [
       alt: "The Sagitta Continuity Engine mark, the backend Sagitta Radar runs on.",
       fit: "contain",
     },
-    priority: 1,
+    priority: 2,
     state: "active",
     canonicalRecord: "/newsroom/sagitta-radar-launched",
     verification: verifiedJul31(
@@ -331,7 +378,7 @@ export const promotions: PromotionRecord[] = [
       alt: "The Sagitta Defense mark: a gold shield carrying a violet infinity figure.",
       fit: "contain",
     },
-    priority: 2,
+    priority: 3,
     state: "active",
     verification: verified(
       "https://defense.sagitta.systems + /newsroom/sagitta-defense-now-operating",
@@ -369,7 +416,7 @@ export const promotions: PromotionRecord[] = [
       alt: "Cover art published with The Missing Layer in Crypto Security: Continuity Defense on The Continuity Desk.",
       fit: "cover",
     },
-    priority: 3,
+    priority: 4,
     state: "active",
     canonicalRecord: "/newsroom/the-missing-layer-in-crypto-security-continuity-defense",
     verification: verifiedAug4(
@@ -408,7 +455,7 @@ export const promotions: PromotionRecord[] = [
       alt: "The Autonomous Allocation Agent mark.",
       fit: "contain",
     },
-    priority: 4,
+    priority: 5,
     state: "active",
     canonicalRecord: "/newsroom/risk-policy-is-only-real-when-it-constrains-the-decision",
     verification: verifiedJul31(
@@ -449,8 +496,10 @@ export const promotions: PromotionRecord[] = [
       alt: "The Sagitta Protocol mark.",
       fit: "contain",
     },
-    priority: 5,
-    state: "active",
+    priority: 9,
+    // Retired from the carousel on 2026-11-16 to make room for Selun AI, while a
+    // new Protocol version is in development. The record itself is unchanged.
+    state: "archived",
     canonicalRecord: "/newsroom/sagitta-protocol-launched-on-arc-testnet",
     verification: verifiedJul31(
       "https://protocol.sagitta.systems + owner-supplied launch date + /newsroom/sagitta-protocol-launched-on-arc-testnet",
@@ -657,9 +706,54 @@ export const promotions: PromotionRecord[] = [
 
   // ── Watch ──────────────────────────────────────────────────────────────────
   //
-  // Three videos, leading with the Radar overview. Their presence here is what
-  // switches the Watch stage out of its forthcoming state; nothing about any of
-  // them is hardcoded in the component.
+  // Four videos, leading with Selun AI from 2026-11-16, then the Radar
+  // overview. Their presence here is what switches the Watch stage out of its
+  // forthcoming state; nothing about any of them is hardcoded in the component.
+  {
+    id: "selun-ai-video",
+    format: "video-episode",
+    channel: "youtube",
+    placement: "video-feature",
+    systemSlugs: ["selun", "aaa", "sagitta-continuity-engine"],
+    lens: ["fund-allocation", "sector-portfolios"],
+    audience: ["Individual portfolio holders", "Operators"],
+    // Unlisted, like the Radar overview, so the stage sets a product label
+    // rather than a channel line that would invite browsing a listing this
+    // video is not in.
+    eyebrow: "Selun AI",
+    headline: "Meet Selun AI: ask a question, get Sagitta's intelligence",
+    publishedAt: "2026-11-12",
+    sourceName: "YouTube · Sagitta Systems",
+    sourceUrl: YOUTUBE_SELUN_AI,
+    videoId: "selun-ai-2026",
+    action: {
+      id: "promo:selun-ai-video:watch",
+      label: "Watch on YouTube",
+      href: YOUTUBE_SELUN_AI,
+      external: true,
+      type: "demonstration",
+      availability: "available",
+      audience: "Individual portfolio holders and operators",
+    },
+    media: {
+      kind: "video-thumbnail",
+      src: "/watch/selun-ai.jpg",
+      alt: "Thumbnail published with the Selun AI - PayPal Hackathon video on YouTube.",
+      duration: "2:36",
+      embed: { provider: "youtube", id: "5BEWbgL6U-Y" },
+      fit: "cover",
+    },
+    priority: 1,
+    state: "active",
+    canonicalRecord: "/newsroom/selun-ai",
+    verification: verifiedNov16(
+      "src/content/videos.ts (selun-ai-2026) + " + YOUTUBE_SELUN_AI,
+      "Stages the canonical video record; the media block restates it and the content check fails the build if the two disagree. The headline is Sagitta's own line for the stage; the canonical title 'Selun AI - PayPal Hackathon' is held on the video record. Takes the lead slot as the newest video. Unlisted, so no claim of channel discoverability is made.",
+    ),
+    publicationState: "published",
+    visibility: "public",
+  },
+
   //
   // The Radar record is the first to carry `videoId` rather than restating a
   // video's metadata inline. Title, runtime, poster, embed id, and source URL
@@ -704,7 +798,7 @@ export const promotions: PromotionRecord[] = [
       embed: { provider: "youtube", id: "KchWMxZIn_g" },
       fit: "cover",
     },
-    priority: 1,
+    priority: 2,
     state: "active",
     verification: {
       status: "verified",
@@ -747,7 +841,7 @@ export const promotions: PromotionRecord[] = [
       embed: { provider: "youtube", id: "SHecO67AqfM" },
       fit: "cover",
     },
-    priority: 2,
+    priority: 3,
     state: "active",
     canonicalRecord: "/newsroom/introducing-selun",
     verification: verifiedJul31(
@@ -793,7 +887,7 @@ export const promotions: PromotionRecord[] = [
       embed: { provider: "youtube", id: "PabWDk6I-HI" },
       fit: "cover",
     },
-    priority: 3,
+    priority: 4,
     state: "active",
     canonicalRecord: "/newsroom/sagitta-protocol-overview",
     verification: verifiedJul31(

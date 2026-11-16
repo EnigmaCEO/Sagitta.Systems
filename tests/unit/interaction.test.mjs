@@ -493,14 +493,18 @@ describe("promotion model", () => {
       assert.equal(new Set(priorities).size, priorities.length, `${placement}: duplicate priority`);
     }
 
-    // The lead story is the Radar launch by editorial choice, not the newest
-    // record — the 30 July LinkedIn article carries a later date and sits third.
-    const lead = content.promotionsAt("lead-carousel")[0];
-    assert.equal(lead.id, "radar-launched");
-    const newest = [...content.activePromotions]
-      .filter((p) => p.publishedAt)
-      .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0];
-    assert.notEqual(lead.id, newest.id, "the lead story is just the newest record");
+    // Selun AI leads from 2026-11-16 by editorial choice, and the Radar launch
+    // follows it ahead of newer stories (the 4 August and 30 July articles), so
+    // the carousel is not simply sorted by date.
+    const carousel = content.promotionsAt("lead-carousel");
+    assert.equal(carousel[0].id, "selun-ai-launch");
+    assert.equal(carousel[1].id, "radar-launched");
+    const byDate = [...carousel].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+    assert.notDeepEqual(
+      carousel.map((p) => p.id),
+      byDate.map((p) => p.id),
+      "the carousel is just sorted by date",
+    );
   });
 
   it("keeps one dominant item per single-item stage", () => {
@@ -688,12 +692,12 @@ describe("the Watch stage's editorial record", () => {
     // Defense Review programme really is announced and really has published
     // nothing, and none of the staged videos is one of its episodes.
     //
-    // The Radar overview leads as of 2026-08-08; the two Sagitta Labs videos
-    // queue behind it. What this asserts is that *something real* holds the
-    // lead slot, not which one — the ordering is editorial.
+    // Selun AI leads as of 2026-11-16, then the Radar overview; the two Sagitta
+    // Labs videos queue behind them. What this asserts is that *something real*
+    // holds the lead slot — the ordering is editorial.
     const staged = content.promotionsAt("video-feature");
     assert.ok(staged.length >= 1, "the Watch stage holds no episode");
-    assert.equal(staged[0].id, "radar-overview-video");
+    assert.equal(staged[0].id, "selun-ai-video");
     assert.equal(programme.publicationState, "upcoming", "the programme claims to have published");
     for (const video of staged) {
       assert.notEqual(

@@ -560,9 +560,9 @@ describe("homepage as a promotional front page", () => {
       home.html.indexOf('id="watch"'),
       home.html.indexOf('id="network"'),
     );
-    const poster = watch.match(/<a[^>]*data-cta="promo:radar-overview-video:watch"[^>]*>/);
+    const poster = watch.match(/<a[^>]*data-cta="promo:selun-ai-video:watch"[^>]*>/);
     assert.ok(poster, "the Watch poster is not an anchor in the static HTML");
-    assert.match(poster[0], /href="https:\/\/www\.youtube\.com\/watch\?v=KchWMxZIn_g"/);
+    assert.match(poster[0], /href="https:\/\/www\.youtube\.com\/watch\?v=5BEWbgL6U-Y"/);
     assert.match(poster[0], /target="_blank"/);
     assert.match(poster[0], /rel="[^"]*noopener/);
 
@@ -570,7 +570,11 @@ describe("homepage as a promotional front page", () => {
     // the section links out to the source for each.
     assert.ok(
       watch.includes("https://www.youtube.com/watch?v=PabWDk6I-HI"),
-      "the second video has no destination in the static HTML",
+      "a queued video has no destination in the static HTML",
+    );
+    assert.ok(
+      watch.includes("https://www.youtube.com/watch?v=KchWMxZIn_g"),
+      "the Radar overview has no destination in the static HTML",
     );
   });
 
@@ -592,11 +596,13 @@ describe("homepage as a promotional front page", () => {
 
   it("promotes no system beyond its operating state", () => {
     const home = page("/");
-    // Sagitta Protocol is in Public Test. It is explored, never opened.
-    assert.ok(home.html.includes("Explore the public test"));
+    // Sagitta Protocol is in Public Test. It is explored or demonstrated, never
+    // opened. Since 2026-11-16 it reaches the homepage only through its overview
+    // video, whose action carries the testnet qualification with it.
+    assert.ok(!home.html.includes("Open Sagitta Protocol"), "the homepage offers to open a Public Test system");
     assert.ok(
-      home.html.includes("No mainnet deployment or contract addresses are published."),
-      "the testnet qualification is missing from the protocol feature",
+      home.html.includes("Sagitta Protocol is in public test on Moonbase Alpha Testnet and Arc Testnet."),
+      "the testnet qualification is missing from the staged protocol video",
     );
   });
 });

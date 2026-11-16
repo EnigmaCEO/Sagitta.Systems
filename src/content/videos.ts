@@ -33,6 +33,36 @@ import type { VideoRecord } from "./types";
 
 export const videos: VideoRecord[] = [
   {
+    id: "selun-ai-2026",
+    title: "Selun AI - PayPal Hackathon",
+    standfirst: "Onchain intelligence, one question away",
+    description:
+      "Selun AI, Sagitta's conversation-first gateway: ask about crypto in plain language, see the price upfront, pay by PayPal, card, or crypto wallet, and receive a clear, downloadable report. Submitted to the PayPal AI Hackathon.",
+    systemSlug: "selun",
+    classification: "Demonstration",
+    provider: "youtube",
+    providerVideoId: "5BEWbgL6U-Y",
+    sourceUrl: "https://www.youtube.com/watch?v=5BEWbgL6U-Y",
+    channelName: "Sagitta Systems",
+    listing: "unlisted",
+    duration: "2:36",
+    publishedAt: "2026-11-12",
+    poster: {
+      src: "/watch/selun-ai.jpg",
+      alt: "Thumbnail published with the Selun AI - PayPal Hackathon video on YouTube.",
+    },
+    verification: {
+      status: "verified",
+      source:
+        "https://www.youtube.com/watch?v=5BEWbgL6U-Y (title and channel via YouTube oEmbed; upload time, runtime, and listing from the watch page, 2026-11-16)",
+      lastVerifiedAt: "2026-11-16",
+      note:
+        "Exact title 'Selun AI - PayPal Hackathon' and channel 'Sagitta Systems' from oEmbed. Uploaded 2026-11-12T08:48:04-08:00, 156 seconds (2:36), and marked unlisted, all read from the watch page. The description is Sagitta's own, from the Selun AI newsroom record and the Devpost submission, not a transcription of the narration. The poster is YouTube's own maxres thumbnail, stored locally.",
+    },
+    publicationState: "published",
+    visibility: "public",
+  },
+  {
     id: "radar-overview-2026",
     title: "Sagitta Radar Overview",
     standfirst: "DeFi Infrastructure Intelligence",
