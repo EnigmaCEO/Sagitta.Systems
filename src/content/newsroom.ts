@@ -79,6 +79,55 @@ export const mediaTypes: MediaType[] = [
 ];
 
 export const newsroomEntries: NewsroomEntry[] = [
+  // Allocation Desk — Selun AI, submitted to the PayPal AI Hackathon.
+  {
+    slug: "selun-ai",
+    title: "Selun AI: onchain intelligence, one question away",
+    summary:
+      "Selun now starts with a conversation. Ask about crypto in plain language, and Selun AI finds the right Sagitta analysis, quotes the price upfront, and takes payment by PayPal, card, or a crypto wallet, including a phone wallet connected by QR code.",
+    publishedAt: "2026-11-16",
+    updatedAt: null,
+    desk: "allocation-read",
+    mediaType: "Article",
+    author: "Sagitta Systems",
+    systemSlug: "selun",
+    relatedSystems: ["aaa", "sagitta-continuity-engine", "sagitta-radar"],
+    heroImage: "/watch/selun-ai.jpg",
+    externalUrl: "https://www.youtube.com/watch?v=5BEWbgL6U-Y",
+    externalRole: "reference",
+    externalLabel: "Watch the Selun AI video",
+    body: [
+      "Selun has a new front door. Selun AI is a conversation: a person asks about crypto in their own words, and Selun connects the question to the Sagitta intelligence services that can answer it. It was submitted to the PayPal AI Hackathon on 12 November 2026, and it is the largest change to how people reach the network since Selun launched.",
+      { kind: "heading", text: "Why a conversation" },
+      "Sagitta's services already understood digital assets, market conditions, price risk, and operational resilience. Reaching them meant knowing which service to use and what it needed as input. Selun AI removes that step. Someone curious about Bitcoin gets a short, plain-English explanation first, with nothing to buy. If they then ask about the risks, Selun remembers the subject is Bitcoin and offers the matching analysis. The person never needs an API name, and never has to repeat the asset.",
+      "Five substantive questions are free. Paid analyses and subscription periods add more.",
+      { kind: "heading", text: "Three ways to pay" },
+      "Every analysis is quoted before anything is charged. The customer then chooses how to pay: PayPal, for one-time purchases and monthly intelligence subscriptions; a card, through Stripe; or a crypto wallet, settling USDC on Base over x402.",
+      "The crypto wallet does not have to live in the browser. Selun can show a QR code instead: the customer scans it with a wallet app on their phone, such as Coinbase Wallet, MetaMask, or Rainbow, and approves the exact amount there.",
+      "All three lead to the same fulfilment path. Once payment is verified, the specialist services produce the analysis, Selun explains the result in plain language, and the full report downloads as a PDF.",
+      { kind: "heading", text: "PayPal across the whole lifecycle" },
+      "PayPal is integrated well past the checkout button. Selun uses PayPal's Orders API for one-time purchases, its catalog, billing-plan, and Subscriptions APIs for recurring intelligence, its Payments API to verify captures and process refunds, signed webhooks to reconcile purchases, subscriptions, and reversals against fulfilment records, and dispute events to suspend access while a payment is contested and restore it once the dispute is resolved.",
+      { kind: "heading", text: "AI proposes. The customer authorizes." },
+      "The organizing rule is a boundary between language and money. The AI interprets the request and selects a service. It never decides whether a payment succeeded, and it never authorizes a charge. The server sets the price, the customer approves it, the payment provider confirms it, and only then does Sagitta execute.",
+      "The same boundary governs the numbers. Reports are generated from the stored results of the specialist services, never from figures supplied by the browser, and the AI's explanation is checked against those results to catch unsupported numbers and advice-like statements. When someone asks for current Radar alerts, Selun links to Radar's live public feed rather than presenting cached alerts as current. Payment events are idempotent: a duplicate callback creates no duplicate entitlement, and a refund revokes the access it paid for.",
+      "This is the principle the rest of the network is built on, authority precedes automation, applied to a consumer product. The model handles understanding and explanation. Software that can be inspected handles price, eligibility, payment, and access.",
+      { kind: "heading", text: "Where it stands" },
+      "The PayPal lifecycle was demonstrated end to end in PayPal's sandbox: question, quote, approved checkout, verified capture, analysis, and PDF download, plus a monthly subscription with its first paid report and a tested cancellation. Production payment and webhook validation, live email delivery, and account recovery across devices are the next milestones. Selun AI is a permanent public gateway to Sagitta's intelligence, not a hackathon prototype.",
+      "Humans and software reach the same intelligence. A person asks Selun AI a question; an agent reads the x402 discovery document and pays per call. The services underneath are the same.",
+    ],
+    featured: true,
+    verification: {
+      status: "verified",
+      source:
+        "https://devpost.com/software/selun-ai (PayPal AI Hackathon submission, read 2026-11-16) + https://www.youtube.com/watch?v=5BEWbgL6U-Y (title, channel, upload time, and runtime from the YouTube watch page and oEmbed) + AAA/SelunAgent repository",
+      lastVerifiedAt: "2026-11-16",
+      note:
+        "Product behaviour, the PayPal API list, the authorization boundary, the five free questions, and the sandbox-demonstration and next-milestone statements are taken from the Devpost submission, which states them as demonstrated sandbox/test-mode capabilities. The phone-wallet QR flow is confirmed in the SelunAgent repository (commit 3308353, WalletConnect pairing drawn as a local QR code). Video: 'Selun AI - PayPal Hackathon' on the Sagitta Systems channel, uploaded 2026-11-12T08:48:04-08:00, 2:36; the poster is YouTube's own thumbnail for this video id, stored locally. Prices are deliberately left out: they are set by Selun and change, and the evergreen record does not quote them.",
+    },
+    publicationState: "published",
+    visibility: "public",
+  },
+
   {
     slug: "cve-2023-39363",
     canonicalPath: "/defense/reviews/cve-2023-39363",

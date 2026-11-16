@@ -35,6 +35,11 @@ function verified(source: string, note?: string): Verification {
   return { status: "verified", source, lastVerifiedAt: VERIFIED_ON, note };
 }
 
+/** A record re-read after the 2026-07-29 pass, on the date given. */
+function verifiedOn(date: string, source: string, note?: string): Verification {
+  return { status: "verified", source, lastVerifiedAt: date, note };
+}
+
 export const systemFamilies: SystemFamily[] = [
   {
     id: "continuity-defense",
@@ -92,12 +97,12 @@ export const systems: SystemRecord[] = [
     availableToday: [
       "A public product surface describing the methodology, threat families, and review scope",
       "A sample defense report showing the structure of the output",
-      "Portal sign-in for review clients",
+      "An operator-only preview of the portal, open to approved operators by request",
     ],
     audience: ["Protocol teams", "DAOs", "Treasury projects", "Security leads"],
     status: "Operating",
     statusEvidence:
-      "Public product surface with sign-in and a downloadable sample report. Some live feeds on the site were showing a reconnecting state when last checked.",
+      "Public product surface and a downloadable sample report; the portal is an operator-only preview, open to approved operators by request. SCE is not sold directly: protocols commission its analysis through Sagitta Defense.",
     operatingUrl: "https://sce.sagitta.systems",
     subdomain: "sce.sagitta.systems",
     evidence: [
@@ -139,7 +144,7 @@ export const systems: SystemRecord[] = [
     featured: true,
     verification: verified(
       "https://sce.sagitta.systems + SCE/README.md",
-      "Live surface confirms marketing site, sample report, portal login. Since 2026-11-15 the homepage ticker renders the last successful Case Library read on first paint; before that it showed 'critical incident feed temporarily unavailable' and 'case library sync pending' while loading.",
+      "Live surface confirms marketing site, sample report, portal login. Labelled an operator-only preview on the SCE site from 2026-11-16, with access by approved request. Since 2026-11-15 the homepage ticker renders the last successful Case Library read on first paint; before that it showed 'critical incident feed temporarily unavailable' and 'case library sync pending' while loading.",
     ),
     publicationState: "published",
     visibility: "public",
@@ -351,31 +356,34 @@ export const systems: SystemRecord[] = [
     systemKind: "service",
     parentSystem: "aaa",
     summary:
-      "A guided allocation product that turns Sagitta's institutional allocation intelligence into a plan an individual can act on.",
+      "Sagitta's intelligence, one question away: ask Selun AI about crypto in plain language, get the right analysis, and pay by PayPal, card, or crypto wallet.",
     ecosystemRole:
-      "Selun exposes the Allocation Agent's intelligence as a customer-facing agent — to individuals through the wizard, and to other agents through its x402 surface.",
+      "Selun is the network's public gateway: people reach Sagitta's intelligence through the Selun AI conversation and the allocation wizard, and other agents reach the same services through its x402 surface.",
     problem:
       "The reasoning that institutions apply to allocation is not available to individual holders, who are left choosing between unexplained signals and their own judgement.",
     overview: [
-      "Selun runs a guided allocation wizard over the same allocation intelligence AAA provides to institutions, and returns a portfolio plan with an optional certified decision report.",
-      "Checkout is available both by card and by onchain USDC settlement, with promo and referral support.",
+      "Selun AI starts with a question. It explains in plain language, finds the Sagitta analysis that fits when the person wants to go deeper, quotes the price upfront, and explains the result once payment is verified, with the full report as a PDF. The AI selects and explains; the server sets prices, verifies payment, and controls execution.",
+      "Payment is by PayPal (one-time and monthly subscriptions), by card through Stripe, or by crypto wallet settling USDC on Base, including a phone wallet connected by QR code.",
+      "The guided allocation wizard runs over the same allocation intelligence AAA provides to institutions, and returns a portfolio plan with an optional certified decision report.",
       "Selun is the service built on the Autonomous Allocation Agent, and it is also where Sagitta's agent-payable surface lives: x402 is a capability of Selun, exposing the same intelligence to machines instead of people.",
     ],
     availableToday: [
+      "Selun AI, a conversation that finds, quotes, and explains Sagitta analyses",
+      "PayPal, card, and crypto-wallet payment, including a phone wallet by QR code",
       "The guided allocation wizard, end to end",
-      "Card checkout and onchain USDC settlement",
       "An optional certified decision report",
       "The x402 agent-payable surface, advertising ten endpoints at /.well-known/x402",
     ],
     audience: ["Individual portfolio holders", "Operators", "Referral partners"],
     status: "Operating",
     statusEvidence:
-      "Public product with a completable wizard and two working payment paths.",
+      "Public product: Selun AI and the allocation wizard are open at selun.sagitta.systems, alongside the x402 discovery document.",
     operatingUrl: "https://selun.sagitta.systems",
     documentationUrl: "https://selun.sagitta.systems/for-developers",
     subdomain: "selun.sagitta.systems",
     evidence: [
-      { label: "Selun", href: "https://selun.sagitta.systems", external: true },
+      { label: "Selun AI", href: "https://selun.sagitta.systems", external: true },
+      { label: "Selun AI, PayPal AI Hackathon submission", href: "https://devpost.com/software/selun-ai", external: true },
       { label: "Allocation wizard", href: "https://selun.sagitta.systems/wizard", external: true },
       {
         label: "x402 discovery document",
@@ -393,14 +401,14 @@ export const systems: SystemRecord[] = [
       },
     ],
     primaryAction: {
-      id: "system:selun:open-wizard",
-      label: "Open the allocation wizard",
-      href: "https://selun.sagitta.systems/wizard",
+      id: "system:selun:ask-selun",
+      label: "Ask Selun AI",
+      href: "https://selun.sagitta.systems",
       external: true,
       type: "open-product",
       availability: "available",
       audience: "Individual portfolio holders",
-      note: "Card checkout or onchain USDC settlement.",
+      note: "Pay by PayPal, card, or crypto wallet.",
     },
     secondaryAction: {
       id: "system:selun:methodology",
@@ -412,9 +420,10 @@ export const systems: SystemRecord[] = [
     },
     logo: "/selun.svg",
     featured: true,
-    verification: verified(
-      "https://selun.sagitta.systems + AAA/SelunAgent/README.md",
-      "Live site is client-rendered so the fetched HTML carries only the title; product surfaces (wizard, Stripe checkout, onchain USDC, referrals, reports) are confirmed by the SelunAgent repository README. The x402 discovery document on the same host independently confirms the deployment is live.",
+    verification: verifiedOn(
+      "2026-11-16",
+      "https://selun.sagitta.systems + https://devpost.com/software/selun-ai + AAA/SelunAgent repository",
+      "Re-verified 2026-11-16. Selun AI (chat), PayPal Orders/Subscriptions/webhooks, Stripe card checkout, x402 USDC on Base, and the phone-wallet QR flow are confirmed by the SelunAgent repository and described in the PayPal AI Hackathon submission. The homepage and /plan are server-rendered as of 2026-11-16 (commit fa451ce), so the fetched HTML now carries the Selun AI welcome copy. The x402 discovery document on the same host independently confirms the deployment is live.",
     ),
     publicationState: "published",
     visibility: "public",
