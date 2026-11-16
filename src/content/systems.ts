@@ -168,7 +168,7 @@ export const systems: SystemRecord[] = [
       "Findings are produced from Sagitta Continuity Engine intelligence and delivered as a written report.",
     ],
     availableToday: [
-      "A Starter Defense Review at a published flat fee of $3,000",
+      "A Starter Defense Review at a published flat fee of $3,000, including a follow-up update after evidence submission",
       "A downloadable sample report showing structure and methodology",
       "A published FAQ covering scope, access requirements, and delivery",
     ],
@@ -190,7 +190,7 @@ export const systems: SystemRecord[] = [
       type: "defense-review",
       availability: "available",
       audience: "Protocol teams, DAOs, and treasury operators",
-      note: "Starter Defense Review, published at a flat $3,000 for a fixed scope.",
+      note: "Starter Defense Review, published at a flat $3,000 for a fixed scope, follow-up included.",
     },
     secondaryAction: {
       id: "system:sagitta-defense:evidence",
@@ -204,7 +204,7 @@ export const systems: SystemRecord[] = [
     featured: true,
     verification: verified(
       "https://defense.sagitta.systems",
-      "Confirms $3,000 flat fee Starter Defense Review, ~7 day typical delivery, sample PDF, no-key access model, and the critical-incidents figure attributed to SCE (1,036 on 2026-11-15).",
+      "Confirms $3,000 flat fee Starter Defense Review (evidence follow-up included, confirmed by the owner 2026-11-16), ~7 day typical delivery, sample PDF, no-key access model, and the critical-incidents figure attributed to SCE (1,036 on 2026-11-15).",
     ),
     publicationState: "published",
     visibility: "public",
