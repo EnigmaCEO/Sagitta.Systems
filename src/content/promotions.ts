@@ -83,6 +83,11 @@ function verifiedNov16(source: string, note?: string): Verification {
   return { status: "verified", source, lastVerifiedAt: "2026-11-16", note };
 }
 
+/** Verified in the 2026-11-17 pass. */
+function verifiedNov17(source: string, note?: string): Verification {
+  return { status: "verified", source, lastVerifiedAt: "2026-11-17", note };
+}
+
 /**
  * The thirteen formats, each with its editorial label and the stage it is built
  * for. This is the model's own record that the format set is complete, and it is
@@ -562,10 +567,17 @@ export const promotions: PromotionRecord[] = [
     sourceName: "defense.sagitta.systems",
     signal: {
       metric: "Critical incidents in the tracked set",
-      value: "1,036",
+      value: "2,080",
       reading: "snapshot",
-      asOf: "2026-11-15",
+      asOf: "2026-11-17",
       snapshot: true,
+      // Replaced in the browser by the current count; the dated value above is
+      // the static fallback.
+      live: {
+        endpoint: "https://continuityengineserver.fly.dev/advisories/overview",
+        field: "critical_advisories",
+        label: "SCE",
+      },
     },
     action: {
       id: "promo:sce-incidents-tracked:case-library",
@@ -577,9 +589,9 @@ export const promotions: PromotionRecord[] = [
     },
     priority: 2,
     state: "active",
-    verification: verifiedNov15(
-      "https://defense.sagitta.systems",
-      "A Sagitta-published figure attributed to SCE on the Defense service page, not an independently audited one. Rendered as a dated snapshot. Re-read 2026-11-15 after the Defense ticker was repointed to /advisories/overview: 1,036 (801 on 2026-07-29, from the retired /incidents/overview).",
+    verification: verifiedNov17(
+      "https://continuityengineserver.fly.dev/advisories/overview",
+      "A Sagitta-published figure from SCE (critical_advisories on /advisories/overview, the same feed the Defense service page reads), not an independently audited one. Shipped as a dated snapshot and replaced in the browser by the live count. Re-read 2026-11-17 after the full De.Fi REKT backfill: 2,080 (1,036 on 2026-11-15; 801 on 2026-07-29).",
     ),
     publicationState: "published",
     visibility: "public",

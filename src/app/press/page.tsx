@@ -4,6 +4,7 @@ import PageHero from "@/components/PageHero";
 import PressResourceCard from "@/components/PressResourceCard";
 import SectionHeading, { Section } from "@/components/SectionHeading";
 import { ExternalArrow } from "@/components/icons";
+import { LivePressValue } from "@/components/LiveFigure";
 import {
   formatDate,
   pressContact,
@@ -106,12 +107,21 @@ export default function PressPage() {
               className="rounded-xl border p-5 flex flex-col"
               style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
             >
-              <p
-                className="display text-2xl md:text-3xl font-bold mb-1 tabular-nums"
-                style={{ color: "var(--gold)" }}
-              >
-                {stat.value}
-              </p>
+              {stat.live ? (
+                <LivePressValue
+                  value={stat.value}
+                  live={stat.live}
+                  className="display text-2xl md:text-3xl font-bold mb-1 tabular-nums"
+                  style={{ color: "var(--gold)" }}
+                />
+              ) : (
+                <p
+                  className="display text-2xl md:text-3xl font-bold mb-1 tabular-nums"
+                  style={{ color: "var(--gold)" }}
+                >
+                  {stat.value}
+                </p>
+              )}
               <p className="text-sm font-semibold mb-3" style={{ color: "var(--text-primary)" }}>
                 {stat.metric}
               </p>

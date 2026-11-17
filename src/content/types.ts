@@ -273,6 +273,23 @@ export interface PromotionSignal {
    * rule a snapshot is always labelled as one stays directly assertable.
    */
   snapshot: boolean;
+  /**
+   * Optional live source. When present, the dated `value` is what the static
+   * page ships (and what crawlers and the content check see); the browser then
+   * replaces it with the current figure read from `endpoint`, and relabels it
+   * as live. If the read fails, the dated snapshot simply stays.
+   */
+  live?: LiveFigureSource;
+}
+
+/** Where a figure is read live from, in the visitor's browser. */
+export interface LiveFigureSource {
+  /** Public HTTPS JSON endpoint on an allowlisted Sagitta host. */
+  endpoint: string;
+  /** Top-level numeric field in the response. */
+  field: string;
+  /** Product named in the live label, e.g. "SCE". */
+  label: string;
 }
 
 export interface PromotionRecord extends RecordBase {
@@ -823,6 +840,8 @@ export interface PressStatistic extends RecordBase {
   /** What the figure covers and what it excludes. */
   scope: string;
   source: Link;
+  /** Optional live source; see PromotionSignal.live. */
+  live?: LiveFigureSource;
 }
 
 // ─── People ──────────────────────────────────────────────────────────────────

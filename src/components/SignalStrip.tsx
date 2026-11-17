@@ -2,6 +2,7 @@ import Link from "@/components/Link";
 import { formatDate, getSystemName } from "@/content";
 import type { PromotionRecord } from "@/content/types";
 import { ExternalArrow } from "./icons";
+import { LiveSignalBody } from "./LiveFigure";
 
 /**
  * Current signals, as a live information line.
@@ -66,6 +67,19 @@ export default function SignalStrip({ promotions }: { promotions: PromotionRecor
                     </span>
                   </p>
 
+                  {signal?.live ? (
+                    // A dated snapshot in the static HTML, replaced in the
+                    // browser by the current figure from the product.
+                    <LiveSignalBody
+                      value={signal.value}
+                      metric={signal.metric}
+                      asOf={signal.asOf}
+                      asOfLabel={signal.asOf ? formatDate(signal.asOf) : null}
+                      sourceName={system ?? promotion.sourceName}
+                      live={signal.live}
+                    />
+                  ) : (
+                  <>
                   <p className="ticker-value mb-3">{signal ? signal.value : "—"}</p>
 
                   <p className="text-sm leading-snug mb-2" style={{ color: "var(--text-secondary)" }}>
@@ -87,6 +101,8 @@ export default function SignalStrip({ promotions }: { promotions: PromotionRecor
                     ) : null}
                     {system ?? promotion.sourceName}
                   </p>
+                  </>
+                  )}
 
                   {external ? (
                     <a

@@ -541,8 +541,14 @@ describe("promotion model", () => {
 
     const incidents = content.getPromotion("sce-incidents-tracked");
     assert.equal(incidents.signal.reading, "snapshot");
-    // Re-read from the live Defense page on 2026-11-15.
-    assert.equal(incidents.signal.asOf, "2026-11-15");
+    // Re-read from SCE on 2026-11-17; the dated value is the static fallback.
+    assert.equal(incidents.signal.asOf, "2026-11-17");
+    // Replaced in the browser by the live count from SCE.
+    assert.equal(
+      incidents.signal.live?.endpoint,
+      "https://continuityengineserver.fly.dev/advisories/overview",
+    );
+    assert.equal(incidents.signal.live?.field, "critical_advisories");
   });
 
   it("publishes the Radar figure as an undated rollup at a threshold", () => {

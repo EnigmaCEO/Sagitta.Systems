@@ -372,9 +372,9 @@ export const pressStatistics: PressStatistic[] = [
   {
     id: "sce-incidents-tracked",
     metric: "Critical incidents tracked by SCE",
-    value: "1,036",
+    value: "2,080",
     scope:
-      "Incidents in the Sagitta Continuity Engine's tracked set, as published on the Defense service page. A Sagitta-published figure, not an independently audited one.",
+      "Critical incidents in the Sagitta Continuity Engine's tracked set, read live from SCE (the same figure the Defense service page shows). A Sagitta-published figure, not an independently audited one.",
     source: {
       label: "defense.sagitta.systems",
       href: "https://defense.sagitta.systems",
@@ -383,8 +383,13 @@ export const pressStatistics: PressStatistic[] = [
     verification: {
       status: "verified",
       source: "https://defense.sagitta.systems",
-      lastVerifiedAt: "2026-11-15",
-      note: "Re-read 2026-11-15 from the live Defense page: 1,036 (801 on 2026-07-29).",
+      lastVerifiedAt: "2026-11-17",
+      note: "Re-read 2026-11-17 from SCE /advisories/overview after the full De.Fi REKT backfill: 2,080 (1,036 on 2026-11-15; 801 on 2026-07-29). Updates live in the browser.",
+    },
+    live: {
+      endpoint: "https://continuityengineserver.fly.dev/advisories/overview",
+      field: "critical_advisories",
+      label: "SCE",
     },
     publicationState: "published",
     visibility: "public",

@@ -32,6 +32,30 @@ const isPublic = (r) => r.visibility === "public";
 const isPublished = (r) => r.publicationState === "published";
 const isLive = (r) => isPublic(r) && isPublished(r);
 
+// Hosts a figure may be read live from in the browser. Mirrors
+// LIVE_FIGURE_HOSTS in src/components/LiveFigure.tsx.
+const LIVE_FIGURE_HOSTS = ["continuityengineserver.fly.dev"];
+
+/**
+ * A live figure is still shipped as a dated snapshot (the static fallback), so
+ * it must be a snapshot, and it may only be read from an allowlisted HTTPS host.
+ */
+function checkLiveSource(live, where) {
+  if (!live) return;
+  let url = null;
+  try {
+    url = new URL(live.endpoint);
+  } catch {
+    fail(`${where} live: endpoint is not a URL — "${live.endpoint}"`);
+    return;
+  }
+  if (url.protocol !== "https:") fail(`${where} live: endpoint must be https`);
+  if (!LIVE_FIGURE_HOSTS.includes(url.hostname))
+    fail(`${where} live: host "${url.hostname}" is not an allowlisted live source`);
+  if (!live.field) fail(`${where} live: missing field`);
+  if (!live.label) fail(`${where} live: missing label`);
+}
+
 function checkDate(value, where) {
   if (value === null || value === undefined) return;
   if (!ISO_DATE.test(value)) fail(`${where}: date "${value}" is not YYYY-MM-DD`);
@@ -541,6 +565,7 @@ function main() {
     if (!stat.verification?.lastVerifiedAt) fail(`${where}: no last-verified date`);
     checkVerification(stat, where);
     checkLocalAsset(stat.source?.href ?? "", `${where} source`);
+    checkLiveSource(stat.live, where);
   }
 
   for (const section of pressSections) {
@@ -1032,6 +1057,11 @@ function main() {
       // moving value never enters the record in the first place.
       if (signal.reading === "rollup" && /\d[\d,.]*\.\d{2,}/.test(signal.value))
         fail(`${where} signal: a rollup publishes a precise moving figure — "${signal.value}"`);
+
+      // A live figure ships its dated snapshot as the static fallback.
+      if (signal.live && signal.reading !== "snapshot")
+        fail(`${where} signal: a live figure must carry a dated snapshot fallback`);
+      checkLiveSource(signal.live, `${where} signal`);
     }
 
     if (promotion.media) {

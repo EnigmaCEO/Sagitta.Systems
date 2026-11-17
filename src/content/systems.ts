@@ -204,7 +204,7 @@ export const systems: SystemRecord[] = [
     featured: true,
     verification: verified(
       "https://defense.sagitta.systems",
-      "Confirms $3,000 flat fee Starter Defense Review (evidence follow-up included, confirmed by the owner 2026-11-16), ~7 day typical delivery, sample PDF, no-key access model, and the critical-incidents figure attributed to SCE (1,036 on 2026-11-15).",
+      "Confirms $3,000 flat fee Starter Defense Review (evidence follow-up included, confirmed by the owner 2026-11-16), ~7 day typical delivery, sample PDF, no-key access model, and the critical-incidents figure attributed to SCE (read live; 2,080 on 2026-11-17).",
     ),
     publicationState: "published",
     visibility: "public",
