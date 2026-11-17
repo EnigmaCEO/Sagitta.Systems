@@ -79,6 +79,49 @@ export const mediaTypes: MediaType[] = [
 ];
 
 export const newsroomEntries: NewsroomEntry[] = [
+  // SCE Wire — Research Note 001, the first SCE authority report.
+  {
+    slug: "the-authority-gap",
+    title: "The Authority Gap: how crypto losses enter, and why containment fails",
+    summary:
+      "Research Note 001, the first SCE authority report. Across 4,139 public crypto incidents, 94.8% of losses with a classified cause entered through privileged access, signing, or admin authority rather than code bugs. In 80.6% of incidents, the authority that could contain the loss was the one causing it.",
+    publishedAt: "2026-11-17",
+    updatedAt: null,
+    desk: "sce-wire",
+    mediaType: "Report",
+    author: "Sagitta Systems",
+    seriesLabel: "Research Note 001 · Authority Report · Q4 2026",
+    systemSlug: "sagitta-continuity-engine",
+    relatedSystems: ["sagitta-defense"],
+    externalUrl: "https://sce.sagitta.systems/research/note-001",
+    externalRole: "canonical",
+    externalLabel: "Read the full report on sce.sagitta.systems",
+    body: [
+      "Most loss reports ask how much was stolen and from where. Research Note 001 asks who held the authority that let each loss happen, and who held the authority that could have stopped it. It reads 4,139 public crypto incident records, from June 2011 to November 2026, from the SCE Case Library.",
+      { kind: "heading", text: "Authority, not code" },
+      "Of $33.55B in losses with a classified cause, $31.79B (94.8%) entered through privileged access, signing, or admin authority: compromised from outside or used by insiders. Code and logic exploits account for $1.76B (5.2%). The split holds in every window tested: 92.4% in 2020–2022, 94.4% in 2023–2026, and 98.1% in the last twelve months, or 89.5%–93.5% with the single largest record excluded.",
+      "The entry point has moved. In 2020–2022, insiders using their own authority drove 74.9% of classified losses. In 2023–2026, outsiders taking over privileged keys and roles drove 92.7%. The median Access Control incident lost $2.37M, against $678K for the median code exploit.",
+      { kind: "heading", text: "Who could contain it" },
+      "In 3,335 of the 4,139 incidents (80.6%), the loss came from an insider abusing privileged authority or from an outsider who had taken it. A pause controlled by that same authority is not a containment control. Public incident records do not say whether a usable pause existed, and the report names that as a gap in public data rather than estimating it.",
+      { kind: "heading", text: "What came back" },
+      "Code exploits saw 17.1% of lost value returned. External privileged compromise saw 5.1%, and insider authority abuse 0.6%. When the loss comes through a compromised or abused authority path, the tools a protocol would use to recover are often the tools that were lost. Recovery time could not be measured from public records, which carry the incident date but not when containment began or normal operation resumed. Future editions will report it where public, dated evidence allows.",
+      { kind: "heading", text: "The worked case" },
+      "CVE-2023-39363, the Vyper compiler flaw behind the July 2023 Curve pool exploits, is a code bug. The Case Library records $50.5M lost and $6.8M returned. Curve's emergency DAO could stop CRV emissions to the affected pools but, per LlamaRisk's postmortem, could not pause them or handle user funds, so containment had to happen around the contracts rather than inside them. Even when the root cause is code, authority decides the outcome.",
+      "The report uses public data only, with losses and categories as recorded by De.Fi's REKT database, and states its scope and limits in full. It is the first edition of a quarterly series.",
+    ],
+    featured: true,
+    verification: {
+      status: "verified",
+      source:
+        "https://sce.sagitta.systems/research/note-001 + SCE Case Library (De.Fi REKT records, read-only queries in SCE research-notes/research-note-001-queries.py, run 2026-11-17)",
+      lastVerifiedAt: "2026-11-17",
+      note:
+        "Every figure is restated from the published report and was re-derived from the Case Library with the report's query script on 2026-11-17. Losses and categories are as recorded by De.Fi REKT and were not independently verified; the grouping into authority paths and code exploits is Sagitta's and is shown in the report. Terra Classic ($40B) is excluded from totals as an outlier. The CVE-2023-39363 authority statement rests on LlamaRisk's Curve postmortem, as in the Defense mini-review. The SCE page is the canonical publication; this record is a summary treatment.",
+    },
+    publicationState: "published",
+    visibility: "public",
+  },
+
   // Allocation Desk — Selun AI, submitted to the PayPal AI Hackathon.
   {
     slug: "selun-ai",
